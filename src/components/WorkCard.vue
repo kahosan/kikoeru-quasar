@@ -116,23 +116,18 @@ export default {
   mixins: [NotifyMixin],
 
   components: {
-    CoverSFW,
-    // WorkDetails
+    CoverSFW
   },
 
   props: {
-    workid: {
-      type: Number,
+    metadata: {
+      type: Object,
       required: true
-    },
+    }
   },
 
   data () {
     return {
-      metadata: {
-        id: this.workid,
-        circle: {}
-      },
       rating: 0,
       userMarked: false,
       showTags: true
@@ -149,30 +144,23 @@ export default {
     }
   },
 
-  created () {
-    this.requestMetadata(this.workid)
+  // TODO: Refactor with Vuex?
+  mounted() {
+    if (this.metadata.userRating) {
+      this.userMarked = true;
+      this.rating = this.metadata.userRating;
+    } else {
+      this.userMarked = false;
+      this.rating = this.metadata.rate_average_2dp || 0;
+    }
+
+    // 极个别作品没有标签
+    if (this.metadata.tags && this.metadata.tags[0].name === null) {
+      this.showTags = false;
+    }
   },
 
   watch: {
-    workid () {
-      this.requestMetadata()
-    },
-    
-    metadata (newMetaData) {
-      if (newMetaData.userRating) {
-        this.userMarked = true;
-        this.rating = newMetaData.userRating;
-      } else {
-        this.userMarked = false;
-        this.rating = newMetaData.rate_average_2dp || 0;
-      }
-
-      // 极个别作品没有标签
-      if (newMetaData.tags && newMetaData.tags[0].name === null) {
-        this.showTags = false;
-      }
-    },
-
     rating (newRating, oldRating) {
       if (oldRating) {
         const submitPayload = {
@@ -187,15 +175,6 @@ export default {
   },
 
   methods: {
-    requestMetadata () {
-      if (this.workid) {
-        this.$axios.get(`/api/work/${this.workid}`)
-          .then((response) => {
-            this.metadata = response.data
-          })
-      } 
-    },
-
     submitRating (payload) {
       this.$axios.put('/api/review', payload)
         .then((response) => {
