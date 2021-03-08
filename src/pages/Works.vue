@@ -6,7 +6,7 @@
         ({{pagination.totalCount}})
       </span>
     </div>
-    
+
     <div :class="`row justify-center ${listMode ? 'list' : 'q-mx-md'}`">
       <q-infinite-scroll @load="onLoad" :offset="250" :disable="stopLoad" style="max-width: 1680px;" class="col">
         <div v-show="works.length" class="row justify-between q-mb-md q-mr-sm">
@@ -77,17 +77,17 @@
           />
 
         </div>
-        
+
         <q-list v-if="listMode" bordered separator class="shadow-2">
           <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel="showLabel && windowWidth > 700" />
         </q-list>
 
         <div v-else class="row q-col-gutter-x-md q-col-gutter-y-lg">
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" :class="{'work-card': detailMode}" v-for="work in works" :key="work.id">
-            <WorkCard :metadata="work" class="fit"/> 
-          </div> 
+            <WorkCard :metadata="work" class="fit"/>
+          </div>
         </div>
-        
+
         <div v-show="stopLoad" class="q-mt-lg q-mb-xl text-h6 text-bold text-center">END</div>
 
         <template v-slot:loading>
@@ -244,10 +244,13 @@ export default {
       this.reset()
     },
 
-    sortOption (newSortOptionSetting) {
-      localStorage.sortOption = JSON.stringify(newSortOptionSetting);
-      this.seed = Math.floor(Math.random() * 100);
-      this.reset();
+    sortOption (newSortOptionSetting, oldSortOptionSetting) {
+      console.log(`Sort option changed! old: ${JSON.stringify(oldSortOptionSetting)}, new: ${JSON.stringify(newSortOptionSetting)}`)
+      if (JSON.stringify(oldSortOptionSetting) !== JSON.stringify(newSortOptionSetting)) {
+        localStorage.sortOption = JSON.stringify(newSortOptionSetting);
+        this.seed = Math.floor(Math.random() * 100);
+        this.reset();
+      }
     },
 
     showLabel (newLabelSetting) {
@@ -318,7 +321,7 @@ export default {
               case 'circle':
                 pageTitle = 'Works by '
                 break
-            }    
+            }
             pageTitle += name || ''
 
             this.pageTitle = pageTitle
@@ -337,16 +340,16 @@ export default {
         this.pageTitle = `Search by ${this.$route.params.keyword}`
       } else {
         this.pageTitle = 'All works'
-      } 
+      }
     },
 
     reset () {
-      this.stopLoad = true
+      // this.stopLoad = true
       this.refreshPageTitle()
       this.pagination = {}
       this.requestWorksQueue()
         .then(() => {
-          this.stopLoad = false
+          // this.stopLoad = false
         })
     },
   }
@@ -360,7 +363,7 @@ export default {
       padding: 0px 20px;
     }
   }
-  
+
   .work-card {
     // 宽度 > $breakpoint-xl-min
     @media (min-width: $breakpoint-md-min) {
