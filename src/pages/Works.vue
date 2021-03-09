@@ -349,7 +349,7 @@ export default {
       this.pagination = {}
       this.requestWorksQueue()
         .then(() => {
-          // this.stopLoad = false
+          this.stopLoad = false
         })
     },
   }
