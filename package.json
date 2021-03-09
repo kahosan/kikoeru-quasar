@@ -1,8 +1,8 @@
 {
   "name": "kikoeru-quasar",
   "version": "0.6.0-rc.4",
-  "description": "A self-hosted web media player for listening to your DLsite voice works.",
-  "productName": "Kikoeru",
+  "description": "在线ASMR播放, 同人音声在线播放",
+  "productName": "ASMR Online",
   "cordovaId": "org.cordova.quasar.kikoeru",
   "capacitorId": "",
   "author": "Watanuki-Kimihiro",
