@@ -116,13 +116,12 @@ export default {
   },
 
   props: {
-    restrict: {
-      type: String
-    }
+    //
   },
 
   data () {
     return {
+      url: this.getApiUrl(this.$route.query),
       listMode: false,
       showLabel: true,
       detailMode: false,
@@ -228,18 +227,24 @@ export default {
   },
 
   computed: {
-    url () {
-      if (this.$route.params.keyword) {
-        return `/api/search/${this.$route.params.keyword}`
-      } else if (this.$route.params.id) {
-        return `/api/${this.restrict}/${this.$route.params.id}`
-      } else {
-        return '/api/works'
-      }
-    }
+    //
   },
 
   watch: {
+    '$route.path' (path) {
+      if (path !== '/works') {
+        this.stopLoad = true
+      } else {
+        this.stopLoad = false
+      }
+    },
+
+    '$route.query' (query) {
+      if (this.$route.path === '/works') {
+        this.url = this.getApiUrl(query)
+      }
+    },
+
     url () {
       this.reset()
     },
@@ -267,6 +272,20 @@ export default {
   },
 
   methods: {
+    getApiUrl (query) {
+      if (query.circleId) {
+        return `/api/circle/${this.$route.query.circleId}`
+      } else if (query.tagId) {
+        return `/api/tag/${this.$route.query.tagId}`
+      } else if (query.vaId) {
+        return `/api/va/${this.$route.query.vaId}`
+      } else if (query.keyword) {
+        return `/api/search/${query.keyword}`
+      } else {
+        return '/api/works'
+      }
+    },
+
     onLoad (index, done) {
       this.requestWorksQueue()
         .then(() => done())
@@ -304,14 +323,25 @@ export default {
     },
 
     refreshPageTitle () {
-      if (this.$route.params.id) {
-        const url = `/api/get-name/${this.restrict}/${this.$route.params.id}`
+      if (this.$route.query.circleId || this.$route.query.tagId || this.$route.query.vaId) {
+        let url = '', restrict = ''
+        if (this.$route.query.circleId) {
+          restrict = 'circle'
+          url = `/api/get-name/${restrict}/${this.$route.query.circleId}`
+        } else if (this.$route.query.tagId) {
+          restrict = 'tag'
+          url = `/api/get-name/${restrict}/${this.$route.query.tagId}`
+        } else {
+          restrict = 'va'
+          url = `/api/get-name/${restrict}/${this.$route.query.vaId}`
+        }
+
         this.$axios.get(url)
           .then((response) => {
             const name = response.data
             let pageTitle
 
-            switch (this.restrict) {
+            switch (restrict) {
               case 'tag':
                 pageTitle = 'Works tagged with '
                 break
@@ -336,8 +366,8 @@ export default {
               this.showErrNotif(error.message || error)
             }
           })
-      } else if (this.$route.params.keyword) {
-        this.pageTitle = `Search by ${this.$route.params.keyword}`
+      } else if (this.$route.query.keyword) {
+        this.pageTitle = `Search by ${this.$route.query.keyword}`
       } else {
         this.pageTitle = 'All works'
       }

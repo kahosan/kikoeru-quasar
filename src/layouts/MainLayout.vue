@@ -159,7 +159,9 @@
 
     <q-page-container>
       <!-- <q-page padding> -->
-        <router-view class="page-content" />
+        <keep-alive include="Works">
+          <router-view />
+        </keep-alive>
       <!-- </q-page> -->
         <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
           <q-btn fab icon="keyboard_arrow_up" color="accent" />
@@ -234,7 +236,7 @@ export default {
 
   watch: {
     keyword () {
-      this.$router.push(`/search/${this.keyword}`)
+      this.$router.push(this.keyword ? `/works?keyword=${this.keyword}` : `/works`)
     },
 
     randId () {
