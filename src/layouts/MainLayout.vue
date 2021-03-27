@@ -97,7 +97,27 @@
           </q-item>
         </q-list>
 
+
         <q-list>
+          <q-item
+            clickable
+            v-ripple
+            exact
+            to="/about"
+            @click="miniState = true"
+            active-class="text-deep-purple text-weight-medium"
+          >
+            <q-item-section avatar>
+              <q-icon name="info" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-subtitle1">
+                关于 About
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
           <q-item
             clickable
             v-ripple
