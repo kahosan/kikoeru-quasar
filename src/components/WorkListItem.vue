@@ -45,7 +45,7 @@
         </div>
       </q-item-label>
     </q-item-section>
-  </q-item>   
+  </q-item>
 </template>
 
 <script>
@@ -70,7 +70,7 @@ export default {
     samCoverUrl () {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
-      return this.metadata.id ? `/api/cover/${this.metadata.id}?type=sam&token=${token}` : ""
+      return this.metadata.id ? `/api/cover/${this.metadata.id}.jpg?type=sam` : ""
     },
   }
 }

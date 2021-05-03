@@ -1,6 +1,6 @@
 <template>
   <q-item clickable class="row bg-white">
-      <q-item-section class="col-auto" top> 
+      <q-item-section class="col-auto" top>
         <router-link :to="`/work/${metadata.id}`">
           <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
         </router-link>
@@ -124,8 +124,7 @@ export default {
   computed: {
     coverUrl () {
       // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
-      return this.workid ? `/api/cover/${this.workid}?type=240x240&token=${token}` : ""
+      return this.workid ? `/api/cover/${this.workid}.jpg?type=240x240` : ""
     },
   },
 

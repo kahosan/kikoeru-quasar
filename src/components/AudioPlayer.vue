@@ -18,7 +18,7 @@
                   隐藏封面按钮
                 </q-item-section>
               </q-item>
-              
+
               <q-item clickable v-ripple @click="swapSeekButton = !swapSeekButton">
                 <q-item-section avatar>
                   <q-icon :name="swapSeekButton ? 'done' : ''" />
@@ -27,7 +27,7 @@
                   交换进度按钮与切换按钮
                 </q-item-section>
               </q-item>
-              
+
               <q-item clickable v-ripple @click="openWorkDetail()" v-close-popup>
                 <q-item-section avatar>
                   <!-- placeholder -->
@@ -77,7 +77,7 @@
         <!-- HTML5 volume in iOS is read-only -->
         <div class="row items-center q-mx-lg" style="height: 50px" v-if="!$q.platform.is.ios">
           <q-icon name="volume_down" size="sm" class="col-auto" />
-          <vue-slider 
+          <vue-slider
             v-model="volume"
             :min="0"
             :max="1"
@@ -102,7 +102,7 @@
           <q-space />
           <q-btn dense round size="md" icon="delete_forever" color="red" @click="emptyQueue()" style="height: 35px; width: 35px;" class="col-auto" />
         </div>
-        
+
         <q-separator />
 
         <!-- 音频文件列表 -->
@@ -207,9 +207,8 @@ export default {
   computed: {
     coverUrl () {
       // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
       const hash = this.currentPlayingFile.hash
-      return hash ? `/api/cover/${hash.split('/')[0]}?token=${token}` : ""
+      return hash ? `/api/cover/${hash.split('/')[0]}.jpg` : ""
     },
 
     workDetailUrl () {
@@ -286,7 +285,7 @@ export default {
       'rewindSeekTime',
       'forwardSeekTime'
     ]),
-    
+
     ...mapGetters('AudioPlayer', [
       'currentPlayingFile'
     ])
@@ -331,8 +330,7 @@ export default {
 
     samCoverUrl (hash) {
       // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
-      return hash ? `/api/cover/${hash.split('/')[0]}?type=sam&token=${token}` : ""
+      return hash ? `/api/cover/${hash.split('/')[0]}.jpg?type=sam` : ""
     },
 
     onClickTrack (index) {
@@ -353,7 +351,7 @@ export default {
       } else {
         index = this.queueIndex
       }
-   
+
       this.SET_QUEUE({
         queue: this.queueCopy.concat(),
         index: index,

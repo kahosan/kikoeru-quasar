@@ -5,7 +5,7 @@
         <q-item-section avatar>
           <q-img transition="fade" :src="samCoverUrl" style="height: 50px; width: 50px" class="rounded-borders" />
         </q-item-section>
-        
+
         <q-item-section>
           <q-item-label lines="2">{{ currentPlayingFile.title }}</q-item-label>
           <q-item-label caption lines="1">{{ currentPlayingFile.workTitle }}</q-item-label>
@@ -28,9 +28,8 @@ export default {
   computed: {
     samCoverUrl () {
       // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
       const hash = this.currentPlayingFile.hash
-      return hash ? `/api/cover/${hash.split('/')[0]}?type=sam&token=${token}` : ""
+      return hash ? `/api/cover/${hash.split('/')[0]}.jpg?type=sam` : ""
     },
 
     playingIcon () {

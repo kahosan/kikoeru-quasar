@@ -19,7 +19,7 @@
         {{release}}
       </div>
     </q-img>
-  </router-link>   
+  </router-link>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
       type: Number,
       required: true
     },
-    
+
     nsfw: {
       type: Boolean,
       default: true
@@ -51,8 +51,7 @@ export default {
   computed: {
     coverUrl () {
       // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
-      return this.workid ? `/api/cover/${this.workid}?token=${token}` : ""
+      return this.workid ? `/api/cover/${this.workid}.jpg` : ""
     },
 
     rjcode () {
