@@ -27,7 +27,6 @@ export default {
 
   computed: {
     samCoverUrl () {
-      // 从 LocalStorage 中读取 token
       const hash = this.currentPlayingFile.hash
       return hash ? `/api/cover/${hash.split('/')[0]}.jpg?type=sam` : ""
     },

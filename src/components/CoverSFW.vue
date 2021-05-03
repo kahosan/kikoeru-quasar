@@ -50,7 +50,6 @@ export default {
 
   computed: {
     coverUrl () {
-      // 从 LocalStorage 中读取 token
       return this.workid ? `/api/cover/${this.workid}.jpg` : ""
     },
 

@@ -68,8 +68,6 @@ export default {
 
   computed: {
     samCoverUrl () {
-      // 从 LocalStorage 中读取 token
-      const token = this.$q.localStorage.getItem('jwt-token') || ''
       return this.metadata.id ? `/api/cover/${this.metadata.id}.jpg?type=sam` : ""
     },
   }
