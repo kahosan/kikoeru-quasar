@@ -7,7 +7,7 @@
       </span>
     </div>
 
-    <div :class="`row justify-center ${listMode ? 'list' : 'q-mx-md'}`">
+    <div :class="`row justify-center ${displayMode === 'list' ? 'list' : 'q-mx-md'}`">
       <q-infinite-scroll @load="onLoad" :offset="250" :disable="stopLoad" style="max-width: 1680px;" class="col">
         <div v-show="works.length" class="row justify-between q-mb-md q-mr-sm">
           <!-- 排序选择框 -->
@@ -29,62 +29,28 @@
             dense
             spread
             rounded
-            v-model="listMode"
+            v-model="displayMode"
             toggle-color="primary"
             color="white"
             text-color="primary"
             :options="[
-              { icon: 'apps', value: false },
-              { icon: 'list', value: true }
+              { icon: 'view_module', value: 'thumbnail' },
+              { icon: 'view_column', value: 'detail'},
+              { icon: 'list', value: 'list' }
             ]"
             style="width: 85px;"
             class="col-auto"
-          />
-
-          <q-btn-toggle
-            dense
-            spread
-            rounded
-            v-model="showLabel"
-            toggle-color="primary"
-            color="white"
-            text-color="primary"
-            :options="[
-              { icon: 'label', value: true },
-              { icon: 'label_off', value: false }
-            ]"
-            style="width: 85px;"
-            class="col-auto"
-            v-if="$q.screen.width > 700 && listMode"
-          />
-
-          <q-btn-toggle
-            dense
-            spread
-            rounded
-            :disable="$q.screen.width < 1120"
-            v-model="detailMode"
-            toggle-color="primary"
-            color="white"
-            text-color="primary"
-            :options="[
-              { icon: 'zoom_in', value: true },
-              { icon: 'zoom_out', value: false },
-            ]"
-            style="width: 85px;"
-            class="col-auto"
-            v-if="$q.screen.width > 700 && !listMode"
           />
 
         </div>
 
-        <q-list v-if="listMode" bordered separator class="shadow-2">
-          <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel="showLabel && $q.screen.width > 700" />
+        <q-list v-if="displayMode === 'list'" bordered separator class="shadow-2">
+          <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel=true />
         </q-list>
 
         <div v-else class="row q-col-gutter-x-md q-col-gutter-y-lg">
-          <div class="col-xs-12 col-sm-6 col-md-4" :class="detailMode ? 'col-lg-3 col-xl-3': 'col-lg-2 col-xl-2'" v-for="work in works" :key="work.id">
-            <WorkCard :metadata="work" :thumbnailMode="!detailMode" class="fit"/>
+          <div class="col-xs-12 col-sm-6 col-md-4" :class="displayMode === 'detail' ? 'col-lg-3 col-xl-3': 'col-lg-2 col-xl-2'" v-for="work in works" :key="work.id">
+            <WorkCard :metadata="work" :thumbnailMode="displayMode === 'thumbnail'" class="fit"/>
           </div>
         </div>
 
@@ -117,7 +83,7 @@ export default {
 
   data () {
     return {
-      listMode: false,
+      displayMode: 'detail',
       showLabel: true,
       detailMode: false,
       stopLoad: false,
@@ -209,14 +175,8 @@ export default {
         localStorage.removeItem('sortOption');
       }
     }
-    if (localStorage.showLabel) {
-      this.showLabel = (localStorage.showLabel === 'true');
-    }
-    if (localStorage.listMode) {
-      this.listMode = (localStorage.listMode === 'true');
-    }
-    if (localStorage.detailMode) {
-      this.detailMode = (localStorage.detailMode === 'true');
+    if (localStorage.displayMode) {
+      this.displayMode = localStorage.displayMode;
     }
   },
 
