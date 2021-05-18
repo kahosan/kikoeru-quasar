@@ -82,7 +82,7 @@ module.exports = function (ctx) {
           exclude: /[\\/]node_modules[\\/]/
         })
       },
-      modern: true,
+      modern: false,
       sourceMap: true,
       devtool: 'source-map'
     },
