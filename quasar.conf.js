@@ -83,7 +83,7 @@ module.exports = function (ctx) {
         })
       },
       modern: false,
-      sourceMap: true,
+      sourceMap: false,
       devtool: 'source-map'
     },
 
