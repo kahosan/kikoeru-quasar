@@ -78,6 +78,8 @@
           />
         </div>
 
+        <div class="flex flex-center" v-show="userName === 'guest'">小提示: 使用 guest 账号加载速度会受到限制，推荐注册属于自己的账号</div>
+
       </q-page>
     </div>
   </div>
@@ -87,6 +89,7 @@
 import WorkCard from 'components/WorkCard'
 import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
+import {mapState} from "vuex";
 
 export default {
   name: 'Works',
@@ -200,6 +203,10 @@ export default {
   },
 
   computed: {
+    ...mapState('User', {
+      userName: 'name'
+    }),
+
     url() {
       const query = this.$route.query
       if (query.circleId) {
