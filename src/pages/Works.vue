@@ -72,7 +72,7 @@
         <div class="q-pa-lg flex flex-center">
           <q-pagination
             v-model="page"
-            :max="pagination.totalCount / pagination.pageSize"
+            :max="maxPage"
             :max-pages="7"
             :boundary-numbers="false"
           />
@@ -206,6 +206,10 @@ export default {
     ...mapState('User', {
       userName: 'name'
     }),
+
+    maxPage() {
+      return Math.ceil(this.pagination.totalCount / this.pagination.pageSize);
+    },
 
     url() {
       const query = this.$route.query
