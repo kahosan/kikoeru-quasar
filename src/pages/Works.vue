@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="text-h5 text-weight-regular q-ma-md">
-      {{pageTitle}}
+      {{ pageTitle }}
       <span v-show="pagination.totalCount">
-        ({{pagination.totalCount}})
+        ({{ pagination.totalCount }})
       </span>
     </div>
 
     <div :class="`row justify-center ${displayMode === 'list' ? 'list' : 'q-mx-md'}`">
-      <q-infinite-scroll @load="onLoad" :offset="250" :disable="stopLoad" style="max-width: 1680px;" class="col">
+      <!--      <q-infinite-scroll @load="onLoad" :offset="250" :disable="stopLoad" style="max-width: 1680px;" class="col">-->
+      <q-page class="col">
+        <!-- 有作品显示时，显示排序和浏览模式选项 -->
         <div v-show="works.length" class="row justify-between q-mb-md q-mr-sm">
           <!-- 排序选择框 -->
           <q-select
@@ -44,24 +46,39 @@
 
         </div>
 
+        <!-- 无缩略图的列表 -->
         <q-list v-if="displayMode === 'list'" bordered separator class="shadow-2">
           <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel=true />
         </q-list>
 
+        <!-- 缩略图或完整卡片 -->
         <div v-else class="row q-col-gutter-x-md q-col-gutter-y-lg">
-          <div class="col-xs-12 col-sm-6 col-md-4" :class="displayMode === 'detail' ? 'col-lg-3 col-xl-3': 'col-lg-2 col-xl-2'" v-for="work in works" :key="work.id">
+          <div class="col-xs-12 col-sm-6 col-md-4"
+               :class="displayMode === 'detail' ? 'col-lg-3 col-xl-3': 'col-lg-2 col-xl-2'" v-for="work in works"
+               :key="work.id">
             <WorkCard :metadata="work" :thumbnailMode="displayMode === 'thumbnail'" class="fit"/>
           </div>
         </div>
 
-        <div v-show="stopLoad" class="q-mt-lg q-mb-xl text-h6 text-bold text-center">END</div>
+        <!-- 无更多作品时 stopLoad = true-->
+<!--        <div v-show="stopLoad" class="q-mt-lg q-mb-xl text-h6 text-bold text-center">END</div>-->
 
-        <template v-slot:loading>
-          <div class="row justify-center q-my-md">
-            <q-spinner-dots color="primary" size="40px" />
-          </div>
-        </template>
-      </q-infinite-scroll>
+        <!-- loading -->
+        <div class="row justify-center q-my-md" v-show="loading">
+          <q-spinner-dots color="primary" size="40px"/>
+        </div>
+
+        <!-- 分页 -->
+        <div class="q-pa-lg flex flex-center">
+          <q-pagination
+            v-model="page"
+            :max="pagination.totalCount / pagination.pageSize"
+            :max-pages="7"
+            :boundary-numbers="false"
+          />
+        </div>
+
+      </q-page>
     </div>
   </div>
 </template>
@@ -81,16 +98,17 @@ export default {
     WorkListItem
   },
 
-  data () {
+  data() {
     return {
       displayMode: 'detail',
       showLabel: true,
       detailMode: false,
       stopLoad: false,
+      loading: true,
       works: [],
       pageTitle: '',
       page: 1,
-      pagination: { currentPage:0, pageSize:12, totalCount:0 },
+      pagination: {currentPage: 0, pageSize: 12, totalCount: 0},
       seed: 7, // random sort
       sortOption: {
         label: '按照发售日期新到老的顺序',
@@ -162,7 +180,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.refreshPageTitle();
     this.seed = Math.floor(Math.random() * 100);
   },
@@ -178,10 +196,11 @@ export default {
     if (localStorage.displayMode) {
       this.displayMode = localStorage.displayMode;
     }
+    this.requestWorksQueue()
   },
 
   computed: {
-    url () {
+    url() {
       const query = this.$route.query
       if (query.circleId) {
         return `/api/circles/${this.$route.query.circleId}/works`
@@ -199,20 +218,20 @@ export default {
 
   // keep-alive hooks
   // <keep-alive /> is set in MainLayout
-  activated () {
+  activated() {
     this.stopLoad = false
   },
 
-  deactivated () {
+  deactivated() {
     this.stopLoad = true
   },
 
   watch: {
-    url () {
+    url() {
       this.reset()
     },
 
-    sortOption (newSortOptionSetting, oldSortOptionSetting) {
+    sortOption(newSortOptionSetting, oldSortOptionSetting) {
       console.log(`Sort option changed! old: ${JSON.stringify(oldSortOptionSetting)}, new: ${JSON.stringify(newSortOptionSetting)}`)
       if (JSON.stringify(oldSortOptionSetting) !== JSON.stringify(newSortOptionSetting)) {
         localStorage.sortOption = JSON.stringify(newSortOptionSetting);
@@ -221,37 +240,48 @@ export default {
       }
     },
 
-    showLabel (newLabelSetting) {
+    showLabel(newLabelSetting) {
       localStorage.showLabel = newLabelSetting;
     },
 
-    listMode (newListModeSetting) {
+    listMode(newListModeSetting) {
       localStorage.listMode = newListModeSetting;
     },
 
     detailMode(newModeSetting) {
       localStorage.detailMode = newModeSetting;
     },
+
+    page() {
+      // TODO 回到顶部怎么才能更优雅一点？
+      document.getElementById("gotop") ? document.getElementById("gotop").click() : false;
+      this.requestWorksQueue();
+    }
   },
 
   methods: {
-    onLoad (index, done) {
+    onLoad(index, done) {
       this.requestWorksQueue()
         .then(() => done())
     },
 
-    requestWorksQueue () {
+    requestWorksQueue() {
+      this.loading = true;
+      this.works = {};
       const params = {
         order: this.sortOption.order,
         sort: this.sortOption.sort,
-        page: this.pagination.currentPage + 1 || 1,
+        // page: this.pagination.currentPage + 1 || 1,
+        page: this.page,
         seed: this.seed
       }
 
-      return this.$axios.get(this.url, { params })
+      return this.$axios.get(this.url, {params})
         .then((response) => {
+          this.loading = false;
           const works = response.data.works
-          this.works = (params.page === 1) ? works.concat() : this.works.concat(works)
+          // this.works = (params.page === 1) ? works.concat() : this.works.concat(works)
+          this.works = works.concat();
           this.pagination = response.data.pagination
 
           if (this.works.length >= this.pagination.totalCount) {
@@ -259,6 +289,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.loading = false;
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             if (error.response.status !== 401) {
@@ -271,7 +302,7 @@ export default {
         })
     },
 
-    refreshPageTitle () {
+    refreshPageTitle() {
       if (this.$route.query.circleId || this.$route.query.tagId || this.$route.query.vaId) {
         let url = '', restrict = ''
         if (this.$route.query.circleId) {
@@ -322,10 +353,10 @@ export default {
       }
     },
 
-    reset () {
+    reset() {
       // this.stopLoad = true
       this.refreshPageTitle()
-      this.pagination = { currentPage:0, pageSize:12, totalCount:0 }
+      this.pagination = {currentPage: 0, pageSize: 12, totalCount: 0}
       this.requestWorksQueue()
         .then(() => {
           this.stopLoad = false
@@ -336,17 +367,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list {
-    // 宽度 >= $breakpoint-sm-min
-    @media (min-width: $breakpoint-sm-min) {
-      padding: 0px 20px;
-    }
+.list {
+  // 宽度 >= $breakpoint-sm-min
+  @media (min-width: $breakpoint-sm-min) {
+    padding: 0px 20px;
   }
+}
 
-  .work-card {
-    // 宽度 > $breakpoint-xl-min
-    @media (min-width: $breakpoint-md-min) {
-      width: 560px;
-    }
+.work-card {
+  // 宽度 > $breakpoint-xl-min
+  @media (min-width: $breakpoint-md-min) {
+    width: 560px;
   }
+}
 </style>
