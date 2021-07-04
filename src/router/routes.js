@@ -1,17 +1,17 @@
 import MainLayout from 'layouts/MainLayout'
-import DashboardLayout from 'layouts/DashboardLayout'
+// import DashboardLayout from 'layouts/DashboardLayout'
 
 import Works from 'pages/Works'
 import Work from 'pages/Work'
-import List from 'pages/List'
+// import List from 'pages/List'
 import Login from 'pages/Login'
-import Favourites from 'pages/Favourites'
-import About from 'pages/About'
+// import Favourites from 'pages/Favourites'
+// import About from 'pages/About'
 
-import Folders from 'pages/Dashboard/Folders'
-import Scanner from 'pages/Dashboard/Scanner'
-import Advanced from 'pages/Dashboard/Advanced'
-import UserManage from 'pages/Dashboard/UserManage'
+// import Folders from 'pages/Dashboard/Folders'
+// import Scanner from 'pages/Dashboard/Scanner'
+// import Advanced from 'pages/Dashboard/Advanced'
+// import UserManage from 'pages/Dashboard/UserManage'
 
 function prefixRoutes(prefix, routes) {
   return routes.map((route) => {
@@ -23,23 +23,23 @@ function prefixRoutes(prefix, routes) {
 const routes = [
   {
     path: '/admin',
-    component: DashboardLayout,
+    component: () => import('layouts/DashboardLayout'),
     children: [
       {
         path: '',
-        component: Folders
+        component: () => import('pages/Dashboard/Folders')
       },
       {
         path: 'scanner',
-        component: Scanner
+        component: () => import('pages/Dashboard/Scanner')
       },
       {
         path: 'advanced',
-        component: Advanced
+        component: () => import('pages/Dashboard/Advanced')
       },
       {
         path: 'usermanage',
-        component: UserManage
+        component: () => import('pages/Dashboard/UserManage')
       }
     ]
   },
@@ -65,70 +65,70 @@ const routes = [
       {
         path: 'circles',
         props: { restrict: "circles" },
-        component: List
+        component: () => import('pages/List')
       },
       {
         path: 'tags',
         props: { restrict: "tags" },
-        component: List
+        component: () => import('pages/List')
       },
       {
         path: 'vas',
         props: { restrict: "vas" },
-        component: List
+        component: () => import('pages/List')
       },
       {
         path: "about",
         props: { restrict: "about" },
-        component: About
+        component: () => import('pages/About')
       },
       ...prefixRoutes('favourites', [
         {
           path: '',
           props: { route: 'review'},
-          component: Favourites,
+          component: () => import('pages/Favourites'),
         },
         {
           path: '/review',
           props: { route: 'review'},
-          component: Favourites,
+          component: () => import('pages/Favourites'),
         },
         ...prefixRoutes('/progress', [
           {
             path: '',
             props: { route: 'progress', progress: 'marked'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
           {
             path: '/marked',
             props: { route: 'progress', progress: 'marked'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
           {
             path: '/listening',
             props: { route: 'progress', progress: 'listening'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
           {
             path: '/listened',
             props: { route: 'progress', progress: 'listened'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
           {
             path: '/replay',
             props: { route: 'progress', progress: 'replay'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
           {
             path: '/postponed',
             props: { route: 'progress', progress: 'postponed'},
-            component: Favourites,
+            component: () => import('pages/Favourites'),
           },
         ]),
         {
           path: '/folder',
           props: { route: 'folder'},
-          component: Favourites,
+          component: () => import('pages/Favourites'),
         },
       ]),
     ],
