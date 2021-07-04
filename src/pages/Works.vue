@@ -60,8 +60,8 @@
           </div>
         </div>
 
-        <!-- 无更多作品时 stopLoad = true-->
-<!--        <div v-show="stopLoad" class="q-mt-lg q-mb-xl text-h6 text-bold text-center">END</div>-->
+        <!-- 无更多作品时 stopLoad = true -->
+        <div v-show="stopLoad && maxPage === 0" class="q-mt-lg q-mb-xl text-h6 text-bold text-center">END</div>
 
         <!-- loading -->
         <div class="row justify-center q-my-md" v-show="loading">
@@ -75,6 +75,7 @@
             :max="maxPage"
             :max-pages="7"
             :boundary-numbers="false"
+            v-show="maxPage"
           />
         </div>
 
@@ -271,11 +272,6 @@ export default {
   },
 
   methods: {
-    onLoad(index, done) {
-      this.requestWorksQueue()
-        .then(() => done())
-    },
-
     requestWorksQueue() {
       this.loading = true;
       this.works = {};
@@ -365,12 +361,12 @@ export default {
     },
 
     reset() {
-      // this.stopLoad = true
+      this.stopLoad = false
       this.refreshPageTitle()
       this.pagination = {currentPage: 0, pageSize: 12, totalCount: 0}
       this.requestWorksQueue()
         .then(() => {
-          this.stopLoad = false
+          // this.stopLoad = false
         })
     },
   }
