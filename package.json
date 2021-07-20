@@ -11,6 +11,7 @@
     "test": "node_modules/.bin/eslint ."
   },
   "dependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
     "@quasar/extras": "^1.10.4",
     "axios": "^0.21.1",
     "lrc-file-parser": "^1.0.7",
