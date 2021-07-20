@@ -3,6 +3,6 @@ module.exports = {
     '@quasar/babel-preset-app'
   ],
   plugins: [
-    'plugin-proposal-object-rest-spread'
+    '@babel/plugin-proposal-object-rest-spread'
   ]
 }
