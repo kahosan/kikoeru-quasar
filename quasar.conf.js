@@ -84,7 +84,10 @@ module.exports = function (ctx) {
       },
       modern: false,
       sourceMap: false,
-      devtool: 'source-map'
+      devtool: 'source-map',
+      transpile: true,
+      // transpileDependencies: ['.*?plyr.*?', 'plyr']
+      transpileDependencies: [/[\\\/]node_modules[\\\/]test[\\\/]/]
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
