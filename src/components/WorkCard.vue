@@ -77,6 +77,7 @@
         <span class="q-mx-sm text-weight-medium text-h6 text-red">{{ metadata.price }} 日元</span>
         <span>售出数: {{ metadata.dl_count }}</span>
         <span v-if="!metadata.nsfw" class="q-mx-sm" style="background: #e6f7d6; color: #56842a">全年龄</span>
+        <span v-if="metadata.has_subtitle" class="q-mx-sm" style="color: dodgerblue">带字幕</span>
       </div>
 
       <!-- 标签 -->

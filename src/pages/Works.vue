@@ -26,6 +26,8 @@
             class="col-auto"
           />
 
+          <q-checkbox v-model="subtitleOnly" label="带字幕" class="row"></q-checkbox>
+
           <!-- 切换显示模式按钮 -->
           <q-btn-toggle
             dense
@@ -114,64 +116,65 @@ export default {
       page: 1,
       pagination: {currentPage: 0, pageSize: 12, totalCount: 0},
       seed: 7, // random sort
+      subtitleOnly: false,
       sortOption: {
-        label: '按照发售日期新到老的顺序',
+        label: '发售日期倒序',
         order: 'release',
         sort: 'desc'
       },
       options: [
         {
-          label: '按照发售日期新到老的顺序',
+          label: '发售日期倒序',
           order: 'release',
           sort: 'desc'
         },
         {
-          label: '按照我的评价排序',
+          label: '我的评价倒序',
           order: 'rating',
           sort: 'desc'
         },
         {
-          label: '按照发售日期老到新的顺序',
+          label: '发售日期顺序',
           order: 'release',
           sort: 'asc'
         },
         {
-          label: '按照售出数量多到少的顺序',
+          label: '销量倒序',
           order: 'dl_count',
           sort: 'desc'
         },
         {
-          label: '按照价格便宜到贵的顺序',
+          label: '价格顺序',
           order: 'price',
           sort: 'asc'
         },
         {
-          label: '按照价格贵到便宜的顺序',
+          label: '价格倒序',
           order: 'price',
           sort: 'desc'
         },
         {
-          label: '按照评价高到低的顺序',
+          label: '评价倒序',
           order: 'rate_average_2dp',
           sort: 'desc'
         },
         {
-          label: '按照评论多到少的顺序',
+          label: '评论数量倒序',
           order: 'review_count',
           sort: 'desc'
         },
         {
-          label: '按照RJ号大到小的顺序',
+          label: 'RJ号倒序',
           order: 'id',
           sort: 'desc'
         },
         {
-          label: '按照RJ号小到大的顺序',
+          label: 'RJ号顺序',
           order: 'id',
           sort: 'asc'
         },
         {
-          label: '按照全年龄新作优先的顺序',
+          label: '全年龄顺序',
           order: 'nsfw',
           sort: 'asc'
         },
@@ -252,6 +255,10 @@ export default {
       }
     },
 
+    subtitleOnly() {
+      this.reset();
+    },
+
     showLabel(newLabelSetting) {
       localStorage.showLabel = newLabelSetting;
     },
@@ -280,7 +287,8 @@ export default {
         sort: this.sortOption.sort,
         // page: this.pagination.currentPage + 1 || 1,
         page: this.page,
-        seed: this.seed
+        seed: this.seed,
+        subtitle: this.subtitleOnly ? 1 : 0
       }
 
       return this.$axios.get(this.url, {params})
