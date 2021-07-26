@@ -195,7 +195,10 @@ export default {
   mounted() {
     if (localStorage.sortOption) {
       try {
-        this.sortOption = JSON.parse(localStorage.sortOption);
+        let storageSortOption = JSON.parse(localStorage.sortOption);
+        // 通过 order + sort 来确定排序选项，而不是 label，以便应对后期修改 label 的情况
+        this.sortOption = this.options.find((option) =>
+          storageSortOption.order === option.order && storageSortOption.sort === option.sort)
       } catch {
         localStorage.removeItem('sortOption');
       }
