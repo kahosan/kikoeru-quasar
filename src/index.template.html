@@ -22,10 +22,17 @@
       We are sorry, but Kikoeru requires Javascript to work.
     </noscript>
     <div id="browser-update">
-      <h3>网站正在加载</h3>
-      如果此界面停留时间过长（5秒以上），请更新您的系统和浏览器（要求ios12+ android8+）<br />
-      如果升级系统、浏览器后仍然卡在此界面，请与管理员联系 example.com@protonmail.com
+      <p>此应用程序无法运行在比较老的浏览器上，请更新到最新版本的浏览器。（苹果设备系统版本必须在iOS11以上）</p>
+      <p>This App is not available on this browser, please update to the latest version of your browser.</p>
     </div>
+    <script type="text/javascript">
+      'use strict';
+      try {
+        const a = {...{}};
+        document.getElementById("browser-update").hidden = true;
+      } catch (e) {}
+    </script>
+
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
     <!-- Cloudflare Web Analytics -->

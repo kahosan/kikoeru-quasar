@@ -5,7 +5,6 @@
 </template>
 
 <script>
-document.getElementById("browser-update").hidden = true;
 export default {
   name: 'App'
 }
