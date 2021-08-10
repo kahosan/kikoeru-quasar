@@ -6,7 +6,7 @@
   "cordovaId": "org.cordova.quasar.kikoeru",
   "capacitorId": "",
   "author": "Watanuki-Kimihiro",
-  "baseURL": "",
+  "baseURL": "https://api.example.com",
   "__baseURLExample": "https://example.com",
   "private": true,
   "scripts": {
