@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import {coverURL} from "src/utils/apiURL";
+
 export default {
   name: 'CoverSFW',
 
@@ -50,7 +52,7 @@ export default {
 
   computed: {
     coverUrl () {
-      return this.workid ? `/api/cover/${this.workid}.jpg` : ""
+      return coverURL(this.workid);
     },
 
     rjcode () {

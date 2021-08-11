@@ -87,6 +87,8 @@
 <script>
 import WriteReview from './WriteReview'
 import NotifyMixin from '../mixins/Notification.js'
+import {coverURL} from "src/utils/apiURL";
+
 
 export default {
   name: 'FavListItem',
@@ -123,7 +125,7 @@ export default {
 
   computed: {
     coverUrl () {
-      return this.workid ? `/api/cover/${this.workid}.jpg?type=240x240` : ""
+      return coverURL(this.workid, '240x240');
     },
   },
 

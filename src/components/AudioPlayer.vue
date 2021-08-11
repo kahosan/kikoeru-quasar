@@ -151,6 +151,7 @@
 import draggable from 'vuedraggable'
 import AudioElement from 'components/AudioElement'
 import { mapState, mapGetters, mapMutations } from 'vuex'
+import {coverURL} from '../utils/apiURL';
 
 export default {
   name: 'AudioPlayer',
@@ -207,7 +208,7 @@ export default {
   computed: {
     coverUrl () {
       const hash = this.currentPlayingFile.hash
-      return hash ? `/api/cover/${hash.split('/')[0]}.jpg` : ""
+      return coverURL(hash.split('/')[0]);
     },
 
     workDetailUrl () {
@@ -328,7 +329,7 @@ export default {
     },
 
     samCoverUrl (hash) {
-      return hash ? `/api/cover/${hash.split('/')[0]}.jpg?type=sam` : ""
+      return coverURL(hash.split('/')[0], "sam");
     },
 
     onClickTrack (index) {

@@ -52,6 +52,8 @@
 // import WorkDetails from 'components/WorkDetails'
 // import CoverSFW from 'components/CoverSFW'
 
+import {coverURL} from "src/utils/apiURL";
+
 export default {
   name: 'WorkListItem',
 
@@ -68,7 +70,7 @@ export default {
 
   computed: {
     samCoverUrl () {
-      return this.metadata.id ? `/api/cover/${this.metadata.id}.jpg?type=sam` : ""
+      return coverURL(this.metadata.id, 'sam')
     },
   }
 }

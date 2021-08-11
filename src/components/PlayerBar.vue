@@ -21,6 +21,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'PlayerBar',
@@ -28,7 +29,7 @@ export default {
   computed: {
     samCoverUrl () {
       const hash = this.currentPlayingFile.hash
-      return hash ? `/api/cover/${hash.split('/')[0]}.jpg?type=sam` : ""
+      return coverURL(hash.split('/')[0], 'sam')
     },
 
     playingIcon () {
