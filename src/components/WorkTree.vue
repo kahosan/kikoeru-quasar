@@ -4,7 +4,7 @@
       <q-breadcrumbs-el   >
         <q-btn no-caps flat dense size="md" icon="folder" style="height: 30px;" @click="path = []">ROOT</q-btn>
       </q-breadcrumbs-el>
-      
+
       <q-breadcrumbs-el v-for="(folderName, index) in path"  :key="index"  class="cursor-pointer" >
         <q-btn no-caps flat dense size="md" icon="folder" style="height: 30px;" @click="onClickBreadcrumb(index)">{{folderName}}</q-btn>
       </q-breadcrumbs-el>
@@ -66,6 +66,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import {mediaDownloadURL, mediaStreamURL} from "src/utils/apiURL";
 
 export default {
   name: 'WorkTree',
@@ -121,7 +122,7 @@ export default {
 
   methods: {
     playIcon (hash) {
-      return this.playing && this.currentPlayingFile.hash === hash ? "pause" : "play_arrow"            
+      return this.playing && this.currentPlayingFile.hash === hash ? "pause" : "play_arrow"
     },
 
     initPath () {
@@ -136,7 +137,7 @@ export default {
       }
       this.path = initialPath
     },
-    
+
     onClickBreadcrumb (index) {
       this.path = this.path.slice(0, index+1)
     },
@@ -179,8 +180,8 @@ export default {
 
     download (file) {
       const token = this.$q.localStorage.getItem('jwt-token') || '';
-      // Fallback to old API for an old backend 
-      const url = file.mediaDownloadUrl ? `${file.mediaDownloadUrl}?token=${token}` : `/api/media/download/${file.hash}?token=${token}`;
+      // Fallback to old API for an old backend
+      const url = file.mediaDownloadUrl ? `${file.mediaDownloadUrl}?token=${token}` : mediaDownloadURL(file.hash, token);
       const link = document.createElement('a');
       link.href = url;
       link.target="_blank";
@@ -189,8 +190,8 @@ export default {
 
     openFile (file) {
       const token = this.$q.localStorage.getItem('jwt-token') || '';
-      // Fallback to old API for an old backend 
-      const url = file.mediaStreamUrl ? `${file.mediaStreamUrl}?token=${token}` : `/api/media/stream/${file.hash}?token=${token}`;
+      // Fallback to old API for an old backend
+      const url = file.mediaStreamUrl ? `${file.mediaStreamUrl}?token=${token}` : mediaStreamURL(file.hash, token);
       const link = document.createElement('a');
       link.href = url;
       link.target="_blank";

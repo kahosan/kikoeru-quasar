@@ -14,8 +14,18 @@ export const coverURL = (workId, type = null) => {
 
 /**
  * 计算在线播放 url
- * @param hash
+ * @param {number} hash
+ * @param {string} token
  */
-const mediaStreamURL = (hash) => {
+export const mediaStreamURL = (hash, token) => {
+  return baseURL + `/api/media/stream/${hash}?token=${token}`;
+}
 
+/**
+ * 计算下载 url
+ * @param {number} hash
+ * @param {string} token
+ */
+export const mediaDownloadURL = (hash, token) => {
+  return baseURL + `/api/media/download/${hash}?token=${token}`;
 }

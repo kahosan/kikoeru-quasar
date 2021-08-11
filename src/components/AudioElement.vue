@@ -1,4 +1,4 @@
-<template> 
+<template>
   <vue-plyr ref="plyr"
     :emit="['canplay', 'timeupdate', 'ended', 'seeked']"
     @canplay="onCanplay()"
@@ -16,6 +16,7 @@
 import Lyric from 'lrc-file-parser'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
+import {mediaStreamURL} from "src/utils/apiURL";
 
 export default {
   name: 'AudioElement',
@@ -42,8 +43,9 @@ export default {
         return `${this.currentPlayingFile.mediaStreamUrl}?token=${token}`
       } else if (this.currentPlayingFile.hash) {
         // Fallback to be compatible with old backend
-        return `/api/media/stream/${this.currentPlayingFile.hash}?token=${token}`
+        return mediaStreamURL(this.currentPlayingFile.hash, token);
       } else {
+        // 这个情况会出现吗？
         return ""
       }
     },
@@ -69,7 +71,7 @@ export default {
   },
 
   watch: {
-    playing (flag) {  
+    playing (flag) {
       if (this.player.duration) {
         // 缓冲至可播放状态
         flag ? this.player.play() : this.player.pause()
@@ -78,7 +80,7 @@ export default {
     },
 
     source (url) {
-      if (url) {   
+      if (url) {
         // 加载新音频/视频文件
         this.player.media.load();
         this.loadLrcFile();
@@ -95,7 +97,7 @@ export default {
       if (val < 0 || val > 1) {
         return
       }
-      
+
       // 调节音量
       this.player.volume = val
     },
@@ -135,7 +137,7 @@ export default {
       // 播放
       if (this.playing && this.player.currentTime !== this.player.duration) {
         this.player.play()
-      } 
+      }
     },
 
     onTimeupdate () {

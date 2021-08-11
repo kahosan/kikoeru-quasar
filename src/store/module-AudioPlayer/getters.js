@@ -3,7 +3,9 @@ const getters = {
     return state.queue[state.queueIndex] || {
       hash: '',
       title: '',
-      workTitle: ''
+      workTitle: '',
+      mediaStreamUrl: '',
+      mediaDownloadUrl: ''
     }
   }
 }

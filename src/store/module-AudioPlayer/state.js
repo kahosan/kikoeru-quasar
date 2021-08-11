@@ -10,7 +10,9 @@ export default function () {
       /*
         hash: null, // unique identifier for the file
         title: null, // title to show in UI
-        workTitle: null // workTitle to show in UI
+        workTitle: null, // workTitle to show in UI
+        mediaStreamUrl: null, // media custom stream url from backend
+        mediaDownloadUrl: null // media custom download url from backend
        */
     ],
     queueIndex: 0, // which track in the queue is currently selected
