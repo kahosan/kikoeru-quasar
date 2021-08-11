@@ -5,7 +5,10 @@ const getters = {
       title: '',
       workTitle: '',
       mediaStreamUrl: '',
-      mediaDownloadUrl: ''
+      mediaDownloadUrl: '',
+      samCoverUrl: '',
+      thumbnailCoverUrl: '',
+      mainCoverUrl: ''
     }
   }
 }

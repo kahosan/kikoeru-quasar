@@ -125,7 +125,7 @@ export default {
 
   computed: {
     coverUrl () {
-      return coverURL(this.workid, '240x240');
+      return this.metadata.thumbnailCoverUrl || coverURL(this.workid, '240x240');
     },
   },
 

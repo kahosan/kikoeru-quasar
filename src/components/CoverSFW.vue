@@ -23,12 +23,16 @@
 </template>
 
 <script>
-import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'CoverSFW',
 
   props: {
+    coverUrl: {
+      type: String,
+      required: true
+    },
+
     workid: {
       type: Number,
       required: true
@@ -51,9 +55,9 @@ export default {
   },
 
   computed: {
-    coverUrl () {
-      return coverURL(this.workid);
-    },
+    // coverUrl () {
+    //   return coverURL(this.workid);
+    // },
 
     rjcode () {
       return (`000000${this.workid}`).slice(-6)

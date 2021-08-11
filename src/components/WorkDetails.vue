@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-link :to="`/work/${metadata.id}`">
-      <CoverSFW :workid="metadata.id" :nsfw="false" :release="metadata.release" />
+      <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
     <div class="q-pa-sm">
@@ -164,6 +164,7 @@
 import CoverSFW from 'components/CoverSFW'
 import WriteReview from './WriteReview'
 import NotifyMixin from '../mixins/Notification.js'
+import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'WorkDetails',
@@ -198,6 +199,9 @@ export default {
         return (a.review_point > b.review_point) ? -1 : 1;
       }
       return this.metadata.rate_count_detail.slice().sort(compare);
+    },
+    coverUrl: function () {
+      return this.metadata.mainCoverUrl || coverURL(this.metadata.id, 'main')
     }
   },
 

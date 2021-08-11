@@ -28,8 +28,8 @@ export default {
 
   computed: {
     samCoverUrl () {
-      const hash = this.currentPlayingFile.hash
-      return coverURL(hash.split('/')[0], 'sam')
+      return this.currentPlayingFile.samCoverUrl
+        || coverURL(this.currentPlayingFile.hash.split('/')[0], 'sam')
     },
 
     playingIcon () {

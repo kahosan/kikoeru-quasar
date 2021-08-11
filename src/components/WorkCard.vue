@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <router-link :to="`/work/${metadata.id}`">
-      <CoverSFW :workid="metadata.id" :nsfw="false" :release="metadata.release" />
+      <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
     <q-separator />
@@ -113,6 +113,7 @@
 // import WorkDetails from 'components/WorkDetails'
 import CoverSFW from 'components/CoverSFW'
 import NotifyMixin from '../mixins/Notification.js'
+import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'WorkCard',
@@ -149,6 +150,10 @@ export default {
       }
 
       return this.metadata.rate_count_detail.slice().sort(compare);
+    },
+
+    coverUrl: function () {
+      return this.metadata.mainCoverUrl || coverURL(this.metadata.id, 'main');
     }
   },
 

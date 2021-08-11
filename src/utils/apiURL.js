@@ -6,10 +6,10 @@ import {baseURL} from "app/package.json";
  * @param {string|null} type
  * @return {string|string}
  */
-export const coverURL = (workId, type = null) => {
+export const coverURL = (workId, type = 'main') => {
   // /api/cover/RJ123456.jpg?type=sam
-  let url = workId ? baseURL + `/api/cover/${workId}.jpg` : "";
-  return type ? url + `?type=${type}` : url;
+  if (!workId) return '';
+  return baseURL + `/api/cover/${workId}.jpg?type=${type}`
 };
 
 /**

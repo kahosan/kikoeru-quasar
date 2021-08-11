@@ -128,7 +128,7 @@
               </q-item-section>
 
               <q-item-section avatar>
-                <q-img transition="fade" :src="samCoverUrl(track.hash)" style="height: 38px; width: 38px" class="rounded-borders" />
+                <q-img transition="fade" :src="samCoverUrl(track)" style="height: 38px; width: 38px" class="rounded-borders" />
               </q-item-section>
 
               <q-item-section>
@@ -207,8 +207,8 @@ export default {
 
   computed: {
     coverUrl () {
-      const hash = this.currentPlayingFile.hash
-      return coverURL(hash.split('/')[0]);
+      return this.currentPlayingFile.coverUrl
+        || coverURL(this.currentPlayingFile.hash.split('/')[0]);
     },
 
     workDetailUrl () {
@@ -328,8 +328,9 @@ export default {
         : h + ":" + m + ":" + s
     },
 
-    samCoverUrl (hash) {
-      return coverURL(hash.split('/')[0], "sam");
+    samCoverUrl (track) {
+      return track.samCoverUrl
+        || coverURL(track.hash.split('/')[0], "sam");
     },
 
     onClickTrack (index) {
