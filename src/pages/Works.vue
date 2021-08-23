@@ -219,6 +219,10 @@ export default {
       return Math.ceil(this.pagination.totalCount / this.pagination.pageSize);
     },
 
+    // TODO 把查询参数调整为 type=vas&id=1&page=1
+    // 以便于统合 query 发生变更时的逻辑
+    // type/id changed -> refreshTitle + requestWorksQueue
+    // page changed -> requestWorksQueue
     url() {
       const query = this.$route.query
       if (query.circleId) {
@@ -384,12 +388,16 @@ export default {
       // 不包含：翻页，keep-alive 返回，
       this.stopLoad = false
       this.refreshPageTitle()
-      // 这会导致 this.maxPage 被重新计算，进而导致 this.page 属性变为 1
       this.pagination = {currentPage: 0, pageSize: 12, totalCount: 0}
-      this.requestWorksQueue()
-        .then(() => {
-          // this.stopLoad = false
-        })
+
+      // TODO 此处逻辑需要通过重写 query 规则进行优化
+      if (this.page === 1) {
+        // 当 page === 1 时，由本方法调用 requestWorksQueue
+        this.requestWorksQueue()
+      } else {
+        // 否则通过设定 page = 1，触发 this.page 的 watcher，间接调用 requestWorksQueue
+        this.page = 1
+      }
     },
   }
 }
