@@ -117,6 +117,7 @@ export default {
       pagination: {currentPage: 0, pageSize: 12, totalCount: 0},
       seed: 7, // random sort
       subtitleOnly: false,
+      previousUrl: '',
       sortOption: {
         label: '发售日期倒序',
         order: 'release',
@@ -245,7 +246,13 @@ export default {
   },
 
   watch: {
-    url() {
+    url(_, newValue) {
+      // 当组件处在 keep-alive 的后台时，终止页面重置
+      let notInWorksComponent = !this.$route.path.startsWith('/works')
+      // 当用户从作品详情界面返回时，此条件会终止页面重置
+      let urlIsSameAsPreviousValidUrl = this.previousUrl === newValue
+      if (notInWorksComponent || urlIsSameAsPreviousValidUrl) { return }
+      this.previousUrl = newValue
       this.reset()
     },
 
@@ -372,8 +379,12 @@ export default {
     },
 
     reset() {
+      // 当用户浏览完全不同的 works 时会触发本方法
+      // 比如：不同标签，社团...
+      // 不包含：翻页，keep-alive 返回，
       this.stopLoad = false
       this.refreshPageTitle()
+      // 这会导致 this.maxPage 被重新计算，进而导致 this.page 属性变为 1
       this.pagination = {currentPage: 0, pageSize: 12, totalCount: 0}
       this.requestWorksQueue()
         .then(() => {
