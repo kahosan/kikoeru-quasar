@@ -6,7 +6,7 @@
   "cordovaId": "org.cordova.quasar.kikoeru",
   "capacitorId": "",
   "author": "Watanuki-Kimihiro",
-  "baseURL": "https://api.example.com",
+  "baseURL": "",
   "__baseURLExample": "https://example.com",
   "private": true,
   "scripts": {
@@ -19,10 +19,12 @@
     "lrc-file-parser": "^1.0.7",
     "plyr": "^3.6.7",
     "quasar": "^1.15.12",
+    "vue-loader": "^15.9.2",
     "vue-moveable": "^1.8.10",
     "vue-plyr": "^6.0.4",
     "vue-slider-component": "^3.2.11",
     "vue-socket.io": "^3.0.10",
+    "vue-template-compiler": "^2.6.14",
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
