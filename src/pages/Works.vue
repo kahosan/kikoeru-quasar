@@ -17,7 +17,7 @@
             dense
             rounded
             outlined
-            bg-color="white"
+            :bg-color="color"
             transition-show="scale"
             transition-hide="scale"
             v-model="sortOption"
@@ -93,11 +93,12 @@ import WorkCard from 'components/WorkCard'
 import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
 import {mapState} from "vuex";
+import DarkMode from '../mixins/DarkMode'
 
 export default {
   name: 'Works',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, DarkMode],
 
   components: {
     WorkCard,
