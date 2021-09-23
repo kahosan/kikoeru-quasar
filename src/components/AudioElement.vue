@@ -1,10 +1,14 @@
 <template>
-  <vue-plyr ref="plyr"
-    :emit="['canplay', 'timeupdate', 'ended', 'seeked']"
+  <vue-plyr
+    ref="plyr"
+    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause']"
     @canplay="onCanplay()"
     @timeupdate="onTimeupdate()"
     @ended="onEnded()"
     @seeked="onSeeked()"
+    @playing="playLrc(true)"
+    @waiting="playLrc(false)"
+    @pause="playLrc(false)"
   >
     <audio crossorigin="anonymous" >
       <source v-if="source" :src="source" />
@@ -18,6 +22,11 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import {mediaStreamURL} from "src/utils/apiURL";
 
+
+/**
+ * 点击 音频文件后， playing = true，触发 watch(playing)，但是 duration = 0，什么都不会发生
+ * 然后触发 watch(source)，调用player.media.load()，加载完成后调用 canPlay 开始播放
+ */
 export default {
   name: 'AudioElement',
 
@@ -76,9 +85,10 @@ export default {
         // 缓冲至可播放状态
         flag ? this.player.play() : this.player.pause()
       }
-      this.playLrc(flag);
+      // this.playLrc(flag);
     },
 
+    // watch source -> media.load() -> canPlay -> player.play()
     source (url) {
       if (url) {
         // 加载新音频/视频文件
@@ -195,12 +205,12 @@ export default {
     },
 
     onSeeked() {
-      if (this.lrcAvailable) {
-        this.lrcObj.play(this.player.currentTime * 1000);
-        if (!this.playing) {
-          this.lrcObj.pause();
-        }
-      }
+      // if (this.lrcAvailable) {
+      //   this.lrcObj.play(this.player.currentTime * 1000);
+      //   if (!this.playing) {
+      //     this.lrcObj.pause();
+      //   }
+      // }
     },
 
 
