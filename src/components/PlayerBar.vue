@@ -1,6 +1,6 @@
 <template>
   <q-slide-transition class="bordered elevated">
-    <div v-show="currentPlayingFile.hash && hide" class="row bg-white text-black">
+    <div v-show="currentPlayingFile.hash && hide" class="row text-black" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-white'">
       <q-item clickable v-ripple @click="toggleHide()" style="padding: 0px 5px;" class="col non-selectable">
         <q-item-section avatar>
           <q-img transition="fade" :src="samCoverUrl" style="height: 50px; width: 50px" class="rounded-borders" />
@@ -12,9 +12,9 @@
         </q-item-section>
       </q-item>
 
-      <q-btn flat size="lg" icon="skip_previous" @click="previousTrack()" style="height: 60px; width: 60px" class="col-auto gt-sm"/>
-      <q-btn flat size="lg" :icon="playingIcon" @click="togglePlaying()" style="height: 60px; width: 60px" class="col-auto" />
-      <q-btn flat size="lg" icon="skip_next" @click="nextTrack()" style="height: 60px; width: 60px" class="col-auto gt-sm"/>
+      <q-btn flat size="lg" icon="skip_previous" :text-color="textColor" @click="previousTrack()" style="height: 60px; width: 60px" class="col-auto gt-sm"/>
+      <q-btn flat size="lg" :icon="playingIcon" :text-color="textColor" @click="togglePlaying()" style="height: 60px; width: 60px" class="col-auto" />
+      <q-btn flat size="lg" icon="skip_next" :text-color="textColor" @click="nextTrack()" style="height: 60px; width: 60px" class="col-auto gt-sm"/>
     </div>
   </q-slide-transition>
 </template>
@@ -22,9 +22,12 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import {coverURL} from "src/utils/apiURL";
+import DarkMode from '../mixins/DarkMode'
 
 export default {
   name: 'PlayerBar',
+
+  mixins: [DarkMode],
 
   computed: {
     samCoverUrl () {

@@ -8,7 +8,7 @@
       <div class="q-px-sm q-py-none">
         <!-- 标题 -->
         <div class="text-h6 text-weight-regular">
-          <router-link :to="`/work/${metadata.id}`" class="text-black">
+          <router-link :to="`/work/${metadata.id}`" :class="classTextColor">
             {{metadata.title}}
           </router-link>
         </div>
@@ -164,12 +164,13 @@
 import CoverSFW from 'components/CoverSFW'
 import WriteReview from './WriteReview'
 import NotifyMixin from '../mixins/Notification.js'
+import DarkMode from '../mixins/DarkMode'
 import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'WorkDetails',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, DarkMode],
 
   components: {
     CoverSFW,
