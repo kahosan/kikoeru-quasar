@@ -13,13 +13,11 @@
     "test": "node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
     "@quasar/extras": "^1.10.4",
     "axios": "^0.21.1",
     "lrc-file-parser": "^1.0.7",
     "plyr": "^3.6.7",
     "quasar": "^1.15.12",
-    "vue-loader": "^15.9.2",
     "vue-moveable": "^1.8.10",
     "vue-plyr": "^6.0.4",
     "vue-slider-component": "^3.2.11",
