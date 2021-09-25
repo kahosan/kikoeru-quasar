@@ -10,7 +10,7 @@ module.exports = function (ctx) {
       'axios',
       'slider',
       'plyr',
-      'socket.io'
+      // 'socket.io'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
