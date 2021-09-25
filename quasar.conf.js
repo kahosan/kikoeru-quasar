@@ -8,7 +8,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       'axios',
-      'slider',
+      // 'slider',
       'plyr',
       // 'socket.io'
     ],

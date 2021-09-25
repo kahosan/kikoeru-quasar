@@ -77,15 +77,15 @@
         <!-- HTML5 volume in iOS is read-only -->
         <div class="row items-center q-mx-lg" style="height: 50px" v-if="!$q.platform.is.ios">
           <q-icon name="volume_down" size="sm" class="col-auto" />
-          <vue-slider
+          <q-slider
             v-model="volume"
             :min="0"
             :max="1"
-            :interval="0.01"
-            :dragOnClick="true"
-            :contained="true"
+            :step="0.01"
             tooltip="none"
             class="col"
+            color="white"
+            style="margin-left: 0.5em; margin-right: 0.5em"
           />
           <q-icon name="volume_up" size="sm" class="col-auto" />
         </div>
