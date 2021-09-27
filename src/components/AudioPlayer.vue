@@ -84,7 +84,6 @@
             :step="0.01"
             tooltip="none"
             class="col"
-            color="white"
             style="margin-left: 0.5em; margin-right: 0.5em"
           />
           <q-icon name="volume_up" size="sm" class="col-auto" />
