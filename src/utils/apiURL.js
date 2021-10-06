@@ -2,14 +2,35 @@ import {baseURL} from "app/package.json";
 
 /**
  * 计算封面 url
- * @param {string|number} workId
+ * @param {Object} metadata
  * @param {string|null} type
  * @return {string|string}
  */
-export const coverURL = (workId, type = 'main') => {
-  // /api/cover/RJ123456.jpg?type=sam
-  if (!workId) return '';
-  return baseURL + `/api/cover/${workId}.jpg?type=${type}`
+export const coverURL = (metadata, type = 'main') => {
+  metadata = metadata || {
+    'samCoverUrl': '',
+    'thumbnailCoverUrl': '',
+    'mainCoverUrl': ''
+  }
+
+  // 优先选择后端返回的 url 地址
+  switch (type) {
+    case 'main':
+      if (metadata.mainCoverUrl) { return metadata.mainCoverUrl }
+      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=main` }
+
+    case 'sam':
+      if (metadata.samCoverUrl) { return metadata.samCoverUrl }
+      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=sam` }
+
+    case 'thumb':
+      if (metadata.thumbnailCoverUrl) { return metadata.thumbnailCoverUrl }
+      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=240x240` }
+
+    default:
+      // /api/cover/RJ123456.jpg?type=sam
+      return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=${type}`
+  }
 };
 
 /**

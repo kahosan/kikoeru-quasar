@@ -31,8 +31,7 @@ export default {
 
   computed: {
     samCoverUrl () {
-      return this.currentPlayingFile.samCoverUrl
-        || coverURL(this.currentPlayingFile.hash.split('/')[0], 'sam')
+      return coverURL(this.currentPlayingFile, 'sam')
     },
 
     playingIcon () {

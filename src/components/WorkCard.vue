@@ -153,7 +153,7 @@ export default {
     },
 
     coverUrl: function () {
-      return this.metadata.mainCoverUrl || coverURL(this.metadata.id, 'main');
+      return coverURL(this.metadata, 'main')
     }
   },
 

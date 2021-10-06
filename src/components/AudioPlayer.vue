@@ -209,8 +209,7 @@ export default {
 
   computed: {
     coverUrl () {
-      return this.currentPlayingFile.coverUrl
-        || coverURL(this.currentPlayingFile.hash.split('/')[0]);
+      return coverURL(this.currentPlayingFile, 'main')
     },
 
     workDetailUrl () {
@@ -331,8 +330,7 @@ export default {
     },
 
     samCoverUrl (track) {
-      return track.samCoverUrl
-        || coverURL(track.hash.split('/')[0], "sam");
+      return coverURL(track, 'sam')
     },
 
     onClickTrack (index) {

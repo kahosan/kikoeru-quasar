@@ -202,7 +202,7 @@ export default {
       return this.metadata.rate_count_detail.slice().sort(compare);
     },
     coverUrl: function () {
-      return this.metadata.mainCoverUrl || coverURL(this.metadata.id, 'main')
+      return coverURL(this.metadata, 'main')
     }
   },
 

@@ -73,7 +73,7 @@ export default {
 
   computed: {
     samCoverUrl () {
-      return this.metadata.samCoverUrl || coverURL(this.metadata.id, 'sam')
+      return coverURL(this.metadata, 'sam')
     },
   }
 }
