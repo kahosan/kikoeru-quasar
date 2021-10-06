@@ -13,6 +13,9 @@ export const coverURL = (metadata, type = 'main') => {
     'mainCoverUrl': ''
   }
 
+  // 应对组件初始化时没有提供 workId 的情况
+  if (!(metadata.id || metadata.hash.split('/')[0])) { return '' }
+
   // 优先选择后端返回的 url 地址
   switch (type) {
     case 'main':
