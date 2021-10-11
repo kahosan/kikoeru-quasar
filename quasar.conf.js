@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
-module.exports = function (ctx) {
+module.exports = function () {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -9,7 +9,7 @@ module.exports = function (ctx) {
     boot: [
       'axios',
       // 'slider',
-      'plyr',
+      // 'plyr',
       // 'socket.io'
     ],
 

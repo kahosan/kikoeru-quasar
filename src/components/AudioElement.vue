@@ -1,24 +1,37 @@
 <template>
-  <vue-plyr
-    ref="plyr"
-    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause']"
-    @canplay="onCanplay()"
-    @timeupdate="onTimeupdate()"
-    @ended="onEnded()"
-    @seeked="onSeeked()"
-    @playing="onPlaying()"
-    @waiting="onWaiting()"
-    @pause="onPause()"
-  >
-    <audio crossorigin="anonymous" >
-      <source v-if="source" :src="source" />
+  <div class="q-mx-md">
+    <audio
+      ref="audio"
+      crossorigin="anonymous"
+      @canplay="onCanplay()"
+      @timeupdate="onTimeupdate()"
+      @ended="onEnded()"
+      @seeked="onSeeked()"
+      @playing="onPlaying()"
+      @waiting="onWaiting()"
+      @pause="onPause()"
+    >
+      <source v-if="source" :src="source"/>
     </audio>
-  </vue-plyr>
+    <q-slider
+      label
+      :value="this.currentTime"
+      :min="0"
+      :max="this.duration"
+      :step="0.001"
+      :label-value="formatSeconds(seekValue || this.currentTime)"
+      @input="updateSeekValue"
+      @change="doSeek"
+    />
+<!--
+滑动时， 通过 sliderValue 显示目标时间
+滑动结束后，通过 doSeek 对 player 进行操作-->
+  </div>
 </template>
 
 <script>
 import Lyric from 'lrc-file-parser'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import {mediaStreamURL} from "src/utils/apiURL";
 
@@ -36,15 +49,13 @@ export default {
     return {
       lrcObj: null,
       lrcAvailable: false,
+      player: {},
+      seekValue: 0
     }
   },
 
   computed: {
-    player () {
-      return this.$refs.plyr.player
-    },
-
-    source () {
+    source() {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
       // New API
@@ -71,7 +82,9 @@ export default {
       'rewindSeekTime',
       'forwardSeekTime',
       'rewindSeekMode',
-      'forwardSeekMode'
+      'forwardSeekMode',
+      'duration',
+      'currentTime'
     ]),
 
     ...mapGetters('AudioPlayer', [
@@ -80,8 +93,8 @@ export default {
   },
 
   watch: {
-    playing (flag) {
-      if (this.player.duration) {
+    playing(flag) {
+      if (this.duration) {
         // 缓冲至可播放状态
         flag ? this.player.play() : this.player.pause()
       }
@@ -89,20 +102,20 @@ export default {
     },
 
     // watch source -> media.load() -> canPlay -> player.play()
-    source (url) {
+    source(url) {
       if (url) {
         // 加载新音频/视频文件
-        this.player.media.load();
+        this.player.load();
         this.loadLrcFile();
       }
     },
 
-    muted (flag) {
+    muted(flag) {
       // 切换静音状态
       this.player.muted = flag
     },
 
-    volume (val) {
+    volume(val) {
       // 屏蔽非法数值
       if (val < 0 || val > 1) {
         return
@@ -113,19 +126,39 @@ export default {
     },
     rewindSeekMode(rewind) {
       if (rewind) {
-        this.player.rewind(this.rewindSeekTime);
+        this.player.currentTime = this.player.currentTime - this.rewindSeekTime
+        this.SET_CURRENT_TIME(this.player.currentTime - this.rewindSeekTime)
         this.SET_REWIND_SEEK_MODE(false);
       }
     },
     forwardSeekMode(forward) {
       if (forward) {
-        this.player.forward(this.forwardSeekTime);
+        this.player.currentTime = this.player.currentTime + this.forwardSeekTime
+        this.SET_CURRENT_TIME(this.player.currentTime)
         this.SET_FORWARD_SEEK_MODE(false);
       }
     }
   },
 
   methods: {
+    formatSeconds (seconds) {
+      let h = Math.floor(seconds / 3600) < 10
+        ? '0' + Math.floor(seconds / 3600)
+        : Math.floor(seconds / 3600)
+
+      let m = Math.floor((seconds / 60 % 60)) < 10
+        ? '0' + Math.floor((seconds / 60 % 60))
+        : Math.floor((seconds / 60 % 60))
+
+      let s = Math.floor((seconds % 60)) < 10
+        ? '0' + Math.floor((seconds % 60))
+        : Math.floor((seconds % 60))
+
+      return h === "00"
+        ? m + ":" + s
+        : h + ":" + m + ":" + s
+    },
+
     /**
      * 当 外部暂停（线控暂停、软件切换）、用户控制暂停、seek 时会触发本事件
      */
@@ -164,7 +197,7 @@ export default {
       'SET_FORWARD_SEEK_MODE'
     ]),
 
-    onCanplay () {
+    onCanplay() {
       // 缓冲至可播放状态时触发 (只有缓冲至可播放状态, 才能获取媒体文件的播放时长)
       this.SET_DURATION(this.player.duration)
 
@@ -174,7 +207,7 @@ export default {
       }
     },
 
-    onTimeupdate () {
+    onTimeupdate() {
       // 当目前的播放位置已更改时触发
       this.SET_CURRENT_TIME(this.player.currentTime)
       if (this.sleepMode && this.sleepTime) {
@@ -193,7 +226,7 @@ export default {
       }
     },
 
-    onEnded () {
+    onEnded() {
       // 当前文件播放结束时触发
       switch (this.playMode.name) {
         case "all repeat":
@@ -211,7 +244,7 @@ export default {
           break
         case "shuffle": {
           // 随机播放
-          const index = Math.floor(Math.random()*this.queue.length)
+          const index = Math.floor(Math.random() * this.queue.length)
           this.SET_TRACK(index)
           if (index === this.queueIndex) {
             this.player.currentTime = 0
@@ -237,8 +270,19 @@ export default {
       // }
     },
 
+    doSeek() {
+      // 按照用户决定的最终值跳转
+      this.player.currentTime = this.seekValue
+      this.SET_CURRENT_TIME(this.seekValue)
+      // 重置 sliderValue 以便 label 显示实际播放时间
+      this.seekValue = 0
+    },
 
-    playLrc (playStatus) {
+    updateSeekValue(value) {
+      this.seekValue = value
+    },
+
+    playLrc(playStatus) {
       if (this.lrcAvailable) {
         if (playStatus) {
           this.lrcObj.play(this.player.currentTime * 1000);
@@ -248,15 +292,15 @@ export default {
       }
     },
 
-    initLrcObj () {
-        this.lrcObj = new Lyric({
-          onPlay: (line, text) => {
-            this.SET_CURRENT_LYRIC(text);
-          },
-        })
+    initLrcObj() {
+      this.lrcObj = new Lyric({
+        onPlay: (line, text) => {
+          this.SET_CURRENT_LYRIC(text);
+        },
+      })
     },
 
-    loadLrcFile () {
+    loadLrcFile() {
       const token = this.$q.localStorage.getItem('jwt-token') || '';
       const fileHash = this.queue[this.queueIndex].hash;
       const url = `/api/media/check-lrc/${fileHash}?token=${token}`;
@@ -294,7 +338,8 @@ export default {
     },
   },
 
-  mounted () {
+  mounted() {
+    this.player = this.$refs.audio
     // 初始化音量
     this.SET_VOLUME(this.player.volume);
     this.initLrcObj();
@@ -306,7 +351,4 @@ export default {
 </script>
 
 <style>
-.plyr--audio .plyr__controls {
-  background: inherit !important;
-}
 </style>
