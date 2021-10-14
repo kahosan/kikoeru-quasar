@@ -220,11 +220,12 @@ import LyricsBar from 'components/LyricsBar'
 import SleepMode from 'components/SleepMode'
 import NotifyMixin from '../mixins/Notification.js'
 import { mapMutations, mapState } from 'vuex'
+import UpdateNotify from "src/mixins/UpdateNotify";
 
 export default {
   name: 'MainLayout',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, UpdateNotify],
 
   components: {
     PlayerBar,
