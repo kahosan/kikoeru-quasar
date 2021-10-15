@@ -1,32 +1,19 @@
 <template>
-  <div class="q-mx-md">
-    <audio
-      ref="audio"
-      crossorigin="anonymous"
-      @canplay="onCanplay()"
-      @timeupdate="onTimeupdate()"
-      @ended="onEnded()"
-      @seeked="onSeeked()"
-      @playing="onPlaying()"
-      @waiting="onWaiting()"
-      @pause="onPause()"
-    >
-      <source v-if="source" :src="source"/>
+  <vue-plyr
+    ref="plyr"
+    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause']"
+    @canplay="onCanplay()"
+    @timeupdate="onTimeupdate()"
+    @ended="onEnded()"
+    @seeked="onSeeked()"
+    @playing="onPlaying()"
+    @waiting="onWaiting()"
+    @pause="onPause()"
+  >
+    <audio crossorigin="anonymous" >
+      <source v-if="source" :src="source" />
     </audio>
-    <q-slider
-      label
-      :value="this.currentTime"
-      :min="0"
-      :max="this.duration"
-      :step="0.001"
-      :label-value="formatSeconds(seekValue || this.currentTime)"
-      @input="updateSeekValue"
-      @change="doSeek"
-    />
-<!--
-滑动时， 通过 sliderValue 显示目标时间
-滑动结束后，通过 doSeek 对 player 进行操作-->
-  </div>
+  </vue-plyr>
 </template>
 
 <script>
@@ -49,13 +36,15 @@ export default {
     return {
       lrcObj: null,
       lrcAvailable: false,
-      player: {},
-      seekValue: 0
     }
   },
 
   computed: {
-    source() {
+    player () {
+      return this.$refs.plyr.player
+    },
+
+    source () {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
       // New API
@@ -83,8 +72,6 @@ export default {
       'forwardSeekTime',
       'rewindSeekMode',
       'forwardSeekMode',
-      'duration',
-      'currentTime',
       'lyricContent'
     ]),
 
@@ -107,8 +94,8 @@ export default {
       }
     },
 
-    playing(flag) {
-      if (this.duration) {
+    playing (flag) {
+      if (this.player.duration) {
         // 缓冲至可播放状态
         flag ? this.player.play() : this.player.pause()
       }
@@ -119,7 +106,7 @@ export default {
     source(url) {
       if (url) {
         // 加载新音频/视频文件
-        this.player.load();
+        this.player.media.load();
         this.loadLrcFile();
       }
     },
@@ -140,39 +127,19 @@ export default {
     },
     rewindSeekMode(rewind) {
       if (rewind) {
-        this.player.currentTime = this.player.currentTime - this.rewindSeekTime
-        this.SET_CURRENT_TIME(this.player.currentTime - this.rewindSeekTime)
+        this.player.rewind(this.rewindSeekTime);
         this.SET_REWIND_SEEK_MODE(false);
       }
     },
     forwardSeekMode(forward) {
       if (forward) {
-        this.player.currentTime = this.player.currentTime + this.forwardSeekTime
-        this.SET_CURRENT_TIME(this.player.currentTime)
+        this.player.forward(this.forwardSeekTime);
         this.SET_FORWARD_SEEK_MODE(false);
       }
     }
   },
 
   methods: {
-    formatSeconds (seconds) {
-      let h = Math.floor(seconds / 3600) < 10
-        ? '0' + Math.floor(seconds / 3600)
-        : Math.floor(seconds / 3600)
-
-      let m = Math.floor((seconds / 60 % 60)) < 10
-        ? '0' + Math.floor((seconds / 60 % 60))
-        : Math.floor((seconds / 60 % 60))
-
-      let s = Math.floor((seconds % 60)) < 10
-        ? '0' + Math.floor((seconds % 60))
-        : Math.floor((seconds % 60))
-
-      return h === "00"
-        ? m + ":" + s
-        : h + ":" + m + ":" + s
-    },
-
     /**
      * 当 外部暂停（线控暂停、软件切换）、用户控制暂停、seek 时会触发本事件
      */
@@ -285,17 +252,6 @@ export default {
       // }
     },
 
-    doSeek() {
-      // 按照用户决定的最终值跳转
-      this.player.currentTime = this.seekValue
-      this.SET_CURRENT_TIME(this.seekValue)
-      // 重置 sliderValue 以便 label 显示实际播放时间
-      this.seekValue = 0
-    },
-
-    updateSeekValue(value) {
-      this.seekValue = value
-    },
 
     playLrc(playStatus) {
       if (this.lrcAvailable) {
@@ -350,17 +306,18 @@ export default {
   },
 
   mounted() {
-    this.player = this.$refs.audio
     // 初始化音量
     this.SET_VOLUME(this.player.volume);
     this.initLrcObj();
     if (this.source) {
       this.loadLrcFile();
     }
-    console.log('mounted')
   }
 }
 </script>
 
 <style>
+.plyr--audio .plyr__controls {
+  background: inherit !important;
+}
 </style>
