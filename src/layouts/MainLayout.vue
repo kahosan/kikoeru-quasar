@@ -21,7 +21,7 @@
 
       </q-toolbar>
 
-      <AudioPlayer />
+      <AudioPlayer v-if="hasPlayingFile" />
     </q-header>
 
     <q-drawer
@@ -207,19 +207,19 @@
     </q-page-container>
 
     <q-footer class="q-pa-none">
-      <LyricsBar />
-      <PlayerBar />
+      <LyricsBar v-if="hasPlayingFile"/>
+      <PlayerBar v-if="hasPlayingFile"/>
     </q-footer>
   </q-layout>
 </template>
 
 <script>
-import PlayerBar from 'components/PlayerBar'
-import AudioPlayer from 'components/AudioPlayer'
-import LyricsBar from 'components/LyricsBar'
+// import PlayerBar from 'components/PlayerBar'
+// import AudioPlayer from 'components/AudioPlayer'
+// import LyricsBar from 'components/LyricsBar'
 import SleepMode from 'components/SleepMode'
 import NotifyMixin from '../mixins/Notification.js'
-import { mapMutations, mapState } from 'vuex'
+import {mapGetters, mapMutations, mapState} from 'vuex'
 import UpdateNotify from "src/mixins/UpdateNotify";
 
 export default {
@@ -228,9 +228,9 @@ export default {
   mixins: [NotifyMixin, UpdateNotify],
 
   components: {
-    PlayerBar,
-    AudioPlayer,
-    LyricsBar,
+    PlayerBar: () => import('components/PlayerBar'),
+    AudioPlayer: () => import('components/AudioPlayer'),
+    LyricsBar: () => import('components/LyricsBar'),
     SleepMode
   },
 
@@ -307,7 +307,16 @@ export default {
     ...mapState('User', {
       userName: 'name',
       authEnabled: 'auth'
-    })
+    }),
+
+    ...mapGetters('AudioPlayer', [
+      'currentPlayingFile'
+    ]),
+
+    hasPlayingFile() {
+      // return true;
+      return Boolean(this.currentPlayingFile.mediaStreamUrl)
+    }
   },
 
   methods: {

@@ -357,6 +357,7 @@ export default {
     if (this.source) {
       this.loadLrcFile();
     }
+    console.log('mounted')
   }
 }
 </script>
