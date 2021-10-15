@@ -3,6 +3,11 @@ const mutations = {
     state.hide = !state.hide
   },
 
+  // 进入 WorkDetail 页面后提前加载 AudioPlayer，否则 ios 无法自动播放
+  LOAD_PLAYER (state) {
+    state.shouldLoadPlayer = true
+  },
+
   PLAY (state) {
     state.playing = true
   },

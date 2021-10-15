@@ -21,7 +21,7 @@
 
       </q-toolbar>
 
-      <AudioPlayer v-if="hasPlayingFile" />
+      <AudioPlayer v-if="shouldLoadPlayer" />
     </q-header>
 
     <q-drawer
@@ -207,8 +207,8 @@
     </q-page-container>
 
     <q-footer class="q-pa-none">
-      <LyricsBar v-if="hasPlayingFile"/>
-      <PlayerBar v-if="hasPlayingFile"/>
+      <LyricsBar v-if="shouldLoadPlayer"/>
+      <PlayerBar v-if="shouldLoadPlayer"/>
     </q-footer>
   </q-layout>
 </template>
@@ -219,7 +219,7 @@
 // import LyricsBar from 'components/LyricsBar'
 import SleepMode from 'components/SleepMode'
 import NotifyMixin from '../mixins/Notification.js'
-import {mapGetters, mapMutations, mapState} from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import UpdateNotify from "src/mixins/UpdateNotify";
 
 export default {
@@ -309,14 +309,9 @@ export default {
       authEnabled: 'auth'
     }),
 
-    ...mapGetters('AudioPlayer', [
-      'currentPlayingFile'
+    ...mapState('AudioPlayer', [
+      'shouldLoadPlayer'
     ]),
-
-    hasPlayingFile() {
-      // return true;
-      return Boolean(this.currentPlayingFile.mediaStreamUrl)
-    }
   },
 
   methods: {

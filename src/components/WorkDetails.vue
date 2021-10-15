@@ -284,6 +284,10 @@ export default {
     processReview () {
       this.showReviewDialog = false;
     },
+  },
+  mounted() {
+    // 进入本页时提前加载 Player，否则 ios 会因为 autoplay 限制无法播放
+    this.$store.commit('AudioPlayer/LOAD_PLAYER')
   }
 }
 </script>

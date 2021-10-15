@@ -29,6 +29,7 @@ export default function () {
     forwardSeekTime: 30,
     rewindSeekMode: false,
     forwardSeekMode: false,
-    lyricContent: ''
+    lyricContent: '',
+    shouldLoadPlayer: false
   }
 }
