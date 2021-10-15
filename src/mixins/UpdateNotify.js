@@ -33,7 +33,9 @@ export default {
      * 检查版本号是否有更新
      */
     hasUpdate(localVersion, remoteVersion) {
-      return localVersion !== remoteVersion
+      let v1 = localVersion.split('.').slice(0, -1).join('.')
+      let v2 = remoteVersion.split('.').slice(0, -1).join('.')
+      return v1 !== v2
     },
 
     /**

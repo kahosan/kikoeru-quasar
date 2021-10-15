@@ -1,6 +1,6 @@
 {
   "name": "kikoeru-quasar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "在线ASMR播放, 同人音声在线播放",
   "productName": "ASMR Online",
   "cordovaId": "org.cordova.quasar.kikoeru",
