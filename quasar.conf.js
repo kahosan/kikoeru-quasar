@@ -9,7 +9,7 @@ module.exports = function (ctx) {
     boot: [
       'axios',
       // 'slider',
-      'plyr',
+      // 'plyr',
       // 'socket.io'
     ],
 
@@ -59,6 +59,10 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
     supportIE: false,
+
+    vendor: {
+      remove: ['vue-plyr', 'plyr', 'vuedraggable', 'sortablejs']
+    },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {

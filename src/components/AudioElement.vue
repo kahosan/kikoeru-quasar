@@ -2,6 +2,7 @@
   <vue-plyr
     ref="plyr"
     :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause']"
+    :options="{controls: ['progress']}"
     @canplay="onCanplay()"
     @timeupdate="onTimeupdate()"
     @ended="onEnded()"
@@ -21,7 +22,7 @@ import Lyric from 'lrc-file-parser'
 import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import {mediaStreamURL} from "src/utils/apiURL";
-
+import VuePlyr from "vue-plyr";
 
 /**
  * 点击 音频文件后， playing = true，触发 watch(playing)，但是 duration = 0，什么都不会发生
@@ -31,6 +32,11 @@ export default {
   name: 'AudioElement',
 
   mixins: [NotifyMixin],
+
+  components: {
+    // 'vue-plyr': () => import('vue-plyr')
+    'vue-plyr': VuePlyr
+  },
 
   data() {
     return {
