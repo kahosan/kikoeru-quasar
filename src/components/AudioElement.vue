@@ -25,7 +25,7 @@ import {mediaStreamURL} from "src/utils/apiURL";
 import VuePlyr from "vue-plyr";
 
 /**
- * 点击 音频文件后， playing = true，触发 watch(playing)，但是 duration = 0，什么都不会发生
+ * 点击 音频文件后， wantPlaying = true，触发 watch(wantPlaying)，但是 duration = 0，什么都不会发生
  * 然后触发 watch(source)，调用player.media.load()，加载完成后调用 canPlay 开始播放
  */
 export default {
@@ -67,6 +67,7 @@ export default {
 
     ...mapState('AudioPlayer', [
       'playing',
+      'wantPlaying',
       'queue',
       'queueIndex',
       'playMode',
@@ -100,7 +101,7 @@ export default {
       }
     },
 
-    playing (flag) {
+    wantPlaying (flag) {
       if (this.player.duration) {
         // 缓冲至可播放状态
         flag ? this.player.play() : this.player.pause()
@@ -148,11 +149,12 @@ export default {
   methods: {
     /**
      * 当 外部暂停（线控暂停、软件切换）、用户控制暂停、seek 时会触发本事件
+     * 特别注意：在一些安卓浏览器上，seek 时会触发 onPause，随后会自动恢复播放
      */
     onPause() {
       console.log('onPause')
       this.playLrc(false)
-      this.PAUSE()
+      this.ON_PAUSE()
     },
     /**
      * 当播放器真正开始播放时会触发本事件
@@ -160,7 +162,13 @@ export default {
     onPlaying() {
       console.log('onPlaying')
       this.playLrc(true)
-      this.PLAY()
+      this.ON_PLAY()
+
+      // 缓冲时用户暂停播放
+      // 可是缓冲结束后浏览器强制继续播放
+      if (!this.wantPlaying) {
+        this.player.pause()
+      }
     },
     /**
      * 当播放器缓冲区空，被迫暂停加载时会触发本事件
@@ -168,13 +176,18 @@ export default {
     onWaiting() {
       console.log('onWaiting')
       this.playLrc(false)
-      this.PLAY()
+      this.ON_PLAY()
     },
     ...mapMutations('AudioPlayer', [
       'SET_DURATION',
       'SET_CURRENT_TIME',
-      'PAUSE',
-      'PLAY',
+
+      'WANT_PAUSE',
+      'WANT_PLAY',
+
+      'ON_PAUSE',
+      'ON_PLAY',
+
       'SET_TRACK',
       'NEXT_TRACK',
       'SET_CURRENT_LYRIC',
@@ -186,11 +199,13 @@ export default {
     ]),
 
     onCanplay() {
+      console.log('onCanPlay')
+
       // 缓冲至可播放状态时触发 (只有缓冲至可播放状态, 才能获取媒体文件的播放时长)
       this.SET_DURATION(this.player.duration)
 
       // 播放
-      if (this.playing && this.player.currentTime !== this.player.duration) {
+      if (this.wantPlaying && this.player.currentTime !== this.player.duration) {
         this.player.play()
       }
     },
@@ -205,7 +220,7 @@ export default {
         const sleepHourStr = this.sleepTime.match(/\d+/g)[0]
         const sleepMinuteStr = this.sleepTime.match(/\d+/g)[1]
         if (currentHourStr === sleepHourStr && currentMinuteStr === sleepMinuteStr) {
-          this.PAUSE()
+          this.WANT_PAUSE()
           this.CLEAR_SLEEP_MODE()
           // Persist sleep mode settings
           this.$q.sessionStorage.set('sleepTime', null)
@@ -228,7 +243,7 @@ export default {
         case "repeat once":
           // 单曲循环
           this.player.currentTime = 0
-          this.PLAY()
+          this.WANT_PLAY()
           break
         case "shuffle": {
           // 随机播放
@@ -242,7 +257,7 @@ export default {
         default:
           // 顺序播放
           if (this.queueIndex === this.queue.length - 1) {
-            this.PAUSE()
+            this.WANT_PAUSE()
           } else {
             this.NEXT_TRACK()
           }

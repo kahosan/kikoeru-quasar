@@ -8,13 +8,25 @@ const mutations = {
     state.shouldLoadPlayer = true
   },
 
-  PLAY (state) {
+  // 这里控制的是用户期望的播放状态
+  WANT_PLAY (state) {
+    state.wantPlaying = true
+  },
+  WANT_PAUSE (state) {
+    state.wantPlaying = false
+  },
+  TOGGLE_WANT_PLAYING (state) {
+    state.wantPlaying = !state.wantPlaying
+  },
+
+  // 这里控制的是播放器实际的播放状态
+  ON_PLAY (state) {
     state.playing = true
   },
-  PAUSE (state) {
+  ON_PAUSE (state) {
     state.playing = false
   },
-  TOGGLE_PLAYING (state) {
+  TOGGLE_ON_PLAYING (state) {
     state.playing = !state.playing
   },
 
@@ -47,7 +59,7 @@ const mutations = {
     state.queueIndex = payload.index
 
     if (payload.resetPlaying) {
-      state.playing = true
+      state.wantPlaying = true
     }
   },
   EMPTY_QUEUE: (state) => {

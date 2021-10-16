@@ -160,7 +160,7 @@ export default {
 
     onClickPlayButton (hash) {
       if (this.currentPlayingFile.hash === hash) {
-        this.$store.commit('AudioPlayer/TOGGLE_PLAYING')
+        this.playing ? this.$store.commit('AudioPlayer/WANT_PAUSE') : this.$store.commit('AudioPlayer/WANT_PLAY')
       } else {
         this.$store.commit('AudioPlayer/SET_QUEUE', {
           queue: this.queue.concat(),

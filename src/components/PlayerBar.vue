@@ -54,7 +54,7 @@ export default {
     },
 
     togglePlaying () {
-      this.$store.commit('AudioPlayer/TOGGLE_PLAYING')
+      this.playing ? this.$store.commit('AudioPlayer/WANT_PAUSE') : this.$store.commit('AudioPlayer/WANT_PLAY')
     },
 
     nextTrack () {

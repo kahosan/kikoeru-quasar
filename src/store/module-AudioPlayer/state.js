@@ -1,7 +1,8 @@
 export default function () {
   return {
     hide: false,
-    playing: false, // 播放状态 (true/false)
+    wantPlaying: false,  // 用户期望的播放状态
+    playing: false, // 实际的播放状态 (true/false)
     currentTime: 0, // 单位: 秒
     duration: 0,
     source: "",
