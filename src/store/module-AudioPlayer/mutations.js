@@ -72,6 +72,7 @@ const mutations = {
     state.queue.splice(index, 1)
 
     if (index === state.queueIndex) {
+      state.playing = false
       state.wantPlaying = false
       state.queueIndex = 0
     } else if (index < state.queueIndex) {
