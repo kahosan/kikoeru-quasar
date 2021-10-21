@@ -36,20 +36,20 @@ const mutations = {
       return; // Invalid index, bail.
     }
 
-    state.playing = true
+    state.wantPlaying = true
     state.queueIndex = index
   },
   NEXT_TRACK: (state) => {
     if (state.queueIndex < state.queue.length - 1) {
       // Go to next track only if it exists.
-      state.playing = true
+      state.wantPlaying = true
       state.queueIndex += 1
     }
   },
   PREVIOUS_TRACK: (state) => {
     if (state.queueIndex > 0) {
       // Go to previous track only if it exists.
-      state.playing = true
+      state.wantPlaying = true
       state.queueIndex -= 1
     }
   },
@@ -63,7 +63,7 @@ const mutations = {
     }
   },
   EMPTY_QUEUE: (state) => {
-    state.playing = false
+    state.wantPlaying = false
     state.queue = []
     state.queueIndex = 0
   },
@@ -74,7 +74,7 @@ const mutations = {
     state.queue.splice(index, 1)
 
     if (index === state.queueIndex) {
-      state.playing = false
+      state.wantPlaying = false
       state.queueIndex = 0
     } else if (index < state.queueIndex) {
       state.queueIndex -= 1
