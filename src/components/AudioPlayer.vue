@@ -77,7 +77,7 @@
         <div class="row justify-around" style="height: 65px">
           <q-btn flat dense size="md" icon="queue_music" @click="showCurrentPlayList = !showCurrentPlayList" style="width: 55px" class="col-auto" />
           <q-btn flat dense size="lg" :icon="swapSeekButton ? rewindIcon : 'skip_previous'" @click="swapSeekButton ? rewind(true) : previousTrack()" style="width: 55px" class="col-auto" />
-          <q-btn flat dense size="28px" :icon="playingIcon" @click="playing ? wantPause() : wantPlay()" style="width: 65px" class="col-auto" />
+          <q-btn flat dense size="28px" :icon="playingIcon" @click="togglePlay()" style="width: 65px" class="col-auto" />
           <q-btn flat dense size="lg" :icon="swapSeekButton ? forwardIcon : 'skip_next'" @click="swapSeekButton ? forward(true) : nextTrack()" style="width: 55px" class="col-auto" />
           <q-btn flat dense size="md" :icon="playModeIcon" @click="changePlayMode()" style="width: 55px" class="col-auto" />
         </div>
@@ -325,8 +325,7 @@ export default {
   methods: {
     ...mapMutations('AudioPlayer', {
       toggleHide: 'TOGGLE_HIDE',
-      wantPlay: 'WANT_PLAY',
-      wantPause: 'WANT_PAUSE',
+      togglePlay: 'TOGGLE_WANT_PLAYING',
       nextTrack: 'NEXT_TRACK',
       previousTrack: 'PREVIOUS_TRACK',
       changePlayMode: 'CHANGE_PLAY_MODE',

@@ -16,7 +16,8 @@ const mutations = {
     state.wantPlaying = false
   },
   TOGGLE_WANT_PLAYING (state) {
-    state.wantPlaying = !state.wantPlaying
+    // 根据实际播放状态切换
+    state.wantPlaying = !state.playing
   },
 
   // 这里控制的是播放器实际的播放状态
@@ -25,9 +26,6 @@ const mutations = {
   },
   ON_PAUSE (state) {
     state.playing = false
-  },
-  TOGGLE_ON_PLAYING (state) {
-    state.playing = !state.playing
   },
 
   // Play a specific file from the queue.
