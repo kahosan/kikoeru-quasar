@@ -1,7 +1,7 @@
 <template>
   <vue-plyr
     ref="plyr"
-    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause']"
+    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled']"
     :options="{controls: ['progress']}"
     @canplay="onCanplay()"
     @timeupdate="onTimeupdate()"
@@ -10,6 +10,7 @@
     @playing="onPlaying()"
     @waiting="onWaiting()"
     @pause="onPause()"
+    @stalled="onStalled"
   >
     <audio crossorigin="anonymous" >
       <source v-if="source" :src="source" />
@@ -23,6 +24,8 @@ import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import {mediaStreamURL} from "src/utils/apiURL";
 import VuePlyr from "vue-plyr";
+import * as Sentry from "@sentry/browser";
+
 
 /**
  * 点击 音频文件后， wantPlaying = true，触发 watch(wantPlaying)，但是 duration = 0，什么都不会发生
@@ -147,6 +150,13 @@ export default {
   },
 
   methods: {
+    /**
+     * 音频加载失败
+     */
+    onStalled(e) {
+      Sentry.captureEvent(e)
+    },
+
     /**
      * 当 外部暂停（线控暂停、软件切换）、用户控制暂停、seek 时会触发本事件
      * 特别注意：在一些安卓浏览器上，seek 时会触发 onPause，随后会自动恢复播放

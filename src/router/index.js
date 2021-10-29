@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
+import sentry from "src/utils/sentry";
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,8 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
+
+  sentry(Vue, Router);
 
   return Router
 }
