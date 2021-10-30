@@ -1,7 +1,7 @@
 <template>
   <vue-plyr
     ref="plyr"
-    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled']"
+    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled', 'loadedmetadata']"
     :options="{controls: ['progress']}"
     @canplay="onCanplay()"
     @timeupdate="onTimeupdate()"
@@ -11,6 +11,7 @@
     @waiting="onWaiting()"
     @pause="onPause()"
     @stalled="onStalled"
+    @loadedmetadata="onLoadedMetadata()"
   >
     <audio crossorigin="anonymous" >
       <source v-if="source" :src="source" />
@@ -107,6 +108,7 @@ export default {
     wantPlaying (flag) {
       if (this.player.duration) {
         // 缓冲至可播放状态
+        console.log("wantPlaying: ", flag)
         flag ? this.player.play() : this.player.pause()
       }
       // this.playLrc(flag);
@@ -115,6 +117,7 @@ export default {
     // watch source -> media.load() -> canPlay -> player.play()
     source(url) {
       if (url) {
+        console.log('source changed')
         // 加载新音频/视频文件
         this.player.media.load();
         this.loadLrcFile();
@@ -150,10 +153,18 @@ export default {
   },
 
   methods: {
+    onLoadedMetadata() {
+      /**
+       * fuck you ios
+       */
+      console.log("onLoadedMetadata")
+    },
+
     /**
      * 音频加载失败
      */
     onStalled(e) {
+      console.log("onStalled", e)
       Sentry.captureEvent(e)
     },
 
@@ -240,6 +251,7 @@ export default {
     },
 
     onEnded() {
+      console.log("onEnded")
       // 当前文件播放结束时触发
       switch (this.playMode.name) {
         case "all repeat":
@@ -275,6 +287,7 @@ export default {
     },
 
     onSeeked() {
+      console.log("onSeeked")
       // if (this.lrcAvailable) {
       //   this.lrcObj.play(this.player.currentTime * 1000);
       //   if (!this.playing) {
