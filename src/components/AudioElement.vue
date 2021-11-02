@@ -25,7 +25,6 @@ import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import {mediaStreamURL} from "src/utils/apiURL";
 import VuePlyr from "vue-plyr";
-import * as Sentry from "@sentry/browser";
 
 
 /**
@@ -165,7 +164,6 @@ export default {
      */
     onStalled(e) {
       console.log("onStalled", e)
-      Sentry.captureEvent(e)
     },
 
     /**
