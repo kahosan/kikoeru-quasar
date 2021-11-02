@@ -82,6 +82,9 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /[\\/]node_modules[\\/]/
         })
+        if(cfg.mode === 'production') {
+          cfg.output.publicPath = 'https://cdn.jsdelivr.net/gh/example.com/kikoeru-dist@master' + '/'
+        }
       },
       modern: true,
       sourceMap: false,
