@@ -1,5 +1,3 @@
-import {baseURL} from "app/package.json";
-
 /**
  * 计算封面 url
  * @param {Object} metadata
@@ -20,19 +18,19 @@ export const coverURL = (metadata, type = 'main') => {
   switch (type) {
     case 'main':
       if (metadata.mainCoverUrl) { return metadata.mainCoverUrl }
-      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=main` }
+      else { return process.env.API_URL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=main` }
 
     case 'sam':
       if (metadata.samCoverUrl) { return metadata.samCoverUrl }
-      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=sam` }
+      else { return process.env.API_URL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=sam` }
 
     case 'thumb':
       if (metadata.thumbnailCoverUrl) { return metadata.thumbnailCoverUrl }
-      else { return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=240x240` }
+      else { return process.env.API_URL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=240x240` }
 
     default:
       // /api/cover/RJ123456.jpg?type=sam
-      return baseURL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=${type}`
+      return process.env.API_URL + `/api/cover/${metadata.id || metadata.hash.split('/')[0]}.jpg?type=${type}`
   }
 };
 
@@ -42,7 +40,7 @@ export const coverURL = (metadata, type = 'main') => {
  * @param {string} token
  */
 export const mediaStreamURL = (hash, token) => {
-  return baseURL + `/api/media/stream/${hash}?token=${token}`;
+  return process.env.API_URL + `/api/media/stream/${hash}?token=${token}`;
 }
 
 /**
@@ -51,5 +49,5 @@ export const mediaStreamURL = (hash, token) => {
  * @param {string} token
  */
 export const mediaDownloadURL = (hash, token) => {
-  return baseURL + `/api/media/download/${hash}?token=${token}`;
+  return process.env.API_URL + `/api/media/download/${hash}?token=${token}`;
 }

@@ -5,16 +5,22 @@ import { openURL } from 'quasar'
 
 
 export default {
-  computed: {
-    changelogUrl() {
-      return 'https://blog.example.com/' + 'frontend-' + version.replace('.', '-')
-    }
-  },
   methods: {
     /**
      * 当检测到更新时，通过本方法通知用户
      */
-    notifyUpdate (remoteVersion) {
+    notifyUpdate: function (remoteVersion) {
+      let actions = [{label: '忽略', color: 'white'}]
+      if (process.env.BLOG_URL) {
+        let changeLogUrl = process.env.BLOG_URL + '/frontend-' + version.replace('.', '-');
+        actions.push({
+          label: '查看',
+          color: 'yellow',
+          handler: () => {
+            openURL(changeLogUrl)
+          }
+        })
+      }
       this.$q.notify({
         message: '新版本发布！',
         caption: 'v' + remoteVersion,
@@ -22,10 +28,7 @@ export default {
         icon: 'done',
         timeout: 10000,
         multiLine: false,
-        actions: [
-          {label: '忽略', color: 'white'},
-          {label: '查看', color: 'yellow', handler: () => {openURL(this.changelogUrl)}}
-        ]
+        actions
       })
     },
 

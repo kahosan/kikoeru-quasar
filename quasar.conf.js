@@ -1,6 +1,18 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+/**
+ * Quasar 1 传入的 build.env 参数值必须被 JSON.stringify('some-value') 包裹
+ * @param {Object} env
+ */
+function patchDotEnvForQuasar1(env) {
+  // map each value in env and JSON.stringify them
+  Object.keys(env).forEach(key => {
+    env[key] = JSON.stringify(env[key])
+  })
+  return env;
+}
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -63,6 +75,8 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      env: patchDotEnvForQuasar1(require('dotenv').config().parsed),
+
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // rtl: false, // https://quasar.dev/options/rtl-support
@@ -82,8 +96,10 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /[\\/]node_modules[\\/]/
         })
-        if(cfg.mode === 'production') {
-          cfg.output.publicPath = 'https://cdn.jsdelivr.net/gh/example.com/kikoeru-dist@master' + '/'
+
+        const STATIC_CDN = process.env.STATIC_CDN;
+        if(cfg.mode === 'production' && STATIC_CDN) {
+          cfg.output.publicPath = STATIC_CDN + '/'
         }
       },
       modern: true,
