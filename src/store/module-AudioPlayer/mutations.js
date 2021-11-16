@@ -16,7 +16,12 @@ const mutations = {
     state.wantPlaying = false
   },
   TOGGLE_WANT_PLAYING (state) {
-    // 根据实际播放状态切换
+    // 这里有一个 trick
+    // 如果因为电脑的媒体控制导致播放暂停
+    // 播放器的状态是 wantPlay = true, playing = false
+    // 此时则无法通过 state.wantPlaying = !state.playing 继续播放
+    // 所以这里先把 wantPlay 置为 false
+    state.wantPlaying = false
     state.wantPlaying = !state.playing
   },
 
