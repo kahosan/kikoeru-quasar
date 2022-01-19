@@ -126,13 +126,13 @@ export default {
       },
       options: [
         {
-          label: '最新收录',
-          order: 'create_date',
+          label: '发售日期倒序',
+          order: 'release',
           sort: 'desc'
         },
         {
-          label: '发售日期倒序',
-          order: 'release',
+          label: '最新收录',
+          order: 'create_date',
           sort: 'desc'
         },
         {
