@@ -120,11 +120,16 @@ export default {
       subtitleOnly: false,
       previousUrl: '',
       sortOption: {
-        label: '发售日期倒序',
-        order: 'release',
+        label: '最新收录',
+        order: 'create_date',
         sort: 'desc'
       },
       options: [
+        {
+          label: '最新收录',
+          order: 'create_date',
+          sort: 'desc'
+        },
         {
           label: '发售日期倒序',
           order: 'release',
