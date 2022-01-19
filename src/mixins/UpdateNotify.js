@@ -50,8 +50,10 @@ export default {
   },
   mounted() {
     let localVersion = this.$q.localStorage.getItem('localVersion')
-    if (!localVersion || this.hasUpdate(localVersion, version)) {
+    if (localVersion && this.hasUpdate(localVersion, version)) {
       this.notifyUpdate(version)
+      this.doUpdate(version)
+    } else if (!localVersion) {
       this.doUpdate(version)
     }
   }
