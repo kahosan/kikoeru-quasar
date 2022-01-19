@@ -56,16 +56,5 @@ export default {
     } else if (!localVersion) {
       this.doUpdate(version)
     }
-
-    // 临时服务器搬迁通知
-    this.$q.notify({
-      message: '服务器搬迁！！',
-      caption: '服务器正在搬迁，暂时无法访问',
-      color: 'negative',
-      icon: 'done',
-      timeout: 10000,
-      multiLine: false,
-      action: [{label: '确认', color: 'yellow'}]
-    });
   }
 }
