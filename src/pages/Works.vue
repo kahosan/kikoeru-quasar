@@ -78,6 +78,7 @@
             :max-pages="7"
             :boundary-numbers="false"
             v-show="maxPage"
+            input
           />
         </div>
 
