@@ -141,12 +141,14 @@ export default {
       if (rewind) {
         this.player.rewind(this.rewindSeekTime);
         this.SET_REWIND_SEEK_MODE(false);
+        this.playLrc(true);
       }
     },
     forwardSeekMode(forward) {
       if (forward) {
         this.player.forward(this.forwardSeekTime);
         this.SET_FORWARD_SEEK_MODE(false);
+        this.playLrc(true);
       }
     }
   },
