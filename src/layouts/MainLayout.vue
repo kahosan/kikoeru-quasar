@@ -183,7 +183,7 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="power_settings_new" color="primary" text-color="white" />
-          <span class="q-ml-sm">是否退出登录？（若未开启用户验证，则操作无效）</span>
+          <span class="q-ml-sm">是否退出登录？</span>
         </q-card-section>
 
         <q-card-actions align="right">
