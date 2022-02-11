@@ -21,12 +21,15 @@
     />
 
     <!-- 入口界面按钮 -->
-    <q-btn label="注册" color="secondary" class="fit" @click="navigateToRegister" v-if="this.$store.state.User.reg && !showRegisterForm"/>
     <q-btn label="登录" type="submit" color="primary" class="fit" v-if="!showRegisterForm"/>
+    <div class="row fit no-wrap justify-between">
+      <q-btn label="游客访问" flat dense color="accent" style="max-width: 5em" @click="guestLogin" v-if="!showRegisterForm"></q-btn>
+      <q-btn label="注册" flat dense color="secondary" style="max-width: 5em"  @click="navigateToRegister" v-if="this.$store.state.User.reg && !showRegisterForm"/>
+    </div>
 
     <!-- 注册界面按钮 -->
-    <q-btn label="去看看！" type="submit" color="secondary" class="fit" v-if="showRegisterForm"/>
-    <q-btn label="返回" color="primary" class="fit" @click="navigateBack" v-if="showRegisterForm"/>
+    <q-btn label="去看看！" type="submit" color="primary" class="fit" v-if="showRegisterForm"/>
+    <q-btn label="返回" flat dense color="secondary" @click="navigateBack" v-if="showRegisterForm"/>
   </q-form>
 </template>
 
@@ -73,6 +76,13 @@ export default {
       let response = this.$axios.post('/api/auth/me', {
         name: this.name,
         password: this.password
+      })
+      this.handleResponse(response, "login")
+    },
+    guestLogin() {
+      let response = this.$axios.post('/api/auth/me', {
+        name: "guest",
+        password: "guest"
       })
       this.handleResponse(response, "login")
     },
