@@ -1,35 +1,35 @@
 <template>
   <q-form @submit="onSubmit" style="width: 260px;" class="absolute-center	q-gutter-md">
-    <q-input filled v-model="name" label="用户名" class="fit"
+    <q-input filled v-model="name" :label="$t('login.username')" class="fit"
              lazy-rules
-             :rules="[ val => val && val.length >= 5 || '用户名长度至少为 5' ]"
+             :rules="[ val => val && val.length >= 5 || $t('login.usernameLengthNotEnough', [5]) ]"
     />
 
-    <q-input filled type="password" v-model="password" label="密码" class="fit"
+    <q-input filled type="password" v-model="password" :label="$t('login.password')" class="fit"
              lazy-rules
-             :rules="[ val => val && val.length >= 5 || '密码长度至少为 5' ]"
+             :rules="[ val => val && val.length >= 5 || $t('login.passwordLengthNotEnough', [5]) ]"
              clearable
     />
 
     <!-- 仅在注册界面出现 -->
-    <q-input filled type="password" v-model="passwordConfirm" label="请再次输入密码" class="fit"
+    <q-input filled type="password" v-model="passwordConfirm" :label="$t('login.repeatPassword')" class="fit"
              lazy-rules
              bottom-slots
-             :rules="[ val => val && val === password || '两次密码必须一致' ]"
+             :rules="[ val => val && val === password || $t('login.repeatPasswordNotMatch') ]"
              clearable
              v-if="showRegisterForm"
     />
 
     <!-- 入口界面按钮 -->
-    <q-btn label="登录" type="submit" color="primary" class="fit" v-if="!showRegisterForm"/>
+    <q-btn :label="$t('login.login')" type="submit" color="primary" class="fit" v-if="!showRegisterForm"/>
     <div class="row fit no-wrap justify-between">
-      <q-btn label="游客访问" flat dense color="accent" style="max-width: 5em" @click="guestLogin" v-if="!showRegisterForm"></q-btn>
-      <q-btn label="注册" flat dense color="secondary" style="max-width: 5em"  @click="navigateToRegister" v-if="this.$store.state.User.reg && !showRegisterForm"/>
+      <q-btn :label="$t('login.guestLogin')" flat dense color="accent" style="max-width: 5em" @click="guestLogin" v-if="!showRegisterForm"></q-btn>
+      <q-btn :label="$t('login.register')" flat dense color="secondary" style="max-width: 5em"  @click="navigateToRegister" v-if="this.$store.state.User.reg && !showRegisterForm"/>
     </div>
 
     <!-- 注册界面按钮 -->
-    <q-btn label="去看看！" type="submit" color="primary" class="fit" v-if="showRegisterForm"/>
-    <q-btn label="返回" flat dense color="secondary" @click="navigateBack" v-if="showRegisterForm"/>
+    <q-btn :label="$t('login.postRegister')" type="submit" color="primary" class="fit" v-if="showRegisterForm"/>
+    <q-btn :label="$t('login.backToLogin')" flat dense color="secondary" @click="navigateBack" v-if="showRegisterForm"/>
   </q-form>
 </template>
 
@@ -98,7 +98,7 @@ export default {
         try {
           this.$q.localStorage.set('jwt-token', res.data.token)
           setAxiosHeaders(res.data.token)
-          this.showSuccNotif(type === "reg" ? "注册成功." : "登录成功.")
+          this.showSuccNotif(type === "reg" ? this.$t('login.registerSuccess') : this.$t('login.loginSuccess'))
           this.$router.push('/')
         } catch (error) {
           // 由于Web Storage API错误，

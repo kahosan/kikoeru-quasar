@@ -73,7 +73,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                随心听
+                {{$t('sidebar.randomPlay')}}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -91,7 +91,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                睡眠模式
+                {{$t('sidebar.sleepMode')}}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -112,7 +112,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                黑暗模式
+                {{$t('sidebar.darkMode')}}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -131,7 +131,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                关于 About
+                {{$t('sidebar.about')}}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -170,7 +170,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                登出
+                {{$t('sidebar.logout')}}
               </q-item-label>
               <q-item-label caption lines="2">{{ userName }}</q-item-label>
             </q-item-section>
@@ -183,12 +183,12 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="power_settings_new" color="primary" text-color="white" />
-          <span class="q-ml-sm">是否退出登录？</span>
+          <span class="q-ml-sm">{{$t('sidebar.doubleCheckLogout')}}</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="取消" color="primary" v-close-popup />
-          <q-btn flat label="退出" color="primary" @click="logout()" v-close-popup />
+          <q-btn flat :label="$t('sidebar.doubleCheckLogoutCancel')" color="primary" v-close-popup />
+          <q-btn flat :label="$t('sidebar.doubleCheckLogoutConfirm')" color="primary" @click="logout()" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -244,27 +244,27 @@ export default {
       showTimer: false,
       links: [
         {
-          title: '媒体库',
+          title: this.$t('sidebar.library'),
           icon: 'widgets',
           path: '/'
         },
         {
-          title: '我的收藏',
+          title: this.$t('sidebar.myFavourites'),
           icon: 'favorite',
           path: '/favourites'
         },
         {
-          title: '社团',
+          title: this.$t('sidebar.circles'),
           icon: 'group',
           path: '/circles'
         },
         {
-          title: '标签',
+          title: this.$t('sidebar.tags'),
           icon: 'label',
           path: '/tags'
         },
         {
-          title: '声优',
+          title: this.$t('sidebar.vas'),
           icon: 'mic',
           path: '/vas'
         },

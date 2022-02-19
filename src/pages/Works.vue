@@ -22,7 +22,7 @@
             transition-hide="scale"
             v-model="sortOption"
             :options="options"
-            label="排序"
+            :label="$t('works.sort')"
             class="col-auto"
           />
 
@@ -82,7 +82,7 @@
           />
         </div>
 
-        <div class="flex flex-center" v-show="userName === 'guest'">小提示: 使用 guest 账号加载速度会受到限制，推荐注册属于自己的账号</div>
+        <div class="flex flex-center" v-show="userName === 'guest'">{{$t('works.guestLoginRateLimitTips')}}</div>
 
       </q-page>
     </div>
@@ -121,73 +121,73 @@ export default {
       subtitleOnly: false,
       previousUrl: '',
       sortOption: {
-        label: '最新收录',
+        label: this.$t('works.new'),
         order: 'create_date',
         sort: 'desc'
       },
       options: [
         {
-          label: '发售日期倒序',
+          label: this.$t('works.releaseDesc'),
           order: 'release',
           sort: 'desc'
         },
         {
-          label: '最新收录',
+          label: this.$t('works.new'),
           order: 'create_date',
           sort: 'desc'
         },
         {
-          label: '我的评价倒序',
+          label: this.$t('works.ratingDesc'),
           order: 'rating',
           sort: 'desc'
         },
         {
-          label: '发售日期顺序',
+          label: this.$t('works.releaseAsc'),
           order: 'release',
           sort: 'asc'
         },
         {
-          label: '销量倒序',
+          label: this.$t('works.dlCountDesc'),
           order: 'dl_count',
           sort: 'desc'
         },
         {
-          label: '价格顺序',
+          label: this.$t('works.priceAsc'),
           order: 'price',
           sort: 'asc'
         },
         {
-          label: '价格倒序',
+          label: this.$t('works.priceDesc'),
           order: 'price',
           sort: 'desc'
         },
         {
-          label: '评价倒序',
+          label: this.$t('works.rateAverage2dpDesc'),
           order: 'rate_average_2dp',
           sort: 'desc'
         },
         {
-          label: '评论数量倒序',
+          label: this.$t('works.reviewCountDesc'),
           order: 'review_count',
           sort: 'desc'
         },
         {
-          label: 'RJ号倒序',
+          label: this.$t('works.idDesc'),
           order: 'id',
           sort: 'desc'
         },
         {
-          label: 'RJ号顺序',
+          label: this.$t('works.idAsc'),
           order: 'id',
           sort: 'asc'
         },
         {
-          label: '全年龄顺序',
+          label: this.$t('works.sfwOnly'),
           order: 'nsfw',
           sort: 'asc'
         },
         {
-          label: '随机排序',
+          label: this.$t('works.random'),
           order: 'random',
           sort: 'desc'
         }
