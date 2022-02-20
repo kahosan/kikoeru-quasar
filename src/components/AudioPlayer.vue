@@ -243,7 +243,7 @@ export default {
 
     workDetailUrl () {
       const hash = this.currentPlayingFile.hash
-      return hash ? `/work/${hash.split('/')[0]}` : ""
+      return hash ? `/work/RJ${hash.split('/')[0]}` : ""
     },
 
     volume: {

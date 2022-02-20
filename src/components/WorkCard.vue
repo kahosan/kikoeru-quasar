@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <router-link :to="`/work/${metadata.id}`">
+    <router-link :to="`/work/RJ${metadata.id}`">
       <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
@@ -9,7 +9,7 @@
     <div v-if="!thumbnailMode">
       <!-- 标题 -->
       <div class="q-mx-sm text-h6 text-weight-regular ellipsis-2-lines">
-        <router-link :to="`/work/${metadata.id}`" style="color: inherit">
+        <router-link :to="`/work/RJ${metadata.id}`" style="color: inherit">
           {{ metadata.title }}
         </router-link>
       </div>

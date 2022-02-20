@@ -282,7 +282,7 @@ export default {
     },
 
     randId () {
-      this.$router.push(`/work/${this.randId}`)
+      this.$router.push(`/work/RJ${this.randId}`)
     },
     sharedConfig (config) {
       this.SET_REWIND_SEEK_TIME(config.rewindSeekTime);

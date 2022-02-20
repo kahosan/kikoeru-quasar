@@ -59,6 +59,10 @@ const routes = [
         component: Works
       },
       {
+        path: 'work/RJ:id',
+        component: Work
+      },
+      {
         path: 'work/:id',
         component: Work
       },

@@ -26,22 +26,23 @@ export async function onRequestGet(context) {
   try {
     // Get the workID from the URL
     const workID = params.workID;
+    const workIDWithoutRJ = workID.toLowerCase().replace('rj', '')
 
     // request work info from api
-    const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
+    const res = await fetch(`https://api.asmr.one/api/workInfo/${workIDWithoutRJ}`);
     if (res.status !== 200) {
       return returnDefaultResponseWithError(staticResponse, {
         msg: 'res.status !== 200',
         detail: res.status,
-        url: `https://api.asmr.one/api/workInfo/${workID}`
+        url: `https://api.asmr.one/api/workInfo/${workIDWithoutRJ}`
       });
     }
     const workInfo = await res.json();
 
     // build meta
-    const descriptor = `Price: ${workInfo.price} JPY
+    const descriptor = `
+Price: ${workInfo.price} JPY
 Sales: ${workInfo.dl_count}
-
 Circle: ${workInfo.circle.name}
 Actors: ${workInfo.vas.map(v => v.name).join(', ')}
 Release: ${workInfo.release}`
