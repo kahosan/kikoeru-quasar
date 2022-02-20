@@ -1,6 +1,8 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 /**
  * Quasar 1 传入的 build.env 参数值必须被 JSON.stringify('some-value') 包裹
  * @param {Object} env
@@ -97,6 +99,8 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /[\\/]node_modules[\\/]/
         })
+
+        cfg.plugins.push(new CopyWebpackPlugin([{ from: 'public/', to: '' }]));
 
         const STATIC_CDN = process.env.STATIC_CDN;
         if(cfg.mode === 'production' && STATIC_CDN) {
