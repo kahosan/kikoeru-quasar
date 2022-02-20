@@ -13,9 +13,9 @@
             class="text-bold"
             :text-color="textColor"
             :options="[
-              {label: '我的评价', value: 'review'},
-              {label: '我的进度', value: 'progress'},
-              {label: '分类整理', value: 'folder'}
+              {label: $t('favourites.myReview'), value: 'review'},
+              {label: $t('favourites.myProgress'), value: 'progress'},
+              {label: $t('favourites.folder'), value: 'folder'}
             ]"
           />
       </div>
@@ -44,11 +44,11 @@
         text-color="black"
         rounded
         :options="[
-          {label: '想听', value: 'marked'},
-          {label: '在听', value: 'listening'},
-          {label: '听过', value: 'listened'},
-          {label: '重听', value: 'replay'},
-          {label: '搁置', value: 'postponed'}
+          {label: $t('common.progressEnum.marked'), value: 'marked'},
+          {label: $t('common.progressEnum.listening'), value: 'listening'},
+          {label: $t('common.progressEnum.listened'), value: 'listened'},
+          {label: $t('common.progressEnum.replay'), value: 'replay'},
+          {label: $t('common.progressEnum.postponed'), value: 'postponed'}
         ]"
       />
     </div>
@@ -56,7 +56,7 @@
     <div class="q-pt-md">
       <div class="q-px-sm q-py-md">
         <q-infinite-scroll @load="onLoad" :offset="500" :disable="stopLoad" ref="scroll" v-if="mode !=='folder'">
-          <div class="row justify-center text-grey" v-if="works.length === 0">在作品界面上点击星标、标记进度，标记的音声就会出现在这里啦</div>
+          <div class="row justify-center text-grey" v-if="works.length === 0">{{$t('favourites.favouriteEmptyTips')}}</div>
           <q-list bordered separator class="shadow-2" v-if="works.length">
              <FavListItem v-for="work in works" :key="work.id" :workid="work.id" :metadata="work" @reset="reset()" :mode="mode"></FavListItem>
           </q-list>
@@ -67,7 +67,7 @@
           </template>
         </q-infinite-scroll>
 
-        <div v-else class="row justify-center text-grey">尚未实现，敬请期待</div>
+        <div v-else class="row justify-center text-grey">{{$t('common.comingSoon')}}</div>
       </div>
     </div>
   </q-page>
@@ -117,36 +117,36 @@ export default {
       pagination: { currentPage:0, pageSize:12, totalCount:0 },
       sortMode: 'desc',
       sortBy: {
-          label: '标记时间',
+          label: this.$t('favourites.sortOptions.markedTime'),
           order: 'updated_at'
         },
       sortOptions: [
         {
-          label: '标记时间',
+          label: this.$t('favourites.sortOptions.markedTime'),
           order: 'updated_at'
         },
         {
-          label: '评价',
+          label: this.$t('favourites.sortOptions.rating'),
           order: 'userRating'
         },
         {
-          label: '发布时间',
+          label: this.$t('favourites.sortOptions.releaseDate'),
           order: 'release'
         },
         {
-          label: '评论数量',
+          label: this.$t('favourites.sortOptions.reviewCount'),
           order: 'review_count'
         },
         {
-          label: '售出数量',
+          label: this.$t('favourites.sortOptions.dlCount'),
           order: 'dl_count'
         },
         {
-          label: '全年龄新作',
+          label: this.$t('favourites.sortOptions.sfw'),
           order: 'allage'
         },
         {
-          label: '18禁新作',
+          label: this.$t('favourites.sortOptions.nsfw'),
           order: 'nsfw'
         }
       ]

@@ -73,7 +73,7 @@
 
       <!-- 价格&售出数 -->
       <div class="q-pt-sm q-pb-none">
-        <span class="q-mx-sm text-weight-medium text-h6 text-red">{{metadata.price}} 日元</span> 售出数: {{metadata.dl_count}}
+        <span class="q-mx-sm text-weight-medium text-h6 text-red">{{metadata.price}} JPY</span> {{ $t('workDetail.sales') }}: {{metadata.dl_count}}
       </div>
 
       <!-- 标签 -->
@@ -106,7 +106,7 @@
         dense
         class="q-mt-sm shadow-4 q-mx-xs q-pl-sm"
         color="cyan"
-        label="标记进度"
+        :label="$t('workDetail.progress')"
       >
         <q-list>
           <q-item clickable @click="setProgress('marked')" class="q-pa-xs">
@@ -114,7 +114,7 @@
               <q-avatar icon="headset" v-show="progress === 'marked'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>想听</q-item-label>
+              <q-item-label>{{ $t('common.progressEnum.marked') }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -123,7 +123,7 @@
               <q-avatar icon="headset" v-show="progress === 'listening'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>在听</q-item-label>
+              <q-item-label>{{ $t('common.progressEnum.listening') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable @click="setProgress('listened')" class="q-pa-xs">
@@ -131,7 +131,7 @@
               <q-avatar icon="headset" v-show="progress === 'listened'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>听过</q-item-label>
+              <q-item-label>{{ $t('common.progressEnum.listened') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable @click="setProgress('replay')" class="q-pa-xs">
@@ -139,7 +139,7 @@
               <q-avatar icon="headset" v-show="progress === 'replay'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>重听</q-item-label>
+              <q-item-label>{{ $t('common.progressEnum.replay') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable @click="setProgress('postponed')" class="q-pa-xs">
@@ -147,13 +147,13 @@
               <q-avatar icon="headset" v-show="progress === 'postponed'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>搁置</q-item-label>
+              <q-item-label>{{ $t('common.progressEnum.postponed') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
       </q-btn-dropdown>
 
-      <q-btn dense @click="showReviewDialog = true" color="cyan q-mt-sm shadow-4 q-mx-xs q-px-sm" label="写评论" />
+      <q-btn dense @click="showReviewDialog = true" color="cyan q-mt-sm shadow-4 q-mx-xs q-px-sm" :label="$t('workDetail.writeReview')" />
 
       <WriteReview v-if="showReviewDialog" @closed="processReview" :workid="metadata.id" :metadata="metadata"></WriteReview>
     </div>
