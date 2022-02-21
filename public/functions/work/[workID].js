@@ -46,7 +46,7 @@ DLSite Price: ${workInfo.price} JPY
 DLSite Sales: ${workInfo.dl_count}
 Circle: ${workInfo.circle.name}
 Actors: ${workInfo.vas.map(v => v.name).join(', ')}
-Release: ${workInfo.release}
+Release: ${workInfo.release}` + `  ` + `
 
 Use asmr.one to listen this work online for free!`
 
