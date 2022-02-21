@@ -41,11 +41,15 @@ export async function onRequestGet(context) {
 
     // build meta
     const descriptor = `
-Price: ${workInfo.price} JPY
-Sales: ${workInfo.dl_count}
+RJ Code: RJ${workInfo.id}
+DLSite Price: ${workInfo.price} JPY
+DLSite Sales: ${workInfo.dl_count}
 Circle: ${workInfo.circle.name}
 Actors: ${workInfo.vas.map(v => v.name).join(', ')}
-Release: ${workInfo.release}`
+Release: ${workInfo.release}
+
+Use asmr.one to listen this work online for free!`
+
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
           <meta property="og:url" content="https://www.asmr.one/work/${workID}">
