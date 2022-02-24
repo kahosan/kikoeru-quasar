@@ -48,8 +48,8 @@ export async function onRequestGet(context) {
 🎙️ Actors: ${workInfo.vas.map(v => v.name).join(', ')}
 📅 Release: ${workInfo.release}
 ${workInfo.nsfw ? '🔞' : '🟢'} SFW: ${workInfo.nsfw ? 'No' : 'Yes'}` + `  ` + `
-
-🈚🈚🈚 Use asmr.one to listen this work online for free!`
+-------------
+🈚🈚🈚 Use asmr.one to listen this work online for free! 🈚🈚🈚`
 
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
