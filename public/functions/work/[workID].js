@@ -41,14 +41,15 @@ export async function onRequestGet(context) {
 
     // build meta
     const descriptor = `
-RJ Code: RJ${workInfo.id}
-DLSite Price: ${workInfo.price} JPY
-DLSite Sales: ${workInfo.dl_count}
-Circle: ${workInfo.circle.name}
-Actors: ${workInfo.vas.map(v => v.name).join(', ')}
-Release: ${workInfo.release}` + `  ` + `
+🆔 RJ Code: RJ${workInfo.id}
+💰 DLSite Price: ${workInfo.price} JPY
+📦 DLSite Sales: ${workInfo.dl_count}
+⭕ Circle: ${workInfo.circle.name}
+🎙️ Actors: ${workInfo.vas.map(v => v.name).join(', ')}
+📅 Release: ${workInfo.release}
+${workInfo.nsfw ? '🔞' : '🟢'}NSFW: ${workInfo.nsfw ? 'YES' : 'NO'}` + `  ` + `
 
-Use asmr.one to listen this work online for free!`
+🈚🈚🈚 Use asmr.one to listen this work online for free!`
 
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
