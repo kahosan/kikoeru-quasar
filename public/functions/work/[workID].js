@@ -47,7 +47,7 @@ export async function onRequestGet(context) {
 ⭕ Circle: ${workInfo.circle.name}
 🎙️ Actors: ${workInfo.vas.map(v => v.name).join(', ')}
 📅 Release: ${workInfo.release}
-${workInfo.nsfw ? '🔞' : '🟢'}NSFW: ${workInfo.nsfw ? 'YES' : 'NO'}` + `  ` + `
+${workInfo.nsfw ? '🔞' : '🟢'} NSFW: ${workInfo.nsfw ? 'YES' : 'NO'}` + `  ` + `
 
 🈚🈚🈚 Use asmr.one to listen this work online for free!`
 
