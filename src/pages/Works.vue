@@ -108,6 +108,8 @@ export default {
 
   data() {
     return {
+      lastQueryBeforeDeactivate: '',
+      active: false,
       displayMode: 'detail',
       showLabel: true,
       detailMode: false,
@@ -250,21 +252,33 @@ export default {
   // <keep-alive /> is set in MainLayout
   activated() {
     this.stopLoad = false
+
+    // 用户从作品详情页返回时，有此处判定是否需要刷新api
+    // 当用户返回时的 url 与离开时的 url 不同，
+    // 证明用户在作品详情页点击了某些跳转（tag，group etc.)，需要刷新作品列表
+    if (JSON.stringify(this.lastQueryBeforeDeactivate) !== JSON.stringify(this.$route.query)) {
+      this.lastQueryBeforeDeactivate = this.$route.query
+      this.reset()
+    }
+
+    // 进入 works 页面后，判定移交给 watch.url
+    this.active = true
   },
 
   deactivated() {
     this.stopLoad = true
+
+    // 注销 watch.url 的判定权限
+    this.active = false
   },
 
   watch: {
-    url(_, newValue) {
-      // 当组件处在 keep-alive 的后台时，终止页面重置
-      let notInWorksComponent = !this.$route.path.startsWith('/works')
-      // 当用户从作品详情界面返回时，此条件会终止页面重置
-      let urlIsSameAsPreviousValidUrl = this.previousUrl === newValue
-      if (notInWorksComponent || urlIsSameAsPreviousValidUrl) { return }
-      this.previousUrl = newValue
-      this.reset()
+    url() {
+      // 当用户一直在 works 界面时，api url 的变动由此处处理
+      if (this.active) {
+        this.reset()
+        this.lastQueryBeforeDeactivate = this.$route.query
+      }
     },
 
     sortOption(newSortOptionSetting, oldSortOptionSetting) {
