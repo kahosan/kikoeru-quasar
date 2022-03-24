@@ -2,11 +2,11 @@
   <div id="q-app">
     <router-view v-if="running"/>
     <div class="text-center" v-if="!running">
-      <h3>网站迁移中！</h3>
-      <h3>WebSite upgrading!</h3>
+      <h3>无法连接服务器</h3>
+      <h3>Network Error</h3>
 
-      <h5>预计花费 1-2 小时完成</h5>
-      <h5>It will take about 1-2 hours to complete</h5>
+      <h5>请检查你的网络设置</h5>
+      <h5>Please check you network settings</h5>
     </div>
   </div>
 </template>
