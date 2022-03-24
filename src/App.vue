@@ -24,21 +24,17 @@ export default {
       this.$axios({
         method: 'get',
         url: '/api/health',
-        timeout: 2000 // only wait for 2s
+        timeout: 5000 // only wait for 2s
       }).then(() => {
-        this.running = true
+        this.running = true;
       }).catch(() => {
-        this.running = false
-      })
+        this.running = false;
+        this.checkIsRunning();
+      });
     },
   },
   created () {
     this.checkIsRunning();
-    setInterval(() => {
-      if (!this.running) {
-        this.checkIsRunning();
-      }
-    }, 2000);
   },
 }
 </script>
