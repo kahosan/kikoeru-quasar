@@ -478,4 +478,9 @@ export default {
   }
 }
 
+body {
+  // side effect of antd
+  color: black !important;
+}
+
 </style>
