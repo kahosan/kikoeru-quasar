@@ -71,16 +71,16 @@
         </div>
 
         <!-- 分页 -->
-        <div class="q-pa-lg flex flex-center">
+        <div class="q-py-lg flex flex-center">
 <!--          <q-pagination-->
 <!--            v-model="page"-->
 <!--            :max="maxPage"-->
 <!--            :max-pages="7"-->
 <!--            :boundary-numbers="false"-->
 <!--            v-show="maxPage"-->
-<!--            input-->
 <!--          />-->
           <Pagination
+            :class="this.$q.dark.isActive ? 'dark' : ''"
             v-model="page"
             :pageSize="pagination.pageSize"
             :total="pagination.totalCount"
@@ -100,8 +100,7 @@ import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
 import {mapState} from "vuex";
 import DarkMode from '../mixins/DarkMode'
-import Pagination from 'ant-design-vue/lib/pagination';
-// import {Pagination} from 'ant-design-vue';
+import {Pagination} from 'ant-design-vue';
 import 'ant-design-vue/lib/pagination/style/css';
 
 export default {
@@ -433,7 +432,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .list {
   // 宽度 >= $breakpoint-sm-min
   @media (min-width: $breakpoint-sm-min) {
@@ -447,4 +446,35 @@ export default {
     width: 560px;
   }
 }
+
+.dark .ant-pagination-item-link {
+  color: #fff !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.dark .ant-pagination-item {
+  //border: none !important;
+  background-color: transparent !important;
+}
+
+.dark .ant-pagination-item a {
+  color: #fff !important;
+}
+
+.dark .ant-pagination-item-ellipsis {
+  color: #fff !important;
+}
+
+.ant-pagination-item {
+  @media (max-width: $breakpoint-xs-max)  {
+    // compact mode
+    margin-right: 6px;
+    height: 28px;
+    line-height: 28px;
+    min-width: 28px;
+    //border: none !important;
+  }
+}
+
 </style>
