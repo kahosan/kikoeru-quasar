@@ -140,9 +140,8 @@
             clickable
             v-ripple
             exact
-            to="/admin"
+            to="/settings"
             active-class="text-deep-purple text-weight-medium"
-            v-if="this.$store.state.User.group === 'administrator'"
             @click="miniState = true"
           >
             <q-item-section avatar>
@@ -285,8 +284,8 @@ export default {
       this.$router.push(`/work/RJ${this.randId}`)
     },
     sharedConfig (config) {
-      this.SET_REWIND_SEEK_TIME(config.rewindSeekTime);
-      this.SET_FORWARD_SEEK_TIME(config.forwardSeekTime);
+      if (config.rewindSeekTime) {this.SET_REWIND_SEEK_TIME(config.rewindSeekTime)}
+      if (config.forwardSeekTime) {this.SET_FORWARD_SEEK_TIME(config.forwardSeekTime)}
     }
   },
 
@@ -386,27 +385,10 @@ export default {
     },
 
     readSharedConfig(){
-      this.$axios.get('/api/config/shared')
-        .then((response) => {
-           this.sharedConfig = response.data.sharedConfig;
-        })
-        .catch((error) => {
-          if (error.response) {
-            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            if (error.response.status === 401) {
-              // this.showWarnNotif(error.response.data.error)
-              // 验证失败，跳转到登录页面
-              const path = this.$router.currentRoute.path
-              if (path !=='/login') {
-                this.$router.push('/login');
-              }
-            } else {
-              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-            }
-          } else {
-            this.showErrNotif(error.message || error)
-          }
-        })
+      this.sharedConfig = this.$q.localStorage.getItem('sharedConfig') || {
+        'rewindSeekTime': 5,
+        'forwardSeekTime': 30,
+      };
     },
 
     randomPlay() {

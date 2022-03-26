@@ -6,6 +6,7 @@ import common from "src/i18n/en/common";
 import workDetail from "src/i18n/en/workDetail";
 import writeReview from "src/i18n/en/writeReview";
 import favourites from "src/i18n/en/favourites";
+import settings from "src/i18n/en/settings";
 
 export default {
   common: common,
@@ -16,4 +17,5 @@ export default {
   workDetail: workDetail,
   writeReview: writeReview,
   favourites: favourites,
+  settings: settings
 }

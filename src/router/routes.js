@@ -26,6 +26,11 @@ const routes = [
     component: MainLayout,
     children: [
       {
+        path: 'settings',
+        name: 'settings',
+        component: () => import('pages/Settings'),
+      },
+      {
         path: '',
         redirect: {
           name: 'works'

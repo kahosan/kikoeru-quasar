@@ -288,7 +288,7 @@ export default {
         case 30:
           return 'replay_30'
         default:
-          return 'replay_5'
+          return 'restore'
       }
     },
 
@@ -301,7 +301,7 @@ export default {
         case 30:
           return 'forward_30'
         default:
-          return 'forward_5'
+          return 'update'
       }
     },
 
