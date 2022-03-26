@@ -8,21 +8,21 @@ const mutations = {
     state.shouldLoadPlayer = true
   },
 
-  // 这里控制的是用户期望的播放状态
   WANT_PLAY (state) {
-    state.wantPlaying = true
+    state.playingControlSignal = 'wantPlay'
   },
   WANT_PAUSE (state) {
-    state.wantPlaying = false
+    state.playingControlSignal = 'wantPause'
+  },
+  CONSUME_PLAYING_CONTROL_SIGNAL (state) {
+    state.playingControlSignal = 'nothing'
   },
   TOGGLE_WANT_PLAYING (state) {
-    // 这里有一个 trick
-    // 如果因为电脑的媒体控制导致播放暂停
-    // 播放器的状态是 wantPlay = true, playing = false
-    // 此时则无法通过 state.wantPlaying = !state.playing 继续播放
-    // 所以这里先把 wantPlay 置为 false
-    state.wantPlaying = false
-    state.wantPlaying = !state.playing
+    if (state.playing) {
+      state.playingControlSignal = 'wantPause'
+    } else {
+      state.playingControlSignal = 'wantPlay'
+    }
   },
 
   // 这里控制的是播放器实际的播放状态
@@ -39,20 +39,20 @@ const mutations = {
       return; // Invalid index, bail.
     }
 
-    state.wantPlaying = true
+    state.playingControlSignal = 'wantPlay'
     state.queueIndex = index
   },
   NEXT_TRACK: (state) => {
     if (state.queueIndex < state.queue.length - 1) {
       // Go to next track only if it exists.
-      state.wantPlaying = true
+      state.playingControlSignal = 'wantPlay'
       state.queueIndex += 1
     }
   },
   PREVIOUS_TRACK: (state) => {
     if (state.queueIndex > 0) {
       // Go to previous track only if it exists.
-      state.wantPlaying = true
+      state.playingControlSignal = 'wantPlay'
       state.queueIndex -= 1
     }
   },
@@ -62,11 +62,12 @@ const mutations = {
     state.queueIndex = payload.index
 
     if (payload.resetPlaying) {
-      state.wantPlaying = true
+      state.playingControlSignal = 'wantPlay'
     }
   },
   EMPTY_QUEUE: (state) => {
-    state.wantPlaying = false
+    state.playingControlSignal = 'wantPause'
+
     state.queue = []
     state.queueIndex = 0
   },
@@ -77,8 +78,8 @@ const mutations = {
     state.queue.splice(index, 1)
 
     if (index === state.queueIndex) {
-      state.playing = false
-      state.wantPlaying = false
+      state.playingControlSignal = 'wantPause'
+
       state.queueIndex = 0
     } else if (index < state.queueIndex) {
       state.queueIndex -= 1

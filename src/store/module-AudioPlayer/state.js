@@ -1,7 +1,9 @@
 export default function () {
   return {
     hide: false,
-    wantPlaying: false,  // 用户期望的播放状态
+
+    playingControlSignal: 'nothing',  // ['nothing', 'wantPlay', 'wantPause']
+
     playing: false, // 实际的播放状态 (true/false)
     currentTime: 0, // 单位: 秒
     duration: 0,

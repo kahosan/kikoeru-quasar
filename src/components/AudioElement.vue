@@ -70,7 +70,7 @@ export default {
 
     ...mapState('AudioPlayer', [
       'playing',
-      'wantPlaying',
+      'playingControlSignal',
       'queue',
       'queueIndex',
       'playMode',
@@ -104,11 +104,17 @@ export default {
       }
     },
 
-    wantPlaying (flag) {
+    playingControlSignal (flag) {
       if (this.player.duration) {
         // 缓冲至可播放状态
-        console.log("wantPlaying: ", flag)
-        flag ? this.player.play() : this.player.pause()
+        console.log("playingControlSignal: ", flag)
+        if (flag === 'wantPlay') {
+          this.player.play()
+          this.CONSUME_PLAYING_CONTROL_SIGNAL()
+        } else if (flag === 'wantPause') {
+          this.player.pause()
+          this.CONSUME_PLAYING_CONTROL_SIGNAL()
+        }
       }
       // this.playLrc(flag);
     },
@@ -187,9 +193,9 @@ export default {
 
       // 缓冲时用户暂停播放
       // 可是缓冲结束后浏览器强制继续播放
-      if (!this.wantPlaying) {
-        this.player.pause()
-      }
+      // if (!this.wantPlaying) {
+      //   this.player.pause()
+      // }
     },
     /**
      * 当播放器缓冲区空，被迫暂停加载时会触发本事件
@@ -205,6 +211,7 @@ export default {
 
       'WANT_PAUSE',
       'WANT_PLAY',
+      'CONSUME_PLAYING_CONTROL_SIGNAL',
 
       'ON_PAUSE',
       'ON_PLAY',
@@ -226,7 +233,7 @@ export default {
       this.SET_DURATION(this.player.duration)
 
       // 播放
-      if (this.wantPlaying && this.player.currentTime !== this.player.duration) {
+      if (this.player.currentTime !== this.player.duration) {
         this.player.play()
       }
     },
