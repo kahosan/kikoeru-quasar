@@ -22,28 +22,6 @@ function prefixRoutes(prefix, routes) {
 
 const routes = [
   {
-    path: '/admin',
-    component: () => import('layouts/DashboardLayout'),
-    children: [
-      {
-        path: '',
-        component: () => import('pages/Dashboard/Folders')
-      },
-      {
-        path: 'scanner',
-        component: () => import('pages/Dashboard/Scanner')
-      },
-      {
-        path: 'advanced',
-        component: () => import('pages/Dashboard/Advanced')
-      },
-      {
-        path: 'usermanage',
-        component: () => import('pages/Dashboard/UserManage')
-      }
-    ]
-  },
-  {
     path: '/',
     component: MainLayout,
     children: [
