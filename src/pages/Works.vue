@@ -72,13 +72,18 @@
 
         <!-- 分页 -->
         <div class="q-pa-lg flex flex-center">
-          <q-pagination
+<!--          <q-pagination-->
+<!--            v-model="page"-->
+<!--            :max="maxPage"-->
+<!--            :max-pages="7"-->
+<!--            :boundary-numbers="false"-->
+<!--            v-show="maxPage"-->
+<!--            input-->
+<!--          />-->
+          <Pagination
             v-model="page"
-            :max="maxPage"
-            :max-pages="7"
-            :boundary-numbers="false"
-            v-show="maxPage"
-            input
+            :pageSize="pagination.pageSize"
+            :total="pagination.totalCount"
           />
         </div>
 
@@ -95,6 +100,9 @@ import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
 import {mapState} from "vuex";
 import DarkMode from '../mixins/DarkMode'
+import Pagination from 'ant-design-vue/lib/pagination';
+// import {Pagination} from 'ant-design-vue';
+import 'ant-design-vue/lib/pagination/style/css';
 
 export default {
   name: 'Works',
@@ -103,7 +111,8 @@ export default {
 
   components: {
     WorkCard,
-    WorkListItem
+    WorkListItem,
+    Pagination
   },
 
   data() {
