@@ -466,24 +466,14 @@ export default {
   color: #fff !important;
 }
 
-.ant-pagination-item {
-  @media (max-width: $breakpoint-xs-max)  {
+.ant-pagination-item , .ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next, .ant-pagination-prev {
+  @media (max-width: $breakpoint-xs-max) {
     // compact mode
-    margin-right: 6px;
-    height: 28px;
-    line-height: 28px;
-    min-width: 28px;
-    //border: none !important;
-  }
-}
-
-.ant-pagination-item-link {
-  @media (max-width: $breakpoint-xs-max)  {
-    // compact mode
-    margin-right: 6px;
-    height: 28px;
-    line-height: 28px;
-    min-width: 28px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    //height: 28px;
+    //line-height: 28px;
+    //min-width: 28px;
     //border: none !important;
   }
 }
