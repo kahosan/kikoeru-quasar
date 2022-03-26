@@ -477,4 +477,15 @@ export default {
   }
 }
 
+.ant-pagination-item-link {
+  @media (max-width: $breakpoint-xs-max)  {
+    // compact mode
+    margin-right: 6px;
+    height: 28px;
+    line-height: 28px;
+    min-width: 28px;
+    //border: none !important;
+  }
+}
+
 </style>
