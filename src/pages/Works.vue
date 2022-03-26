@@ -483,4 +483,9 @@ body {
   color: black !important;
 }
 
+body.body--dark {
+  // side effect of antd
+  color: #fff !important;
+}
+
 </style>
