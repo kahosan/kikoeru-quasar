@@ -33,6 +33,7 @@
           <q-item-section>
             <q-item-label lines="2">{{ item.title }}</q-item-label>
             <q-item-label v-if="item.children" caption lines="1">{{ `${item.children.length} 项目` }}</q-item-label>
+            <q-item-label v-if="item.duration" caption lines="1">{{ formatSeconds(item.duration) }}</q-item-label>
           </q-item-section>
 
           <!-- 上下文菜单 -->
@@ -67,6 +68,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import {mediaDownloadURL, mediaStreamURL} from "src/utils/apiURL";
+import {formatSeconds} from "src/utils/time";
 
 export default {
   name: 'WorkTree',
@@ -121,6 +123,7 @@ export default {
   },
 
   methods: {
+    formatSeconds,
     playIcon (hash) {
       return this.playing && this.currentPlayingFile.hash === hash ? "pause" : "play_arrow"
     },
