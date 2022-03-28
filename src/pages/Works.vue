@@ -80,11 +80,12 @@
 <!--            v-show="maxPage"-->
 <!--          />-->
           <Pagination
+            show-quick-jumper
             :class="this.$q.dark.isActive ? 'dark' : ''"
             v-model="page"
             :pageSize="pagination.pageSize"
             :total="pagination.totalCount"
-          />
+            />
         </div>
 
         <div class="flex flex-center" v-show="userName === 'guest'">{{$t('works.guestLoginRateLimitTips')}}</div>
@@ -111,7 +112,7 @@ export default {
   components: {
     WorkCard,
     WorkListItem,
-    Pagination
+    Pagination,
   },
 
   data() {
@@ -447,7 +448,8 @@ export default {
   }
 }
 
-.dark .ant-pagination-item-link {
+.dark .ant-pagination-item-link,
+.dark .ant-pagination-options-quick-jumper {
   color: #fff !important;
   background-color: transparent !important;
   border: none !important;
@@ -466,9 +468,14 @@ export default {
   color: #fff !important;
 }
 
+.dark .ant-pagination-options-quick-jumper input {
+  background-color: transparent !important;
+}
+
 .ant-pagination-item , .ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next, .ant-pagination-prev {
   @media (max-width: $breakpoint-xs-max) {
     // compact mode
+    margin-top: 4px;
     margin-right: 4px;
     margin-bottom: 4px;
     //height: 28px;
