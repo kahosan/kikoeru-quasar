@@ -84,7 +84,7 @@
             :class="this.$q.dark.isActive ? 'dark' : ''"
             v-model="page"
             :pageSize="pagination.pageSize"
-            :total="pagination.totalCount"
+            :total="9999"
             />
         </div>
 
@@ -493,6 +493,14 @@ body {
 body.body--dark {
   // side effect of antd
   color: #fff !important;
+}
+
+.ant-pagination-options {
+  @media (max-width: 576px) {
+    display: block !important;
+    text-align: center !important;
+    margin-top: 2px !important;
+  }
 }
 
 </style>
