@@ -84,7 +84,7 @@
             :class="this.$q.dark.isActive ? 'dark' : ''"
             v-model="page"
             :pageSize="pagination.pageSize"
-            :total="9999"
+            :total="pagination.totalCount"
             />
         </div>
 
