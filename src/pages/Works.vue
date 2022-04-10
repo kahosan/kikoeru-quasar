@@ -470,9 +470,14 @@ export default {
 
 .dark .ant-pagination-options-quick-jumper input {
   background-color: transparent !important;
+  color: white;
 }
 
-.ant-pagination-item , .ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next, .ant-pagination-prev {
+.ant-pagination-item ,
+.ant-pagination-jump-next,
+.ant-pagination-jump-prev,
+.ant-pagination-next,
+.ant-pagination-prev {
   @media (max-width: $breakpoint-xs-max) {
     // compact mode
     margin-top: 4px;
