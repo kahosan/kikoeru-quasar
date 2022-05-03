@@ -47,15 +47,15 @@ export async function onRequestGet(context) {
 ⭕ Circle: ${workInfo.circle.name}
 🎙️ Actors: ${workInfo.vas.map(v => v.name).join(', ')}
 📅 Release: ${workInfo.release}
-${workInfo.nsfw ? '🔞' : '🟢'} SFW: ${workInfo.nsfw ? 'No' : 'Yes'}
+${workInfo.nsfw ? '🔞 NSFW' : '🟢 SFW'}
 -------------
-🈚🈚🈚 Use asmr.one to listen this work online for free! 🈚🈚🈚`
+Use asmr.one to listen this work online for free!`
 
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
           <meta property="og:url" content="https://www.asmr.one/work/${workID}">
           <meta property="og:type" content="website">
-          <meta property="og:title" content="${workInfo.title}">
+          <meta property="og:title" content="${workInfo.title} RJ${workInfo.id}">
           <meta property="og:description" content="${descriptor}">
           <meta property="og:image" content="${workInfo.mainCoverUrl}">
           <meta name="twitter:card" content="summary_large_image">
