@@ -18,26 +18,41 @@
 <!--    <script src='https://js.sentry-cdn.com/922f82b43e6e4f3da655e0963be5a876.min.js' crossorigin="anonymous"></script>-->
   </head>
   <body>
+
+    <!--  应对浏览器没有 JS-->
     <noscript>
       We are sorry, but Kikoeru requires Javascript to work.
     </noscript>
+
+    <!--  应对浏览器不支持最新特性  -->
     <div id="browser-update">
       <p>此应用程序无法运行在比较老的浏览器上，请更新到最新版本的浏览器。（苹果设备系统版本必须在iOS11以上）</p>
       <p>This App is not available on this browser, please update to the latest version of your browser.</p>
     </div>
+
+    <!--  应对浏览器没能加载 JS 资源  -->
+    <div id="js-loading" hidden>
+      <p>正在加载 JS 文件，如果你一直看到本界面，请使用 VPN</p>
+      <p>Loading JS file, if you keep seeing this screen, please contact asmr.one@protonmail.com</p>
+    </div>
+
     <script type="text/javascript">
       'use strict';
       try {
         const a = {...{}};
+        // 验证通过，隐藏浏览器不兼容提示，显示 JS 加载提示
         document.getElementById("browser-update").hidden = true;
+        document.getElementById("js-loading").hidden = false;
       } catch (e) {}
     </script>
 
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
+
     <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ae7e451eef544348a8fd2f472956436b"}'></script>
+<!--    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ae7e451eef544348a8fd2f472956436b"}'></script>-->
     <!-- End Cloudflare Web Analytics -->
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDYHG81DRG"></script>
     <script>

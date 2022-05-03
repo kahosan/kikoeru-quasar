@@ -35,6 +35,8 @@ export default {
   },
   created () {
     this.checkIsRunning();
+    // 回收 index.template.html 的加载提示
+    document.getElementById("js-loading").hidden = true;
   },
 }
 </script>
