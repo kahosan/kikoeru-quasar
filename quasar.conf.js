@@ -123,7 +123,11 @@ module.exports = function (ctx) {
       proxy: {
         // https://webpack.js.org/configuration/dev-server/#devserverproxy
         // proxy all requests starting with /api to http://localhost:8888
-        '/api': 'http://localhost:8888',
+        '/api': {
+          target: 'https://api.asmr.one',
+          changeOrigin: true,
+          secure: false
+        },
         '/socket.io': {
           target: 'http://localhost:8888',
           ws: true
