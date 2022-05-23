@@ -126,7 +126,7 @@ export default {
       loading: true,
       works: [],
       pageTitle: '',
-      page: 1,
+      // page: 1,
       pagination: {currentPage: 0, pageSize: 12, totalCount: 0},
       seed: 7, // random sort
       subtitleOnly: false,
@@ -235,6 +235,18 @@ export default {
 
     maxPage() {
       return Math.ceil(this.pagination.totalCount / this.pagination.pageSize);
+    },
+
+    page: {
+      set(page) {
+        this.$router.push({
+          name: this.$route.name,
+          query: { ...this.$route.query, page: page }
+        })
+      },
+      get() {
+        return this.$route.query.page ? parseInt(this.$route.query.page) : 1;
+      }
     },
 
     // TODO 把查询参数调整为 type=vas&id=1&page=1
