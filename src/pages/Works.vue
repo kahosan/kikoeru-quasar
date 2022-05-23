@@ -226,6 +226,8 @@ export default {
       this.displayMode = localStorage.displayMode;
     }
     this.requestWorksQueue()
+
+    this.skipNextReset = true;
   },
 
   computed: {
@@ -425,6 +427,10 @@ export default {
     },
 
     reset() {
+      if (this.skipNextReset) {
+        this.skipNextReset = false;
+        return
+      }
       // 当用户浏览完全不同的 works 时会触发本方法
       // 比如：不同标签，社团...
       // 不包含：翻页，keep-alive 返回，
