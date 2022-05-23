@@ -8,6 +8,7 @@
       transition="fade"
       @mouseover="toggleBlurFlag()"
       @mouseout="toggleBlurFlag()"
+      native-context-menu
     >
       <div class="absolute-top-left transparent" style="padding: 0;">
         <q-chip dense square color="brown" text-color="white" class="q-ma-sm">
