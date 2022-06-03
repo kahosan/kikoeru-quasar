@@ -45,6 +45,10 @@ export default {
     this.requestData()
   },
 
+  destroyed() {
+    document.title = "ASMR Online"
+  },
+
   methods: {
     requestData () {
       this.$axios.get(`/api/work/${this.workid}`)
