@@ -62,9 +62,16 @@ Use asmr.one to listen this work online for free!`
           <meta name="twitter:image:src" content="${workInfo.mainCoverUrl}">
     `
 
+    const title = `<title>RJ${workInfo.id} - ${workInfo.title}</title>`
+
     // render metadata to html
     const staticResponseHTML = await staticResponse.text();
-    return new Response(staticResponseHTML.replace('<head>', `<head>${meta}`), staticResponse);
+    return new Response(
+      staticResponseHTML
+        .replace('<head>', `<head>${meta}`)
+        .replace('<title>ASMR Online</title>', title),
+      staticResponse
+    );
   } catch (e) {
 
     return returnDefaultResponseWithError(staticResponse, e);
