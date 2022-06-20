@@ -32,6 +32,7 @@ export default {
         {name: "南+", href: "https://www.south-plus.net/"},
         {name: "绅士仓库", href: "https://cangku.io"},
         {name: "ZodGame", href: "https://zodgame.xyz/forum.php"},
+        {name: "可穿戴科技", href: "https://wt.tepis.me/"},
       ]
     }
   }
