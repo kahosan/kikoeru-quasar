@@ -1,24 +1,27 @@
 <template>
   <q-page padding>
-    <h4>Blog</h4>
+    <h4 :class="classTextColor">Blog</h4>
     <q-btn type="a" :href="blog" target="__blank" icon-right="open_in_new" flat >ASMR Online Blog</q-btn>
-    <h4>友情链接</h4>
+    <h4 :class="classTextColor">友情链接</h4>
     <div class="row" v-for="link in links" :key="link.href">
       <q-btn type="a" :href="link.href" target="__blank" icon-right="open_in_new" flat >{{link.name}}</q-btn>
     </div>
 
-    <h4 id="dmca">Contact / DMCA</h4>
+    <h4 :class="classTextColor" id="dmca">Contact / DMCA</h4>
     <p>Please contact {{mail}}</p>
 
-    <h4 id="contract">联系我们</h4>
+    <h4 :class="classTextColor" id="contract">联系我们</h4>
     <p>如果你有任何想法或建议，欢迎联系我们 {{mail}}</p>
   </q-page>
 </template>
 
 <script>
+import DarkMode from 'src/mixins/DarkMode'
+
 export default {
   name: "About",
   components: {},
+  mixins: [DarkMode],
   data() {
     return {
       blog: process.env.BLOG_URL,
