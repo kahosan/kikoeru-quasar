@@ -54,7 +54,7 @@ export default {
       this.$axios.get(`/api/work/${this.workid}`)
         .then(response => {
           this.metadata = response.data
-          document.title = `RJ${this.metadata.id} - ${this.metadata.title}`
+          document.title = `RJ${this.metadata.id} ${this.metadata.title} - ASMR Online`
         })
         .catch((error) => {
           if (error.response) {
