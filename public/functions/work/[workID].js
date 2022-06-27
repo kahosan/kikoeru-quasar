@@ -55,21 +55,23 @@ Use asmr.one to listen this work online for free!`
           <meta property="og:site_name" content="ASMR Online">
           <meta property="og:url" content="https://www.asmr.one/work/${workID}">
           <meta property="og:type" content="website">
-          <meta property="og:title" content="${workInfo.title} RJ${workInfo.id}">
+          <meta property="og:title" content="${workInfo.title} RJ${workInfo.id} - ASMR Onlie">
           <meta property="og:description" content="${descriptor}">
           <meta property="og:image" content="${workInfo.mainCoverUrl}">
           <meta name="twitter:card" content="summary_large_image">
           <meta name="twitter:image:src" content="${workInfo.mainCoverUrl}">
     `
 
-    const title = `<title>RJ${workInfo.id} - ${workInfo.title}</title>`
+    const title = `<title>RJ${workInfo.id} ${workInfo.title} - ASMR Online</title>`
 
     // render metadata to html
     const staticResponseHTML = await staticResponse.text();
     return new Response(
       staticResponseHTML
         .replace('<head>', `<head>${meta}`)
-        .replace('<title>ASMR Online</title>', title),
+        .replace('<title>ASMR Online</title>', title)
+        .replace('在线ASMR播放, 同人音声在线播放', `${descriptor}`)
+        .replace('<meta name="keywords" content="', `<meta name="keywords" content="RJ${workInfo.id} ${workInfo.title} `),
       staticResponse
     );
   } catch (e) {
