@@ -5,7 +5,7 @@ const serverSideRenderForGoogleBot = async ({request, env, next}) => {
   }
 
   // 忽略静态资源渲染 (.css .js .jpg .png .gif .jpeg .webp)
-  if (/\.(css|js|jpg|png|gif|jpeg|webp|woff2|woff)$/.test(request.url)) {
+  if (/\.(css|js|jpg|png|gif|jpeg|webp|woff2|woff|xml|ico|htm|html|txt)$/.test(request.url)) {
     return next();
   }
 
