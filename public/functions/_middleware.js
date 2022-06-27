@@ -11,7 +11,11 @@ const serverSideRenderForGoogleBot = async ({request, env, next}) => {
 
   // 爬虫使用固定端点进行预渲染
   const endpoint = env.PRERENDER_ENDPOINT,
-    ua = env.PRERENDER_UA;
+    ua = env.PRERENDER_UA,
+    url = new URL(request.url);
+
+  // url 增加查询参数 rawUA
+  url.searchParams.append('rawUA', request.headers.get('user-agent'));
 
   return await fetch(endpoint, {
     method: 'POST',
@@ -19,7 +23,7 @@ const serverSideRenderForGoogleBot = async ({request, env, next}) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      url: request.url,
+      url: url.href,
       userAgent: ua
     })
   });
