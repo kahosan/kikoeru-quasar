@@ -118,6 +118,7 @@ export default {
   data() {
     return {
       lastUrlBeforeDeactivate: '',
+      lastPageBeforeDeactivate: 1,
       active: false,
       displayMode: 'detail',
       showLabel: true,
@@ -234,6 +235,7 @@ export default {
     }
     this.requestWorksQueue()
     this.skipNextReset = true;
+    this.lastPageBeforeDeactivate = this.page;
   },
 
   computed: {
@@ -247,13 +249,16 @@ export default {
 
     page: {
       set(page) {
+        this.lastPageBeforeDeactivate = page;
         this.$router.push({
           name: this.$route.name,
           query: { ...this.$route.query, page: page }
         })
       },
       get() {
-        return this.$route.query.page ? parseInt(this.$route.query.page) : 1;
+        // 如果在列表界面，直接返回当前 page
+        // 脱离列表界面（例如进入作品详情）时，返回最后一次获取到的 page
+        return parseInt(this.$route.query.page) || this.lastPageBeforeDeactivate;
       }
     },
 
