@@ -6,7 +6,7 @@
         style="width:30vw;max-width:150px;"
       >
     </p>
-    
+
     <p class="text-faded">
       Sorry, nothing here...<strong>(404)</strong>
     </p>
@@ -21,6 +21,14 @@
 
 <script>
 export default {
-  name: 'Error404'
+  name: 'Error404',
+  metaInfo() {
+    return {
+      title: '404 - ASMR Online',
+      meta: [
+        {name: "robot", content: "noindex"},
+      ]
+    }
+  }
 }
 </script>

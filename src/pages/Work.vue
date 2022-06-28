@@ -28,9 +28,45 @@ export default {
       workid: this.$route.params.id,
       metadata: {
         id: parseInt(this.$route.params.id),
-        circle: {}
+        circle: {},
+        vas: [],
+        tags: [],
       },
       tree: []
+    }
+  },
+
+  metaInfo () {
+    return {
+      title: this.pageTitle,
+      meta: [
+        { property: "og:site_name", content: "ASMR Online" },
+        { property: "og:url", content: `https://www.asmr.one/work/RJ${(`000000${this.metadata.id}`).slice(-6)}` },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: `${this.pageTitle}` },
+        { property: "og:description", content: this.descriptor },
+        { property: "og:image", content: this.metadata.mainCoverUrl },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
+        { name: "description", content: this.descriptor, vmid: "description"}
+      ]
+    }
+  },
+
+  computed: {
+    pageTitle() {
+      return `RJ${this.metadata.id} ${this.metadata.title} - ASMR Online`;
+    },
+    descriptor() {
+      return  `
+🆔 RJ Code: RJ${this.metadata.id}
+💰 DLSite Price: ${this.metadata.price} JPY
+📦 DLSite Sales: ${this.metadata.dl_count}
+⭕ Circle: ${this.metadata.circle.name}
+🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
+🏷️ Tags: ${this.metadata.tags.map(v => v.name).join(', ')}
+📅 Release: ${this.metadata.release}
+${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
     }
   },
 
@@ -45,16 +81,11 @@ export default {
     this.requestData()
   },
 
-  destroyed() {
-    document.title = "ASMR Online"
-  },
-
   methods: {
     requestData () {
       this.$axios.get(`/api/work/${this.workid}`)
         .then(response => {
           this.metadata = response.data
-          document.title = `RJ${this.metadata.id} ${this.metadata.title} - ASMR Online`
         })
         .catch((error) => {
           if (error.response) {

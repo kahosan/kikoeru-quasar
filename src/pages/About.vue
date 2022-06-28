@@ -22,6 +22,10 @@ export default {
   name: "About",
   components: {},
   mixins: [DarkMode],
+
+  metaInfo: {
+    title: 'About - ASMR Online',
+  },
   data() {
     return {
       blog: process.env.BLOG_URL,

@@ -153,6 +153,14 @@ export default {
     }
   },
 
+  metaInfo: {
+    title: 'Favourites',
+    titleTemplate: '%s - ASMR Online',
+    meta: [
+      {name: "robot", content: "noindex"}
+    ]
+  },
+
   created() {
     this.mode = this.route;
     this.progressFilter = this.progress;

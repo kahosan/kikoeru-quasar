@@ -23,6 +23,7 @@ module.exports = function (ctx) {
     boot: [
       'axios',
       'i18n',
+      'vue-meta',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

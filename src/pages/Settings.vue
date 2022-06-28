@@ -61,6 +61,12 @@ import DarkMode from "src/mixins/DarkMode";
 export default {
   name: "Settings",
   mixins: [DarkMode],
+  metaInfo: {
+    title: "Settings - ASMR Online",
+    meta: [
+      {name: "robots", content: "noindex"},
+    ]
+  },
   data () {
     return {
       // forwardSeekTime: null,

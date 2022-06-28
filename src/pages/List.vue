@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-h5 text-weight-regular q-ma-md">
-      All {{restrict}}s
+      {{ title }}
     </div>
 
     <div class="row justify-center q-pb-xl q-pt-none">
@@ -44,11 +44,21 @@ export default {
     }
   },
 
+  metaInfo() {
+    return {
+      title: this.title,
+      titleTemplate: '%s - ASMR Online',
+    }
+  },
+
   created () {
     this.requestList()
   },
 
   computed: {
+    title() {
+      return `All ${this.restrict}s`
+    },
     url () {
       return `/api/${this.restrict}/`
     },
@@ -78,7 +88,7 @@ export default {
   },
 
   methods: {
-    requestList () { 
+    requestList () {
       this.$axios.get(this.url)
         .then((response) => {
           this.items = response.data.concat()

@@ -206,6 +206,13 @@ export default {
     }
   },
 
+  metaInfo() {
+    return {
+      title: this.pageTitle,
+      titleTemplate: "%s - ASMR Online"
+    }
+  },
+
   created() {
     this.refreshPageTitle();
     this.seed = Math.floor(Math.random() * 100);
@@ -334,10 +341,6 @@ export default {
       document.getElementById("gotop") ? document.getElementById("gotop").click() : false;
       this.requestWorksQueue();
     },
-
-    pageTitle(val) {
-      document.title = val + " - ASMR Online";
-    }
   },
 
   methods: {
