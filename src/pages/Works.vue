@@ -333,6 +333,10 @@ export default {
       // TODO 回到顶部怎么才能更优雅一点？
       document.getElementById("gotop") ? document.getElementById("gotop").click() : false;
       this.requestWorksQueue();
+    },
+
+    pageTitle(val) {
+      document.title = val + " - ASMR Online";
     }
   },
 
