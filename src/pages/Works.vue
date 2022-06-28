@@ -233,7 +233,6 @@ export default {
       this.displayMode = localStorage.displayMode;
     }
     this.requestWorksQueue()
-
     this.skipNextReset = true;
   },
 
@@ -286,7 +285,7 @@ export default {
     // 用户从作品详情页返回时，有此处判定是否需要刷新api
     // 当用户返回时的 url 与离开时的 url 不同，
     // 证明用户在作品详情页点击了某些跳转（tag，group etc.)，需要刷新作品列表
-    if (JSON.stringify(this.lastQueryBeforeDeactivate) !== JSON.stringify(this.$route.query)) {
+    if (JSON.stringify(this.lastQueryBeforeDeactivate) !== JSON.stringify({...this.$route.query, page: this.page})) {
       this.lastQueryBeforeDeactivate = this.$route.query
       this.reset()
     }
@@ -307,6 +306,10 @@ export default {
       // 当用户一直在 works 界面时，api url 的变动由此处处理
       if (this.active) {
         this.reset()
+      }
+    },
+    '$route.query'() {
+      if (this.active) {
         this.lastQueryBeforeDeactivate = this.$route.query
       }
     },
