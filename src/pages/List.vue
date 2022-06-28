@@ -57,7 +57,7 @@ export default {
 
   computed: {
     title() {
-      return `All ${this.restrict}s`
+      return `All ${this.restrict}`
     },
     url () {
       return `/api/${this.restrict}/`
