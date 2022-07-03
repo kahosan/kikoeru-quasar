@@ -99,7 +99,16 @@ export default {
           this.$q.localStorage.set('jwt-token', res.data.token)
           setAxiosHeaders(res.data.token)
           this.showSuccNotif(type === "reg" ? this.$t('login.registerSuccess') : this.$t('login.loginSuccess'))
-          this.$router.push('/')
+
+          let redirectPath;
+          if (this.$q.sessionStorage.has("redirect"))  {
+            redirectPath = this.$q.sessionStorage.getItem("redirect")
+            this.$q.sessionStorage.remove("redirect")
+          } else {
+            redirectPath = '/'
+          }
+
+          this.$router.push(redirectPath)
         } catch (error) {
           // 由于Web Storage API错误，
           // 数据未成功保存

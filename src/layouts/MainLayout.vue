@@ -333,6 +333,7 @@ export default {
               // 验证失败，跳转到登录页面
               const path = this.$router.currentRoute.path
               if (path !=='/login') {
+                this.$q.sessionStorage.set("redirect", path)
                 this.$router.push('/login');
               }
             } else {
