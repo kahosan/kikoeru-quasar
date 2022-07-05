@@ -58,7 +58,7 @@ export default {
       return `RJ${this.metadata.id} ${this.metadata.title} - ASMR Online`;
     },
     descriptor() {
-      return  `
+      return  `🈚 🈚 🈚 Listen Online For FREE! 🈚 🈚 🈚
 🆔 RJ Code: RJ${this.metadata.id}
 💰 DLSite Price: ${this.metadata.price} JPY
 📦 DLSite Sales: ${this.metadata.dl_count}
