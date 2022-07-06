@@ -1,3 +1,2 @@
 User-agent: *
-Sitemap: https://www.asmr.one/sitemap.xml
-
+Sitemap: https://www.asmr.one/sitemap_index.xml
