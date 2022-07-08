@@ -41,7 +41,7 @@ export default {
       title: this.pageTitle,
       meta: [
         { property: "og:site_name", content: "ASMR Online" },
-        { property: "og:url", content: `https://www.asmr.one/work/RJ${(`000000${this.metadata.id}`).slice(-6)}` },
+        { property: "og:url", content: `https://www.asmr.one/work/RJ${this.rjCode}` },
         { property: "og:type", content: "website" },
         { property: "og:title", content: `${this.pageTitle}` },
         { property: "og:description", content: this.descriptor },
@@ -54,12 +54,15 @@ export default {
   },
 
   computed: {
+    rjCode() {
+      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
+    },
     pageTitle() {
-      return `RJ${this.metadata.id} ${this.metadata.title} - ASMR Online`;
+      return `${this.rjCode} ${this.metadata.title} - ASMR Online`;
     },
     descriptor() {
-      return  `🈚 🈚 🈚 Listen Online For FREE! 🈚 🈚 🈚
-🆔 RJ Code: RJ${this.metadata.id}
+      return  `Listen Online For FREE!
+🆔 RJ Code: ${this.rjCode}
 💰 DLSite Price: ${this.metadata.price} JPY
 📦 DLSite Sales: ${this.metadata.dl_count}
 ⭕ Circle: ${this.metadata.circle.name}
