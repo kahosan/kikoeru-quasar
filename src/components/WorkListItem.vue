@@ -1,14 +1,14 @@
 <template>
-  <q-item clickable :to="`/work/RJ${metadata.id}`" :class="classBackgroundColor" style="padding: 5px;">
+  <q-item clickable :to="`/work/${rjCode}`" :class="classBackgroundColor" style="padding: 5px;">
     <q-item-section avatar style="padding: 0px 5px 0px 0px;">
-      <router-link :to="`/work/RJ${metadata.id}`">
+      <router-link :to="`/work/${rjCode}`">
         <q-img transition="fade" :src="samCoverUrl" style="height: 60px; width: 60px;" />
       </router-link>
     </q-item-section>
 
     <q-item-section>
       <q-item-label lines="2" class="text">
-        <router-link :to="`/work/RJ${metadata.id}`" style="color: inherit">
+        <router-link :to="`/work/${rjCode}`" style="color: inherit">
           {{ metadata.title }}
         </router-link>
       </q-item-label>
@@ -74,6 +74,9 @@ export default {
   computed: {
     samCoverUrl () {
       return coverURL(this.metadata, 'sam')
+    },
+    rjCode() {
+      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
     },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/work/RJ${workid}`">
+  <router-link :to="`/work/${rjCode}`">
     <q-img
       :src="coverUrl"
       :ratio="4/3"
@@ -12,7 +12,7 @@
     >
       <div class="absolute-top-left transparent" style="padding: 0;">
         <q-chip dense square color="brown" text-color="white" class="q-ma-sm">
-          {{`RJ${rjcode}`}}
+          {{ rjCode }}
         </q-chip>
       </div>
 
@@ -60,8 +60,8 @@ export default {
     //   return coverURL(this.workid);
     // },
 
-    rjcode () {
-      return (`000000${this.workid}`).slice(-6)
+    rjCode() {
+      return `RJ${(`000000${this.workid}`).slice(-6)}`
     },
 
     imgClass () {

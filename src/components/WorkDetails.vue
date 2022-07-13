@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="`/work/RJ${metadata.id}`">
+    <router-link :to="`/work/${rjCode}`">
       <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
@@ -8,7 +8,7 @@
       <div class="q-px-sm q-py-none">
         <!-- 标题 -->
         <div class="text-h6 text-weight-regular">
-          <router-link :to="`/work/RJ${metadata.id}`" :class="classTextColor">
+          <router-link :to="`/work/${rjCode}`" :class="classTextColor">
             {{metadata.title}}
           </router-link>
         </div>
@@ -203,7 +203,10 @@ export default {
     },
     coverUrl: function () {
       return coverURL(this.metadata, 'main')
-    }
+    },
+    rjCode() {
+      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
+    },
   },
 
   watch: {

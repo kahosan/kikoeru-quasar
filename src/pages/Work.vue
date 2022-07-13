@@ -41,7 +41,7 @@ export default {
       title: this.pageTitle,
       meta: [
         { property: "og:site_name", content: "ASMR Online" },
-        { property: "og:url", content: `https://www.asmr.one/work/RJ${this.rjCode}` },
+        { property: "og:url", content: `https://www.asmr.one/work/${this.rjCode}` },
         { property: "og:type", content: "website" },
         { property: "og:title", content: `${this.pageTitle}` },
         { property: "og:description", content: this.descriptor },

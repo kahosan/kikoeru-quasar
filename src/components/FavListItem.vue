@@ -1,7 +1,7 @@
 <template>
   <q-item clickable class="row" :class="classBackgroundColor">
       <q-item-section class="col-auto" top>
-        <router-link :to="`/work/RJ${metadata.id}`">
+        <router-link :to="`/work/${rjCode}`">
           <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
         </router-link>
       </q-item-section>
@@ -9,7 +9,7 @@
 
       <q-item-section class="q-gutter-y-xs column items-start" top v-on:click.self="showReviewDialog = true">
         <q-item-label lines="2" class="text-body2">
-          <router-link :to="`/work/RJ${metadata.id}`" class="col-auto" style="color: inherit">
+          <router-link :to="`/work/${rjCode}`" class="col-auto" style="color: inherit">
             {{metadata.title}}
           </router-link>
         </q-item-label>
@@ -127,6 +127,9 @@ export default {
   computed: {
     coverUrl () {
       return coverURL(this.metadata, 'thumb')
+    },
+    rjCode() {
+      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
     },
   },
 
