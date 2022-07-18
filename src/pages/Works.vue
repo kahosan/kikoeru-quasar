@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="text-h5 text-weight-regular q-ma-md">
+    <div class="text-h5 text-weight-regular q-ma-md flex">
       {{ pageTitle }}
       <span v-show="pagination.totalCount">
-        ({{ pagination.totalCount }})
+          ({{ pagination.totalCount }})
       </span>
+      <q-space></q-space>
+      <Language class="col-auto"/>
     </div>
 
     <div :class="`row justify-center ${displayMode === 'list' ? 'list' : 'q-mx-md'}`">
@@ -103,6 +105,7 @@ import {mapState} from "vuex";
 import DarkMode from '../mixins/DarkMode'
 import {Pagination} from 'ant-design-vue';
 import 'ant-design-vue/lib/pagination/style/css';
+import Language from "components/Language";
 
 export default {
   name: 'Works',
@@ -113,6 +116,7 @@ export default {
     WorkCard,
     WorkListItem,
     Pagination,
+    Language
   },
 
   data() {
