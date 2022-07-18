@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import {mediaDownloadURL, mediaStreamURL} from "src/utils/apiURL";
 import {formatSeconds} from "src/utils/time";
 
@@ -89,10 +89,12 @@ export default {
   watch: {
     tree () {
       this.initPath()
+      this.prefetchAudioUrls()
     }
   },
 
   computed: {
+    ...mapState('AudioPlayer', ['qualityBehavior']),
     fatherFolder () {
       let fatherFolder = this.tree.concat()
       this.path.forEach(folderName => {
@@ -199,6 +201,54 @@ export default {
       link.href = url;
       link.target="_blank";
       link.click();
+    },
+
+    /*
+      从 this.tree 及其 children 递归获取所有 audio
+     */
+    getFiles(tree) {
+      const files = []
+      tree.forEach(item => {
+        if (item.type === 'audio') {
+          files.push(item)
+        } else if (item.type === 'folder') {
+          files.push(...this.getFiles(item.children))
+        }
+      })
+      return files
+    },
+
+    prefetchAudioUrls () {
+      // ua prerender 不要预加载
+      if (window.navigator.userAgent.startsWith('special-ua-for-prerender-')) {
+        return
+      }
+
+      // 由于 mp3 m4a 文件进入 cdn 缓存之前加载延迟很高（约 1-2s）
+      // 因此在进入页面时就通知 workers 对所有音频文件进行缓存预热，
+      // 使其进入 cloudflare workers 缓存
+      const files = this.getFiles(this.tree)
+
+      files.forEach(file => {
+        // 按照音质偏好筛选 url
+        let url
+        if (this.qualityBehavior === "fluentFirst" && file.streamLowQualityUrl) {
+          url = file.streamLowQualityUrl
+        } else {
+          url = file.mediaStreamUrl
+        }
+        // const audio = new Audio()
+        // audio.src = url
+        // audio.preload = 'auto'
+        // audio.load()
+
+        // 注意：此功能依靠 preflight 实现
+        // 跨域请求时，通常为 OPTIONS + {你自己的 method} 一共两个请求
+        // 为了降低 workers 费用，workers 接到 preflight OPTIONS 请求就会开始缓存文件
+        // 但是返回的 cors 中不包含 access-control-allow-methods
+        // 这样第二个请求就不会发出，能节约一些成本
+        this.$axios.options(url, {}).catch(() => {})
+      })
     }
   }
 }
