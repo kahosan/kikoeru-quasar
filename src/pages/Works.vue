@@ -24,6 +24,7 @@
             transition-hide="scale"
             v-model="sortOption"
             :options="options"
+            :option-label="option => $t(option.label)"
             :label="$t('works.sort')"
             class="col-auto"
           />
@@ -137,77 +138,10 @@ export default {
       subtitleOnly: false,
       previousUrl: '',
       sortOption: {
-        label: this.$t('works.new'),
+        label: 'works.new',
         order: 'create_date',
         sort: 'desc'
       },
-      options: [
-        {
-          label: this.$t('works.releaseDesc'),
-          order: 'release',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.new'),
-          order: 'create_date',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.ratingDesc'),
-          order: 'rating',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.releaseAsc'),
-          order: 'release',
-          sort: 'asc'
-        },
-        {
-          label: this.$t('works.dlCountDesc'),
-          order: 'dl_count',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.priceAsc'),
-          order: 'price',
-          sort: 'asc'
-        },
-        {
-          label: this.$t('works.priceDesc'),
-          order: 'price',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.rateAverage2dpDesc'),
-          order: 'rate_average_2dp',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.reviewCountDesc'),
-          order: 'review_count',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.idDesc'),
-          order: 'id',
-          sort: 'desc'
-        },
-        {
-          label: this.$t('works.idAsc'),
-          order: 'id',
-          sort: 'asc'
-        },
-        {
-          label: this.$t('works.sfwOnly'),
-          order: 'nsfw',
-          sort: 'asc'
-        },
-        {
-          label: this.$t('works.random'),
-          order: 'random',
-          sort: 'desc'
-        }
-      ]
     }
   },
 
@@ -283,8 +217,78 @@ export default {
       } else {
         return '/api/works'
       }
+    },
+
+    options() {
+      return [
+        {
+          label: 'works.releaseDesc',
+          order: 'release',
+          sort: 'desc'
+        },
+        {
+          label: 'works.new',
+          order: 'create_date',
+          sort: 'desc'
+        },
+        {
+          label: 'works.ratingDesc',
+          order: 'rating',
+          sort: 'desc'
+        },
+        {
+          label: 'works.releaseAsc',
+          order: 'release',
+          sort: 'asc'
+        },
+        {
+          label: 'works.dlCountDesc',
+          order: 'dl_count',
+          sort: 'desc'
+        },
+        {
+          label: 'works.priceAsc',
+          order: 'price',
+          sort: 'asc'
+        },
+        {
+          label: 'works.priceDesc',
+          order: 'price',
+          sort: 'desc'
+        },
+        {
+          label: 'works.rateAverage2dpDesc',
+          order: 'rate_average_2dp',
+          sort: 'desc'
+        },
+        {
+          label: 'works.reviewCountDesc',
+          order: 'review_count',
+          sort: 'desc'
+        },
+        {
+          label: 'works.idDesc',
+          order: 'id',
+          sort: 'desc'
+        },
+        {
+          label: 'works.idAsc',
+          order: 'id',
+          sort: 'asc'
+        },
+        {
+          label: 'works.sfwOnly',
+          order: 'nsfw',
+          sort: 'asc'
+        },
+        {
+          label: 'works.random',
+          order: 'random',
+          sort: 'desc'
+        }
+      ]
     }
-  },
+ },
 
   // keep-alive hooks
   // <keep-alive /> is set in MainLayout

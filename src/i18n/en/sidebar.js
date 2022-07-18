@@ -11,6 +11,7 @@ export default {
   // bottom
   darkMode: 'Dark Mode',
   about: 'About',
+  settings: 'Settings',
   logout: 'Logout',
   doubleCheckLogout: 'Are you sure you want to log out?',
   doubleCheckLogoutCancel: 'Cancel',

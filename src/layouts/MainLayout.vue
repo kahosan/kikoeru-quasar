@@ -150,7 +150,7 @@
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                设定
+                {{$t('sidebar.settings')}}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -241,33 +241,6 @@ export default {
       confirm: false,
       randId: null,
       showTimer: false,
-      links: [
-        {
-          title: this.$t('sidebar.library'),
-          icon: 'widgets',
-          path: '/'
-        },
-        {
-          title: this.$t('sidebar.myFavourites'),
-          icon: 'favorite',
-          path: '/favourites'
-        },
-        {
-          title: this.$t('sidebar.circles'),
-          icon: 'group',
-          path: '/circles'
-        },
-        {
-          title: this.$t('sidebar.tags'),
-          icon: 'label',
-          path: '/tags'
-        },
-        {
-          title: this.$t('sidebar.vas'),
-          icon: 'mic',
-          path: '/vas'
-        },
-      ],
     }
   },
 
@@ -293,6 +266,35 @@ export default {
   },
 
   computed: {
+    links() {
+      return [
+        {
+          title: this.$t('sidebar.library'),
+          icon: 'widgets',
+          path: '/'
+        },
+        {
+          title: this.$t('sidebar.myFavourites'),
+          icon: 'favorite',
+          path: '/favourites'
+        },
+        {
+          title: this.$t('sidebar.circles'),
+          icon: 'group',
+          path: '/circles'
+        },
+        {
+          title: this.$t('sidebar.tags'),
+          icon: 'label',
+          path: '/tags'
+        },
+        {
+          title: this.$t('sidebar.vas'),
+          icon: 'mic',
+          path: '/vas'
+        },
+      ]
+    },
     isNotAtHomePage () {
       const path = this.$route.path
       return path && path !=='/' && path !=='/works' && path !== '/favourites';

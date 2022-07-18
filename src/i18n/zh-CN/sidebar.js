@@ -11,6 +11,7 @@ export default {
   // bottom
   darkMode: '夜间模式',
   about: '关于',
+  settings: '设置',
   logout: '登出',
   doubleCheckLogout: '是否退出登录？',
   doubleCheckLogoutCancel: '取消',
