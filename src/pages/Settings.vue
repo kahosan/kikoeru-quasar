@@ -49,7 +49,32 @@
         </q-item-section>
       </q-item>
 
+      <q-separator />
+
+      <q-item class="q-py-sm" clickable v-ripple>
+        <q-item-section avatar>
+          <q-icon name="cast" size="28px"></q-icon>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>
+            <span class="text-weight-medium">{{$t('settings.quality')}}</span>
+          </q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <q-select
+            borderless dense
+            @input="setQualityBehavior"
+            :value="qualityBehavior"
+            :options="['qualityFirst', 'fluentFirst']"
+            :option-label="opt => $t(`settings.${opt}`)"
+          />
+        </q-item-section>
+      </q-item>
+
     </q-list>
+
   </div>
 </template>
 
@@ -77,7 +102,8 @@ export default {
   computed: {
     ...mapState('AudioPlayer', [
       'forwardSeekTime',
-      'rewindSeekTime'
+      'rewindSeekTime',
+      'qualityBehavior',
     ])
   },
   methods: {
@@ -93,6 +119,13 @@ export default {
       this.$q.localStorage.set('sharedConfig', {
         ...this.$q.localStorage.getItem('sharedConfig') || {},
         rewindSeekTime: val,
+      })
+    },
+    setQualityBehavior: function (val) {
+      this.$store.commit('AudioPlayer/SET_QUALITY_BEHAVIOR', val)
+      this.$q.localStorage.set('sharedConfig', {
+        ...this.$q.localStorage.getItem('sharedConfig') || {},
+        qualityBehavior: val,
       })
     },
   },

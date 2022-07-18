@@ -6,6 +6,7 @@ const getters = {
       workTitle: '',
       mediaStreamUrl: '',
       mediaDownloadUrl: '',
+      streamLowQualityUrl: '',
       samCoverUrl: '',
       thumbnailCoverUrl: '',
       mainCoverUrl: ''

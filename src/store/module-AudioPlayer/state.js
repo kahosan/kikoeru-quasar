@@ -33,6 +33,8 @@ export default function () {
     rewindSeekMode: false,
     forwardSeekMode: false,
     lyricContent: '',
-    shouldLoadPlayer: false
+    shouldLoadPlayer: false,
+
+    qualityBehavior: "fluentFirst", // "fluentFirst" or "qualityFirst"
   }
 }

@@ -1,4 +1,8 @@
 const mutations = {
+  SET_QUALITY_BEHAVIOR (state, payload) {
+    state.qualityBehavior = payload
+  },
+
   TOGGLE_HIDE (state) {
     state.hide = !state.hide
   },

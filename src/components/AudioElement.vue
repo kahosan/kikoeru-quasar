@@ -14,7 +14,7 @@
     @loadedmetadata="onLoadedMetadata()"
   >
     <audio crossorigin="anonymous" >
-      <source v-if="source" :src="source" />
+      <source v-if="source" :src="source"/>
     </audio>
   </vue-plyr>
 </template>
@@ -23,7 +23,6 @@
 import Lyric from 'lrc-file-parser'
 import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
-import {mediaStreamURL} from "src/utils/apiURL";
 import VuePlyr from "vue-plyr";
 
 
@@ -49,6 +48,8 @@ export default {
   },
 
   computed: {
+    ...mapState('AudioPlayer', ['qualityBehavior']),
+
     player () {
       return this.$refs.plyr.player
     },
@@ -56,16 +57,10 @@ export default {
     source () {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
-      // New API
-      if (this.currentPlayingFile.mediaStreamUrl) {
-        return `${this.currentPlayingFile.mediaStreamUrl}?token=${token}`
-      } else if (this.currentPlayingFile.hash) {
-        // Fallback to be compatible with old backend
-        return mediaStreamURL(this.currentPlayingFile.hash, token);
-      } else {
-        // 这个情况会出现吗？
-        return ""
-      }
+      const source = this.qualityBehavior === 'fluentFirst' && this.currentPlayingFile.streamLowQualityUrl
+        ? this.currentPlayingFile.streamLowQualityUrl
+        : this.currentPlayingFile.mediaStreamUrl
+      return source ? `${source}?token=${token}` : ''
     },
 
     ...mapState('AudioPlayer', [

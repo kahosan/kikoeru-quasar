@@ -268,7 +268,6 @@ export default {
           path: '/vas'
         },
       ],
-      sharedConfig: {}
     }
   },
 
@@ -283,16 +282,12 @@ export default {
     randId () {
       this.$router.push(`/work/RJ${this.randId}`)
     },
-    sharedConfig (config) {
-      if (config.rewindSeekTime) {this.SET_REWIND_SEEK_TIME(config.rewindSeekTime)}
-      if (config.forwardSeekTime) {this.SET_FORWARD_SEEK_TIME(config.forwardSeekTime)}
-    }
   },
 
   mounted () {
     this.initUser();
     this.checkUpdate();
-    this.readSharedConfig();
+    this.loadSharedConfig();
 
     if (this.$q.localStorage.has('dark') && this.$q.localStorage.getItem('dark')) { this.$q.dark.set(true) }
   },
@@ -316,7 +311,8 @@ export default {
   methods: {
     ...mapMutations('AudioPlayer', [
       'SET_REWIND_SEEK_TIME',
-      'SET_FORWARD_SEEK_TIME'
+      'SET_FORWARD_SEEK_TIME',
+      'SET_QUALITY_BEHAVIOR'
     ]),
     initUser () {
       this.$axios.get('/api/auth/me')
@@ -385,11 +381,16 @@ export default {
         })
     },
 
-    readSharedConfig(){
-      this.sharedConfig = this.$q.localStorage.getItem('sharedConfig') || {
+    loadSharedConfig(){
+      const sharedConfig = this.$q.localStorage.getItem('sharedConfig') || {
         'rewindSeekTime': 5,
         'forwardSeekTime': 30,
+        'qualityBehavior': 'qualityFirst'
       };
+
+      if (sharedConfig.rewindSeekTime) {this.SET_REWIND_SEEK_TIME(sharedConfig.rewindSeekTime)}
+      if (sharedConfig.forwardSeekTime) {this.SET_FORWARD_SEEK_TIME(sharedConfig.forwardSeekTime)}
+      if (sharedConfig.qualityBehavior) {this.SET_QUALITY_BEHAVIOR(sharedConfig.qualityBehavior)}
     },
 
     randomPlay() {
