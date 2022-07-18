@@ -7,6 +7,7 @@ import messages from 'src/i18n'
 
 // detect default language
 import Quasar from 'quasar'
+import { LocalStorage } from 'quasar'
 import mapLocale from 'src/utils/localeMap'
 
 // we tell Vue to use our Vue package:
@@ -16,8 +17,9 @@ export default ({ app }) => {
   // Set i18n instance on app;
   // We inject it into root component by doing so;
   // new Vue({..., i18n: ... }).$mount(...)
+  const lang = LocalStorage.getItem('userPreferredLang')
   app.i18n = new VueI18n({
-    locale: mapLocale(Quasar.lang.getLocale()),
+    locale: lang || mapLocale(Quasar.lang.getLocale()),
     fallbackLocale: 'en',
     messages
   })
