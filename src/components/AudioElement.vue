@@ -110,6 +110,8 @@ export default {
           this.player.pause()
           this.CONSUME_PLAYING_CONTROL_SIGNAL()
         }
+      } else {
+        this.CONSUME_PLAYING_CONTROL_SIGNAL()
       }
       // this.playLrc(flag);
     },
