@@ -1,12 +1,12 @@
 import login from './login';
-import sidebar from "src/i18n/en/sidebar";
-import works from "src/i18n/en/works";
-import workCard from "src/i18n/en/workCard";
-import common from "src/i18n/en/common";
-import workDetail from "src/i18n/en/workDetail";
-import writeReview from "src/i18n/en/writeReview";
-import favourites from "src/i18n/en/favourites";
-import settings from "src/i18n/en/settings";
+import sidebar from "./sidebar";
+import works from "./works";
+import workCard from "./workCard";
+import common from "./common";
+import workDetail from "./workDetail";
+import writeReview from "./writeReview";
+import favourites from "./favourites";
+import settings from "./settings";
 
 export default {
   common: common,
