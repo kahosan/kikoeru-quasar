@@ -387,7 +387,7 @@ export default {
       const sharedConfig = this.$q.localStorage.getItem('sharedConfig') || {
         'rewindSeekTime': 5,
         'forwardSeekTime': 30,
-        'qualityBehavior': 'qualityFirst'
+        'qualityBehavior': 'fluentFirst'
       };
 
       if (sharedConfig.rewindSeekTime) {this.SET_REWIND_SEEK_TIME(sharedConfig.rewindSeekTime)}
