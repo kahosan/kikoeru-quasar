@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang=zh-cmn-Hans>
   <head>
-    <title><%= htmlWebpackPlugin.options.productName %></title>
+    <title><%= productName %></title>
 
     <meta charset="utf-8">
     <meta name="keywords" content="在线音声, OnlineASMR, JapaneseASMR, 同人音声"/>
-    <meta data-vmid="description" name="description" content="<%= htmlWebpackPlugin.options.productDescription %>">
+    <meta data-vmid="description" name="description" content="<%= productDescription %>">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova || htmlWebpackPlugin.options.ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
 
     <link rel="icon" type="image/png" href="statics/app-logo-128x128.png">
     <link rel="icon" type="image/png" sizes="16x16" href="statics/icons/favicon-16x16.png">
@@ -16,6 +16,17 @@
     <link rel="icon" type="image/png" sizes="96x96" href="statics/icons/favicon-96x96.png">
     <link rel="icon" type="image/ico" href="statics/icons/favicon.ico">
 <!--    <script src='https://js.sentry-cdn.com/922f82b43e6e4f3da655e0963be5a876.min.js' crossorigin="anonymous"></script>-->
+
+    <style>
+      /*#js-loading > p.title {*/
+      /*  line-height: 1.2em;*/
+      /*  font-size: 1.2em;*/
+      /*  font-weight: bold;*/
+      /*}*/
+      /*#js-loading p {*/
+      /*  line-height: 0.9em;*/
+      /*}*/
+    </style>
   </head>
   <body>
 
@@ -25,26 +36,41 @@
     </noscript>
 
     <!--  应对浏览器不支持最新特性  -->
-    <div id="browser-update">
-      <p>此应用程序无法运行在比较老的浏览器上，请更新到最新版本的浏览器。（苹果设备系统版本必须在iOS11以上）</p>
-      <p>This App is not available on this browser, please update to the latest version of your browser.</p>
-    </div>
+<!--    <div id="browser-update">-->
+<!--      <p>此应用程序无法运行在比较老的浏览器上，请更新到最新版本的浏览器。（苹果设备系统版本必须在iOS11以上）</p>-->
+<!--      <p>This App is not available on this browser, please update to the latest version of your browser.</p>-->
+<!--    </div>-->
 
     <!--  应对浏览器没能加载 JS 资源  -->
-    <div id="js-loading" hidden>
+    <div id="js-loading">
       <p>正在加载 JS 文件，如果你一直看到本界面，请使用 VPN</p>
       <p>Loading JS file, if you keep seeing this screen, please contact contact@asmr.one</p>
+<!--      <p class="title">ASMR Online 无法访问！</p>-->
+<!--      <p>出现这种情况可能是：</p>-->
+<!--      <p>1. 你的浏览器版本太低</p>-->
+<!--      <p>2. JS 无法加载（尝试使用 VPN）</p>-->
+<!--      <p><b>如果持续出错，请联系 contact@asmr.one</b></p>-->
+
+<!--      <br />-->
+<!--      <br />-->
+
+<!--      <p class="title">Unable to load ASMR Online!</p>-->
+<!--      <p>This may occur because:</p>-->
+<!--      <p>1. your browser version is too low</p>-->
+<!--      <p>2. JS cannot be loaded </p>-->
+<!--      <p><b>If the error persists, please contact contact@asmr.one</b></p>-->
+
     </div>
 
-    <script type="text/javascript">
-      'use strict';
-      try {
-        const a = {...{}};
-        // 验证通过，隐藏浏览器不兼容提示，显示 JS 加载提示
-        document.getElementById("browser-update").hidden = true;
-        document.getElementById("js-loading").hidden = false;
-      } catch (e) {}
-    </script>
+<!--    <script type="text/javascript">-->
+<!--      'use strict';-->
+<!--      try {-->
+<!--        const a = {...{}};-->
+<!--        // 验证通过，隐藏浏览器不兼容提示，显示 JS 加载提示-->
+<!--        document.getElementById("browser-update").hidden = true;-->
+<!--        document.getElementById("js-loading").hidden = false;-->
+<!--      } catch (e) {}-->
+<!--    </script>-->
 
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>

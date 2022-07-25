@@ -79,7 +79,7 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      env: patchDotEnvForQuasar1(require('dotenv').config().parsed),
+      env: require('dotenv').config().parsed,  // patchDotEnvForQuasar1(require('dotenv').config().parsed),
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
@@ -111,7 +111,7 @@ module.exports = function (ctx) {
       modern: true,
       sourceMap: false,
       devtool: 'source-map',
-      // transpile: true,
+      transpile: true,
       // transpileDependencies: ['.*?plyr.*?', 'plyr']
       // transpileDependencies: [/[\\\/]node_modules[\\\/]test[\\\/]/]
     },
