@@ -1,9 +1,9 @@
 export default {
   // top
-  library: '媒体ライブラリー',
-  myFavourites: '私のコレクション',
+  library: 'ライブラリ',
+  myFavourites: 'ブックマーク',
   circles: 'サークル',
-  tags: 'ジャンル',
+  tags: 'タグ',
   vas: '声優',
   randomPlay: 'ランダム',
   sleepMode: 'スリープモード',
