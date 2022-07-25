@@ -20,7 +20,14 @@
           />
       </div>
       <div class="col-auto gt-sm row">
-        <q-select dense rounded outlined v-model="sortBy" :options="sortOptions" :bg-color="color" class="q-mx-sm"/>
+        <q-select
+          dense rounded outlined
+          v-model="sortBy"
+          :options="sortOptions"
+          :bg-color="color"
+          class="q-mx-sm"
+          :option-label="option => $t(option.label)"
+        />
         <q-btn
           :disable="sortButtonDisabled"
           dense
@@ -50,6 +57,7 @@
           {label: $t('common.progressEnum.replay'), value: 'replay'},
           {label: $t('common.progressEnum.postponed'), value: 'postponed'}
         ]"
+        :option-label="option => $t(option.label)"
       />
     </div>
 
@@ -117,36 +125,36 @@ export default {
       pagination: { currentPage:0, pageSize:12, totalCount:0 },
       sortMode: 'desc',
       sortBy: {
-          label: this.$t('favourites.sortOptions.markedTime'),
+          label: 'favourites.sortOptions.markedTime',
           order: 'updated_at'
         },
       sortOptions: [
         {
-          label: this.$t('favourites.sortOptions.markedTime'),
+          label: 'favourites.sortOptions.markedTime',
           order: 'updated_at'
         },
         {
-          label: this.$t('favourites.sortOptions.rating'),
+          label: 'favourites.sortOptions.rating',
           order: 'userRating'
         },
         {
-          label: this.$t('favourites.sortOptions.releaseDate'),
+          label: 'favourites.sortOptions.releaseDate',
           order: 'release'
         },
         {
-          label: this.$t('favourites.sortOptions.reviewCount'),
+          label: 'favourites.sortOptions.reviewCount',
           order: 'review_count'
         },
         {
-          label: this.$t('favourites.sortOptions.dlCount'),
+          label: 'favourites.sortOptions.dlCount',
           order: 'dl_count'
         },
         {
-          label: this.$t('favourites.sortOptions.sfw'),
+          label: 'favourites.sortOptions.sfw',
           order: 'allage'
         },
         {
-          label: this.$t('favourites.sortOptions.nsfw'),
+          label: 'favourites.sortOptions.nsfw',
           order: 'nsfw'
         }
       ]
