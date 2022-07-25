@@ -1,14 +1,22 @@
 const localeMap = {
-  'zh-Hans': 'zh-CN',
-  'zh-Hant': 'zh-CN',
+  'zh': 'zh-CN',
+  'zh-hans': 'zh-CN',
+  'zh-hans-cn': 'zh-CN',
+  'zh-hant': 'zh-CN',
   'zh-cn': 'zh-CN',
+  'zh-tw': 'zh-CN',
+  'zh-hk': 'zh-CN',
+
+  'ja-jp': 'ja',
+
+  'en-us': 'en',
 }
 
 export function quasarLocaleToAvailableLocale(locale) {
   // 将 quasar 自动检测出来的 locale
   // 转换为 i18n 实际存在的 locale
   // 适用于 zh-TW -> zh-CN 之类的映射
-  return localeMap[locale] || locale;
+  return localeMap[locale.toString().toLowerCase()] || locale;
 }
 
 export function availableLocaleToTagLocale (availableLocal) {
