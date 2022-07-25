@@ -15,7 +15,7 @@
                 </q-item-section>
 
                 <q-item-section>
-                  隐藏封面按钮
+                  {{ $t('player.hideButton')}}
                 </q-item-section>
               </q-item>
 
@@ -24,7 +24,7 @@
                   <q-icon :name="swapSeekButton ? 'check_box' : 'check_box_outline_blank'" />
                 </q-item-section>
                 <q-item-section>
-                  交换进度按钮与切换按钮
+                  {{ $t('player.swapSeekButton')}}
                 </q-item-section>
               </q-item>
 
@@ -33,7 +33,7 @@
                   <q-icon name="link" />
                 </q-item-section>
                 <q-item-section>
-                  打开作品详情
+                  {{ $t('player.workDetail')}}
                 </q-item-section>
               </q-item>
 
@@ -42,7 +42,7 @@
                   <q-icon name="subtitles" />
                 </q-item-section>
                 <q-item-section>
-                  加载本地字幕
+                  {{ $t('player.loadSubtitle')}}
                 </q-item-section>
               </q-item>
             </q-menu>
@@ -103,7 +103,14 @@
     <!-- 加载本地字幕-->
     <q-dialog v-model="showLyricLoader">
       <q-card class="upload-subtitle">
-          <q-file filled v-model="localLyric" @rejected="onLyricFileRejected" @input="onLyricFileLoaded" label="选择 LRC 字幕文件" accept=".lrc">
+          <q-file
+            filled
+            v-model="localLyric"
+            @rejected="onLyricFileRejected"
+            @input="onLyricFileLoaded"
+            :label="$t('player.selectSubtitleFile')"
+            accept=".lrc"
+          >
             <template v-slot:prepend>
               <q-icon name="cloud_upload" />
             </template>
