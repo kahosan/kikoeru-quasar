@@ -8,6 +8,7 @@
 
 <script>
 import WorkDetails from 'components/WorkDetails'
+import TagI18N from "src/mixins/TagI18N";
 // import WorkQueue from 'components/WorkQueue'
 import WorkTree from 'components/WorkTree'
 import NotifyMixin from '../mixins/Notification.js'
@@ -15,7 +16,7 @@ import NotifyMixin from '../mixins/Notification.js'
 export default {
   name: 'Work',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, TagI18N],
 
   components: {
     WorkDetails,
@@ -44,11 +45,11 @@ export default {
         { property: "og:url", content: `https://www.asmr.one/work/${this.rjCode}` },
         { property: "og:type", content: "website" },
         { property: "og:title", content: `${this.pageTitle}` },
-        { property: "og:description", content: this.descriptor },
+        { property: "og:description", content: this.twitterDesc },
         { property: "og:image", content: this.metadata.mainCoverUrl },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
-        { name: "description", content: this.descriptor, vmid: "description"}
+        { name: "description", content: this.searchDesc, vmid: "description"}
       ]
     }
   },
@@ -60,16 +61,25 @@ export default {
     pageTitle() {
       return `${this.rjCode} ${this.metadata.title} - ASMR Online`;
     },
-    descriptor() {
-      return  `Listen Online For FREE!
-🆔 RJ Code: ${this.rjCode}
-💰 DLSite Price: ${this.metadata.price} JPY
-📦 DLSite Sales: ${this.metadata.dl_count}
+    twitterDesc() {
+      return  `🆔 RJ Code: ${this.rjCode}
 ⭕ Circle: ${this.metadata.circle.name}
 🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
-🏷️ Tags: ${this.metadata.tags.map(v => v.name).join(', ')}
+🏷️ Tags(jp): ${this.metadata.tags.map(v => this.getLocaleTagName(v, 'ja-jp')).join(', ')}
+🏷️ Tags(en): ${this.metadata.tags.map(v => this.getLocaleTagName(v, 'en-us')).join(', ')}
 📅 Release: ${this.metadata.release}
+💰 DLSite Price: ${this.metadata.price} ￥
+📦 DLSite Sales: ${this.metadata.dl_count}
+Listen Online For FREE!
 ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
+    },
+    searchDesc() {
+      // 把文件展示出来
+      let desc = ''
+      this.getFiles(this.tree).forEach((file) => {
+        desc += `${file.title}    \n`
+      })
+      return desc
     }
   },
 
@@ -85,6 +95,17 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
   },
 
   methods: {
+    getFiles(tree) {
+      const files = []
+      tree.forEach(item => {
+        if (item.type === 'audio') {
+          files.push(item)
+        } else if (item.type === 'folder') {
+          files.push(...this.getFiles(item.children))
+        }
+      })
+      return files
+    },
     requestData () {
       this.$axios.get(`/api/work/${this.workid}`)
         .then(response => {
