@@ -1,5 +1,5 @@
 <template>
-  <div id="q-app">
+  <div id="q-app" :class="fontFamilyClass">
     <router-view v-if="running"/>
     <div class="text-center" v-if="!running">
       <h3>无法连接服务器</h3>
@@ -38,5 +38,49 @@ export default {
     // 回收 index.template.html 的加载提示
     document.getElementById("js-loading").hidden = true;
   },
+  computed: {
+    fontFamilyClass () {
+      if (this.$i18n.locale === 'zh-CN') {
+        return 'zh-fonts'
+      } else {
+        return 'ja-fonts'
+      }
+    },
+  },
 }
 </script>
+<style>
+.zh-fonts {
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  Segoe UI,
+  PingFang SC,
+  Hiragino Sans GB,
+  Microsoft YaHei,
+  Helvetica Neue,
+  Helvetica,
+  Arial,
+  sans-serif,
+  Apple Color Emoji,
+  Segoe UI Emoji,
+  Segoe UI Symbol
+  !important;
+}
+.ja-fonts {
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  Noto Sans JP,
+  Segoe UI,
+  PingFang SC,
+  Hiragino Sans GB,
+  Microsoft YaHei,
+  Helvetica Neue,
+  Helvetica,
+  Arial,
+  sans-serif,
+  Apple Color Emoji,
+  Segoe UI Emoji,
+  Segoe UI Symbol
+  !important;
+}
+</style>
