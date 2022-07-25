@@ -44,8 +44,8 @@ export default {
         { property: "og:site_name", content: "ASMR Online" },
         { property: "og:url", content: `https://www.asmr.one/work/${this.rjCode}` },
         { property: "og:type", content: "website" },
-        { property: "og:title", content: `${this.pageTitle}` },
-        { property: "og:description", content: this.twitterDesc },
+        { property: "og:title", content: `${this.ogTitle}` },
+        { property: "og:description", content: this.ogDesc },
         { property: "og:image", content: this.metadata.mainCoverUrl },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
@@ -58,10 +58,10 @@ export default {
     rjCode() {
       return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
     },
-    pageTitle() {
-      return `${this.rjCode} ${this.metadata.title} - ASMR Online`;
+    ogTitle() {
+      return `${this.metadata.title} - ASMR Online`;
     },
-    twitterDesc() {
+    ogDesc() {
       return  `🆔 RJ Code: ${this.rjCode}
 ⭕ Circle: ${this.metadata.circle.name}
 🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
@@ -72,6 +72,9 @@ export default {
 📦 DLSite Sales: ${this.metadata.dl_count}
 Listen Online For FREE!
 ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
+    },
+    pageTitle() {
+      return `${this.rjCode} ${this.metadata.title} - ASMR Online`;
     },
     searchDesc() {
       // 把文件展示出来
