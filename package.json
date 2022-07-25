@@ -31,7 +31,7 @@
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
-    "@quasar/app": "^1.9.6",
+    "@quasar/app": "^2.4.1",
     "copy-webpack-plugin": "^5.1.1",
     "eslint": "^7.25.0",
     "eslint-loader": "^4.0.2",
@@ -44,7 +44,11 @@
     "yarn": ">= 1.21.1"
   },
   "browserslist": [
-    "cover 99.5% in CN"
+    "defaults",
+    "not dead",
+    "not IE 11",
+    "iOS >= 10.3",
+    "Chrome >= 80"
   ],
   "eslintIgnore": [
     "dist/*",

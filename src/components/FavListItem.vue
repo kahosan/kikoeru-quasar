@@ -69,11 +69,11 @@
             text-color="black"
             class="q-pa-sm"
             :options="[
-              {label: '想听', value: 'marked'},
-              {label: '在听', value: 'listening'},
-              {label: '听过', value: 'listened'},
-              {label: '重听', value: 'replay'},
-              {label: '搁置', value: 'postponed'}
+              {label: $t('common.progressEnum.marked'), value: 'marked'},
+              {label: $t('common.progressEnum.listening'), value: 'listening'},
+              {label: $t('common.progressEnum.listened'), value: 'listened'},
+              {label: $t('common.progressEnum.replay'), value: 'replay'},
+              {label: $t('common.progressEnum.postponed'), value: 'postponed'}
             ]"
           />
           </q-item-label>

@@ -87,8 +87,8 @@
           :to="`/works?tagId=${tag.id}`"
           :key=index
         >
-          <q-chip size="md" class="shadow-2">
-            {{ tag.name }}
+          <q-chip size="md" class="shadow-2" :class="$q.dark.isActive ? 'bg-grey-9' : ''">
+            {{ getLocaleTagName(tag) }}
           </q-chip>
         </router-link>
       </div>
@@ -113,12 +113,13 @@
 // import WorkDetails from 'components/WorkDetails'
 import CoverSFW from 'components/CoverSFW'
 import NotifyMixin from '../mixins/Notification.js'
+import TagI18N from "src/mixins/TagI18N";
 import {coverURL} from "src/utils/apiURL";
 
 export default {
   name: 'WorkCard',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, TagI18N],
 
   components: {
     CoverSFW

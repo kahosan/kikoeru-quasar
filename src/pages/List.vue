@@ -15,7 +15,11 @@
 
         <div class="row justify-center q-gutter-sm">
           <div class="col-auto" v-for="item in (keyword ? filteredItems : items)" :key="item.id">
-            <q-btn no-caps rounded color="primary" :label="`${item.name} (${item.count})`" :to="`/works?${queryField}=${item.id}`" />
+            <q-btn
+              no-caps rounded color="primary"
+              :label="`${restrict === 'tags' ? getLocaleTagName(item) : item.name} (${item.count})`"
+              :to="`/works?${queryField}=${item.id}`"
+            />
           </div>
         </div>
       </div>
@@ -25,11 +29,13 @@
 
 <script>
 import NotifyMixin from '../mixins/Notification.js'
+import TagI18N from "src/mixins/TagI18N";
+
 
 export default {
   name: 'List',
 
-  mixins: [NotifyMixin],
+  mixins: [NotifyMixin, TagI18N],
 
   props: {
     restrict: {

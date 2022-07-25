@@ -7,6 +7,7 @@ import workDetail from "./workDetail";
 import writeReview from "./writeReview";
 import favourites from "./favourites";
 import settings from "./settings";
+import player from "./player";
 
 export default {
   common: common,
@@ -17,5 +18,6 @@ export default {
   workDetail: workDetail,
   writeReview: writeReview,
   favourites: favourites,
-  settings: settings
+  settings: settings,
+  player: player
 }
