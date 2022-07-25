@@ -40,7 +40,7 @@
             :key=index
             class="col-auto text-grey"
           >
-            {{ tag.name }}
+            {{ getLocaleTagName(tag) }}
           </router-link>
         </div>
       </q-item-label>
@@ -51,6 +51,7 @@
 <script>
 // import WorkDetails from 'components/WorkDetails'
 // import CoverSFW from 'components/CoverSFW'
+import TagI18N from "src/mixins/TagI18N";
 
 import {coverURL} from "src/utils/apiURL";
 import DarkMode from '../mixins/DarkMode';
@@ -58,7 +59,7 @@ import DarkMode from '../mixins/DarkMode';
 export default {
   name: 'WorkListItem',
 
-  mixins: [DarkMode],
+  mixins: [DarkMode, TagI18N],
 
   props: {
     metadata: {
