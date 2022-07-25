@@ -3,7 +3,7 @@ export default {
   username: "ログインID",
   password: "パスワード",
   login: "ログイン",
-  guestLogin: "一時的な利用",
+  guestLogin: "ゲストアカウント",
   register: "新規登録",
   usernameLengthNotEnough: "ユーザー名の長さが {0} 以上",
   passwordLengthNotEnough: "パスワードの長さが {0} 以上 ",
@@ -12,7 +12,7 @@ export default {
   repeatPassword: "パスワードをもう一度入力してください",
   repeatPasswordNotMatch: "2回入力したパスワードが一致しない",
   postRegister: "登録",
-  backToLogin: "バック",
+  backToLogin: "戻る",
 
   // notify
   loginSuccess: "ログイン成功",

@@ -1,9 +1,9 @@
 export default {
   'playerSettings': "再生設定",
-  'forwardSeekTime': "快进跳跃秒数",
-  'rewindSeekTime': "早送りジャンプ秒数",
+  'forwardSeekTime': "早送り",
+  'rewindSeekTime': "早戻し",
   'seconds': "秒",
   'quality': "音質",
-  'fluentFirst': "流暢さ第一",
-  'qualityFirst': "品質第一",
+  'fluentFirst': "低音質(読込優先)",
+  'qualityFirst': "高音質(音質優先)",
 }
