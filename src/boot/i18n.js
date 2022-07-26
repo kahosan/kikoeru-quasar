@@ -17,9 +17,12 @@ export default ({ app }) => {
   // Set i18n instance on app;
   // We inject it into root component by doing so;
   // new Vue({..., i18n: ... }).$mount(...)
-  const lang = LocalStorage.getItem('userPreferredLang')
+  let userPreferredLocale = LocalStorage.getItem('userPreferredLang')
+  if (window.navigator.userAgent.startsWith('special-ua-for-prerender-')) {
+    userPreferredLocale = 'ja'
+  }
   app.i18n = new VueI18n({
-    locale: lang || quasarLocaleToAvailableLocale(Quasar.lang.getLocale()),
+    locale: userPreferredLocale || quasarLocaleToAvailableLocale(Quasar.lang.getLocale()),
     fallbackLocale: 'en',
     messages
   })
