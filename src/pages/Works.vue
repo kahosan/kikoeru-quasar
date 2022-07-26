@@ -29,7 +29,7 @@
             class="col-auto"
           />
 
-          <q-checkbox v-model="subtitleOnly" label="带字幕" class="row"></q-checkbox>
+          <q-checkbox v-model="subtitleOnly" :label="$t('common.translated')" class="row" v-if="$i18n.locale === 'zh-CN'"></q-checkbox>
 
           <!-- 切换显示模式按钮 -->
           <q-btn-toggle
