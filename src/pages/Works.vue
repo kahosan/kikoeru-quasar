@@ -102,6 +102,7 @@
 import WorkCard from 'components/WorkCard'
 import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
+import TagI18N from "src/mixins/TagI18N";
 import {mapState} from "vuex";
 import DarkMode from '../mixins/DarkMode'
 import {Pagination} from 'ant-design-vue';
@@ -111,7 +112,7 @@ import Language from "components/Language";
 export default {
   name: 'Works',
 
-  mixins: [NotifyMixin, DarkMode],
+  mixins: [NotifyMixin, DarkMode, TagI18N],
 
   components: {
     WorkCard,
@@ -410,7 +411,7 @@ export default {
 
         this.$axios.get(url)
           .then((response) => {
-            const name = response.data.name
+            const name = this.getLocaleTagName(response.data)
             let pageTitle
 
             switch (restrict) {
