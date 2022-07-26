@@ -149,7 +149,15 @@ export default {
   metaInfo() {
     return {
       title: this.pageTitle,
-      titleTemplate: "%s - ASMR Online"
+      titleTemplate: "%s - ASMR Online",
+      meta: [
+        { property: "og:site_name", content: "ASMR Online" },
+        { property: "og:url", content: window.location.href },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: this.pageTitle },
+        { property: "og:description", content: this.description },
+        { name: "description", content: this.description, vmid: "description"}
+      ]
     }
   },
 
@@ -181,6 +189,12 @@ export default {
     ...mapState('User', {
       userName: 'name'
     }),
+
+    description() {
+      return this.works.length ? this.works.map(work => {
+        return `RJ${work.id.toString().padStart(6, '0')} ${work.title}`
+      }).join('\n') + '\n...' : '';
+    },
 
     maxPage() {
       return Math.ceil(this.pagination.totalCount / this.pagination.pageSize);
