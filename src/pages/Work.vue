@@ -62,15 +62,15 @@ export default {
       return `${this.metadata.title} - ASMR Online`;
     },
     ogDesc() {
-      return  `🆔 RJ Code: ${this.rjCode}
+      return  `Listen Online For FREE!
+🆔 RJ Code: ${this.rjCode}
 ⭕ Circle: ${this.metadata.circle.name}
 🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
 🏷️ Tags(jp): ${this.metadata.tags.map(v => this.getLocaleTagName(v, 'ja-jp')).join(', ')}
 🏷️ Tags(en): ${this.metadata.tags.map(v => this.getLocaleTagName(v, 'en-us')).join(', ')}
 📅 Release: ${this.metadata.release}
-💰 DLSite Price: ${this.metadata.price} ￥
+💰 DLSite Price: ${this.metadata.price}￥
 📦 DLSite Sales: ${this.metadata.dl_count}
-Listen Online For FREE!
 ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
     },
     pageTitle() {

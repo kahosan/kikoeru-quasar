@@ -156,6 +156,9 @@ export default {
         { property: "og:type", content: "website" },
         { property: "og:title", content: this.pageTitle },
         { property: "og:description", content: this.description },
+        { property: "og:image", content: this.metaCover },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image:src", content: this.metaCover },
         { name: "description", content: this.description, vmid: "description"}
       ]
     }
@@ -191,9 +194,12 @@ export default {
     }),
 
     description() {
-      return this.works.length ? this.works.map(work => {
-        return `RJ${work.id.toString().padStart(6, '0')} ${work.title}`
-      }).join('\n') + '\n...' : '';
+      const content = this.works.map?.(work => `RJ${work.id.toString().padStart(6, '0')} ${work.title}`).join('\n\n') + '\n...'
+      return 'Listen Online For FREE!\n\n' + content;
+    },
+
+    metaCover() {
+      return this.works?.[0]?.mainCoverUrl;
     },
 
     maxPage() {
