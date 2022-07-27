@@ -329,8 +329,8 @@ export default {
             if (error.response.status === 401) {
               // this.showWarnNotif(error.response.data.error)
               // 验证失败，跳转到登录页面
-              const path = this.$router.currentRoute.path
-              if (path !=='/login') {
+              const path = this.$router.currentRoute.fullPath
+              if (!path.startsWith('/login')) {
                 this.$q.sessionStorage.set("redirect", path)
                 this.$router.push('/login');
               }
