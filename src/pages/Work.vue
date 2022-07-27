@@ -49,7 +49,7 @@ export default {
         { property: "og:image", content: this.metadata.mainCoverUrl },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
-        { name: "description", content: this.searchDesc, vmid: "description"}
+        { name: "description", content: this.ogDesc, vmid: "description"}
       ]
     }
   },
