@@ -74,7 +74,23 @@
       <!-- 价格&售出数 -->
       <div class="q-pt-sm q-pb-none">
         <span class="q-mx-sm text-weight-medium text-h6 text-red">{{metadata.price}} JPY</span> {{ $t('workDetail.sales') }}: {{metadata.dl_count}}
+
+        <div class="inline-block">
+          <q-chip
+            v-if="!metadata.nsfw"
+            dense outline square
+            class="text-green"
+            style="margin-top: 2px"
+          >{{$t('common.sfw')}}</q-chip>
+          <q-chip
+            v-if="metadata.has_subtitle && $i18n.locale === 'zh-CN'"
+            dense outline square
+            class="text-light-blue"
+            style="margin-top: 2px;"
+          >{{$t('common.translated')}}</q-chip>
+        </div>
       </div>
+
 
       <!-- 标签 -->
       <div class="q-px-none q-py-sm" v-if="showTags">

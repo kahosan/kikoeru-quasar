@@ -76,8 +76,26 @@
       <div v-show="metadata.title">
         <span class="q-mx-sm text-weight-medium text-h6 text-red">{{ metadata.price }} JPY</span>
         <span>{{ $t('workCard.sales') }}: {{ metadata.dl_count }}</span>
-        <span v-if="!metadata.nsfw" class="q-mx-sm" style="background: #e6f7d6; color: #56842a">{{$t('common.sfw')}}</span>
-        <span v-if="metadata.has_subtitle" class="q-mx-sm" style="color: dodgerblue">{{ $t('common.translated') }}</span>
+<!--        <span v-if="!metadata.nsfw" class="q-mx-sm" style="background: #e6f7d6; color: #56842a">{{$t('common.sfw')}}</span>-->
+<!--        <span v-if="metadata.has_subtitle" class="q-mx-sm" style="background: dodgerblue">{{ $t('common.translated') }}</span>-->
+
+<!--        <div class="inline-block ">-->
+          <q-chip
+            v-if="!metadata.nsfw"
+            dense outline square
+            class="text-green q-py-sm"
+            size="sm"
+            style="margin-top: 0;"
+          >{{$t('common.sfw')}}</q-chip>
+          <q-chip
+            v-if="metadata.has_subtitle && $i18n.locale === 'zh-CN'"
+            dense outline square
+            class="text-light-blue q-py-sm"
+            size="sm"
+            style="margin-top: 0;"
+          >{{$t('common.translated')}}</q-chip>
+<!--        </div>-->
+
       </div>
 
       <!-- 标签 -->
