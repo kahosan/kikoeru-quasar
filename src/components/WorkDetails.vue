@@ -77,7 +77,7 @@
 
         <div class="inline-block">
           <q-chip
-            v-if="!metadata.nsfw"
+            v-if="!metadata.nsfw === undefined && !metadata.nsfw"
             dense outline square
             class="text-green"
             style="margin-top: 2px"
