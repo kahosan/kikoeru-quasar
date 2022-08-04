@@ -51,6 +51,7 @@ export default {
   },
   mounted() {
     this.checkRegEnable();
+    this.$q.dark.set(this.$q.localStorage.getItem('dark') ?? true)
   },
   methods: {
     navigateToRegister() {

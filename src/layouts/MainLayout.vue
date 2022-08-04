@@ -262,7 +262,7 @@ export default {
     this.checkUpdate();
     this.loadSharedConfig();
 
-    if (this.$q.localStorage.has('dark') && this.$q.localStorage.getItem('dark')) { this.$q.dark.set(true) }
+    this.$q.dark.set(this.$q.localStorage.getItem('dark') ?? true)
   },
 
   computed: {
