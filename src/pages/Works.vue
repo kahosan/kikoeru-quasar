@@ -159,7 +159,8 @@ export default {
         { property: "og:image", content: this.metaCover },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metaCover },
-        { name: "description", content: this.description, vmid: "description"}
+        { name: "description", content: this.description, vmid: "description"},
+        { name: "robot", content: "noindex" }
       ]
     }
   },

@@ -38,11 +38,18 @@ export default {
   },
 
   metaInfo () {
+    const url = process.env.URL + this.$router.resolve({
+      name: 'work',
+      params: { id: this.metadata.id.toString().padStart(6, '0') },
+    }).href
     return {
       title: this.pageTitle,
+      link: [
+        { rel: 'canonical', href: url }
+      ],
       meta: [
         { property: "og:site_name", content: "ASMR Online" },
-        { property: "og:url", content: `https://www.asmr.one/work/${this.rjCode}` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { property: "og:title", content: `${this.ogTitle}` },
         { property: "og:description", content: this.ogDesc },
@@ -56,7 +63,7 @@ export default {
 
   computed: {
     rjCode() {
-      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
+      return 'RJ' + this.metadata.id.toString().padStart(6, '0')
     },
     ogTitle() {
       return `${this.metadata.title} - ASMR Online`;
