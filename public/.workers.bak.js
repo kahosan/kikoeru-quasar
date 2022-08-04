@@ -27,14 +27,13 @@ addEventListener("fetch", event => {
   }
 
   event.respondWith((async () => {
-    const endpoint = PRERENDER_ENDPOINT,
-      ua = PRERENDER_UA,
-      url = new URL(request.url);
+    const url = new URL(request.url),
+      width = request.headers.get('user-agent')?.includes('Android') ? '390' : '1440';
 
     // url 增加查询参数 rawUA
     // url.searchParams.append('rawUA', request.headers.get('user-agent'));
     // url.searchParams.append('cf-from', 'workers');
-    const res = await fetch(endpoint, {
+    return await fetch(PRERENDER_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,11 +41,10 @@ addEventListener("fetch", event => {
       },
       body: JSON.stringify({
         url: url.href,
-        userAgent: ua
+        userAgent: PRERENDER_UA,
+        width
       })
-    })
-    return res;
+    });
   })())
   // 爬虫使用固定端点进行预渲染
-
 })
