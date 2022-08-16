@@ -147,9 +147,16 @@ export default {
   },
 
   metaInfo() {
+    const url = process.env.URL + this.$router.resolve({
+      name: 'works',
+      query: { ...this.$route.query, page: this.page },
+    }).href
     return {
       title: this.pageTitle,
       titleTemplate: "%s - ASMR Online",
+      link: [
+        { rel: 'canonical', href: url }
+      ],
       meta: [
         { property: "og:site_name", content: "ASMR Online" },
         { property: "og:url", content: window.location.href },
@@ -160,7 +167,7 @@ export default {
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metaCover },
         { name: "description", content: this.description, vmid: "description"},
-        { name: "robot", content: "noindex" }
+        // { name: "robot", content: "noindex" }
       ]
     }
   },
