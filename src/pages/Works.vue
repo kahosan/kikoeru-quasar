@@ -88,6 +88,7 @@
             v-model="page"
             :pageSize="pagination.pageSize"
             :total="pagination.totalCount"
+            :itemRender="paginationItemRender"
             />
         </div>
 
@@ -385,6 +386,21 @@ export default {
   },
 
   methods: {
+    paginationItemRender(current, type, originalElement) {
+      // prerender 不支持 script，所以回落到 href 跳转
+      if (window.navigator.userAgent.startsWith('special-ua-for-prerender-')) {
+        const url = this.$router.resolve({
+          name: 'works',
+          query: { ...this.$route.query, page: current },
+        }).href
+
+        originalElement.data = originalElement.data || {};
+        originalElement.data.attrs = originalElement.data.attrs || {}
+        originalElement.data.attrs.href = url
+      }
+
+      return originalElement;
+    },
     requestWorksQueue() {
       this.loading = true;
       this.works = {};
