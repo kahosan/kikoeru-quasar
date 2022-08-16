@@ -27,6 +27,7 @@ export default {
       title: '404 - ASMR Online',
       meta: [
         {name: "robot", content: "noindex"},
+        {name: "prerender-status-code", content: "404"},
       ]
     }
   }
