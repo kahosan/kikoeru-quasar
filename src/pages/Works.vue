@@ -152,17 +152,35 @@ export default {
       name: 'works',
       query: { ...this.$route.query, page: this.page },
     }).href
+
+    // landing page
+    if (JSON.stringify({ ...this.$route.query, page: this.page }) === JSON.stringify({page: 1})) {
+      return {
+        title: "ASMR Online",
+        link: [{ rel: 'canonical', href: process.env.URL }],
+        meta: [
+          { name: 'description', content: 'Listen ASMR Online For Free! 免费在线 ASMR 同人音声' },
+          { name: 'keywords', content: 'ASMR, ASMR Online, 在线音声, 同人音声, Doujin ASMR, Japanese ASMR' },
+          { property: "og:site_name", content: "ASMR Online" },
+          { property: "og:type", content: "website" },
+          { property: "og:url", content: process.env.URL },
+          { property: "og:title", content: `${this.pageTitle} - ASMR Online` },
+          { property: "og:image", content: this.metaCover },
+          { name: "twitter:card", content: "summary_large_image" },
+          { name: "twitter:image:src", content: this.metaCover },
+        ]
+      }
+    }
+
     return {
       title: this.pageTitle,
       titleTemplate: "%s - ASMR Online",
-      link: [
-        { rel: 'canonical', href: url }
-      ],
+      link: [{ rel: 'canonical', href: url }],
       meta: [
         { property: "og:site_name", content: "ASMR Online" },
-        { property: "og:url", content: window.location.href },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
-        { property: "og:title", content: this.pageTitle },
+        { property: "og:title", content: `${this.pageTitle} - ASMR Online` },
         { property: "og:description", content: this.description },
         { property: "og:image", content: this.metaCover },
         { name: "twitter:card", content: "summary_large_image" },
