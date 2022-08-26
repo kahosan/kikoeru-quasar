@@ -16,6 +16,8 @@ function patchDotEnvForQuasar1(env) {
 }
 
 module.exports = function (ctx) {
+  ctx.env = require('dotenv').config().parsed;
+
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
