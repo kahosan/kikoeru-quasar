@@ -47,8 +47,56 @@ export default {
     doUpdate(remoteVersion) {
       this.$q.localStorage.set('localVersion', remoteVersion)
     },
+
+    /**
+     * 检查 iOS 版本，提醒用户升级到最新版，最新版支持后台播放
+     */
+    checkIOSNeedUpdate() {
+      const iPhoneOS = navigator.userAgent.match(/OS ((\d+_?){2,3})\s/);
+      const iPadOS = navigator.userAgent.match(/Version\/((\d+.?){2,3})/)
+      if (!(iPhoneOS || iPadOS)) {
+        return
+      }
+
+      let a, b;
+
+      if (iPhoneOS) {
+        [a, b] = iPhoneOS[1].split('_').map(v => parseInt(v))
+      } else {
+        [a, b] = iPadOS[1].split('.').map(v => parseInt(v))
+      }
+
+      console.log("ios version", a, b)
+
+      // 15 > iOS > 15.6
+      if (a === 15 && b < 6 && !this.$q.localStorage.getItem('never_shown_need_upgrade_iOS_15_6_1')) {
+        this.$q.notify({
+          message: this.$t('common.need_upgrade_iOS_15_6_1'),
+          caption: this.$t('common.new_feature_on_iOS_15_6_1'),
+          color: 'warning',
+          textColor: 'black',
+          timeout: 10000,
+          multiLine: true,
+          actions: [
+            {
+              label: this.$t('common.neverShown'),
+              color: 'secondary',
+              handler: () => {
+                this.$q.localStorage.set('never_shown_need_upgrade_iOS_15_6_1', true)
+              }
+            },
+            {
+              label: this.$t('common.dismiss'),
+              color: 'primary'
+            }
+          ]
+        })
+      }
+    }
   },
   mounted() {
+    this.checkIOSNeedUpdate()
+
     let localVersion = this.$q.localStorage.getItem('localVersion')
     if (localVersion && this.hasUpdate(localVersion, version)) {
       this.notifyUpdate(version)
