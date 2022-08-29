@@ -8,6 +8,7 @@ import writeReview from "./writeReview";
 import favourites from "./favourites";
 import settings from "./settings";
 import player from "./player";
+import feedback from "./feedback";
 
 export default {
   common: common,
@@ -19,5 +20,6 @@ export default {
   writeReview: writeReview,
   favourites: favourites,
   settings: settings,
-  player: player
+  player: player,
+  feedback: feedback
 }

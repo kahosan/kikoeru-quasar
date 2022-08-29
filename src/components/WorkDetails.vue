@@ -169,9 +169,11 @@
         </q-list>
       </q-btn-dropdown>
 
-      <q-btn dense @click="showReviewDialog = true" color="cyan q-mt-sm shadow-4 q-mx-xs q-px-sm" :label="$t('workDetail.writeReview')" />
-
+      <q-btn dense @click="showReviewDialog = true" color="cyan" class="q-mt-sm shadow-4 q-mx-xs q-px-sm" :label="$t('workDetail.writeReview')" />
       <WriteReview v-if="showReviewDialog" @closed="processReview" :workid="metadata.id" :metadata="metadata"></WriteReview>
+
+      <q-btn dense @click="showFeedbackDialog = true" color="grey-8" class="q-mt-sm shadow-4 q-mx-xs q-px-sm" :label="$t('feedback.title')" icon="report_gmailerrorred" />
+      <WorkFeedback v-model="showFeedbackDialog" :workid="metadata.id" :metadata="metadata"></WorkFeedback>
     </div>
   </div>
 </template>
@@ -183,6 +185,7 @@ import NotifyMixin from '../mixins/Notification.js'
 import TagI18N from "src/mixins/TagI18N";
 import DarkMode from '../mixins/DarkMode'
 import {coverURL} from "src/utils/apiURL";
+import WorkFeedback from "components/WorkFeedback";
 
 export default {
   name: 'WorkDetails',
@@ -191,7 +194,8 @@ export default {
 
   components: {
     CoverSFW,
-    WriteReview
+    WriteReview,
+    WorkFeedback
   },
 
   props: {
@@ -207,6 +211,7 @@ export default {
       userMarked: false,
       progress: '',
       showReviewDialog: false,
+      showFeedbackDialog: false,
       showTags: true
     }
   },

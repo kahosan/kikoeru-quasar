@@ -9,4 +9,7 @@ export default {
     postponed: '保留にする',
   },
   comingSoon: '尚未实现，敬请期待',
+  cancel: "キャンセル",
+  submit: "送信する",
+  optional: "任意"
 }
