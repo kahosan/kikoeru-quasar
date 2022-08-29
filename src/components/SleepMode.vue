@@ -1,11 +1,10 @@
 <template>
-    <q-dialog v-bind:value="value" v-on:input="$emit('input')" persistent>
+    <q-dialog v-bind:value="value" v-on:input="$emit('input')" >
       <q-card>
         <div class="q-pa-sm">
           <q-time
             v-model="time"
             now-btn
-            :dark="sleepMode"
           />
         </div>
 
@@ -22,7 +21,7 @@
 
       </q-card>
     </q-dialog>
-</template> 
+</template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
@@ -63,7 +62,7 @@ export default {
       if (visible) {
         if (!this.sleepMode) {
           const currentTime = new Date();
-          this.time = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');          
+          this.time = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');
         } else {
           this.time = this.sleepTime;
         }
