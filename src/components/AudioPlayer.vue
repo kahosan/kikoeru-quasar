@@ -109,6 +109,7 @@
             @rejected="onLyricFileRejected"
             @input="onLyricFileLoaded"
             :label="$t('player.selectSubtitleFile')"
+            :filter="files => files.filter(file => file.size < 300 * 1024)"
             accept=".lrc"
           >
             <template v-slot:prepend>
@@ -182,6 +183,7 @@ import {coverURL} from '../utils/apiURL';
 import DarkMode from '../mixins/DarkMode'
 import Notification from "src/mixins/Notification";
 import {formatSeconds} from "src/utils/time";
+import * as Sentry from "@sentry/vue";
 
 export default {
   name: 'AudioPlayer',
@@ -360,7 +362,19 @@ export default {
       let reader = new FileReader()
       reader.onloadend = () => {
         this.setLyricContent(reader.result);
+
+        Sentry.captureMessage(`Subtitle Upload RJ${this.currentPlayingFile.hash.split('/')[0]} ${this.currentPlayingFile.title}`, scope => {
+          scope.setTags({
+            event: 'subtitle',
+            workID: this.currentPlayingFile.hash.split('/')[0],
+            hash: this.currentPlayingFile.hash,
+            title: this.currentPlayingFile.title,
+          })
+          scope.setExtra("currentPlayingFile", this.currentPlayingFile)
+          scope.addAttachment({filename: fileObject.name, data: reader.result})
+        })
       }
+
       reader.readAsText(fileObject)
       this.showLyricLoader = false
     },

@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.10.4",
-    "@sentry/tracing": "^6.13.3",
-    "@sentry/vue": "^6.13.3",
+    "@sentry/tracing": "^7.11.1",
+    "@sentry/vue": "^7.11.1",
     "ant-design-vue": "^1.7.8",
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
