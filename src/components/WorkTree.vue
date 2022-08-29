@@ -32,7 +32,9 @@
 
           <q-item-section>
             <q-item-label lines="2">{{ item.title }}</q-item-label>
-            <q-item-label v-if="item.children" caption lines="1">{{ `${item.children.length} 项目` }}</q-item-label>
+            <q-item-label v-if="item.children" caption lines="1">
+              {{ `${$tc('common.item', item.children.length)}` }}
+            </q-item-label>
             <q-item-label v-if="item.duration" caption lines="1">{{ formatSeconds(item.duration) }}</q-item-label>
           </q-item-section>
 

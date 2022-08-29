@@ -15,5 +15,6 @@ export default {
   new_feature_on_iOS_15_6_1: '即可支持后台连播下一集',
   cancel: "取消",
   submit: "提交",
-  optional: "可选"
+  optional: "可选",
+  item: "{n} 项目"
 }

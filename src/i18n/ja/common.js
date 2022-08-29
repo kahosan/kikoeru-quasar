@@ -11,5 +11,6 @@ export default {
   comingSoon: '尚未实现，敬请期待',
   cancel: "キャンセル",
   submit: "送信する",
-  optional: "任意"
+  optional: "任意",
+  item: "{n} 項目"
 }

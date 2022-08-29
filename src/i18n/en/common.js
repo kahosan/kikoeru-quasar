@@ -15,5 +15,6 @@ export default {
   new_feature_on_iOS_15_6_1: 'so that we could play next track in background',
   cancel: "cancel",
   submit: "submit",
-  optional: "optional;"
+  optional: "optional",
+  item: "no item | 1 item | {n} items"
 }
