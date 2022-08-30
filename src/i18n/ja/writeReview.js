@@ -2,7 +2,7 @@ export default {
   myReview: 'コメント',
 
   deleteMarker: '削除',
-  secondConfirmDeleteMarker: '本当にブックマークごと削除しますか?',
+  secondConfirmDeleteMarker: 'お気に入りごと削除しますか?',
   secondConfirmYes: 'はい',
   secondConfirmNo: 'いいえ',
 

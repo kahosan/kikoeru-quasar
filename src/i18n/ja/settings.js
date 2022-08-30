@@ -1,5 +1,5 @@
 export default {
-  'playerSettings': "再生設定",
+  'playerSettings': "再生関連",
   'forwardSeekTime': "早送り",
   'rewindSeekTime': "早戻し",
   'seconds': "秒",

@@ -1,6 +1,6 @@
 // text in pages/Works.vue
 export default {
-  sort: '並び替え',
+  sort: 'Sort',
   // sort options
   releaseDesc: '発売日が新しい順',
   new: '最新',
@@ -16,5 +16,5 @@ export default {
   sfwOnly: '全年齢',
   random: 'ランダム',
 
-  guestLoginRateLimitTips: 'ヒント：ゲストアカウントを使用すると読込速度が制限されるため、自分のアカウントを登録することをお勧めします。',
+  guestLoginRateLimitTips: 'ヒント：ゲストアカウントを使用すると読込速度が制限されます。',
 }

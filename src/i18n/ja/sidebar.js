@@ -1,7 +1,7 @@
 export default {
   // top
   library: 'ライブラリ',
-  myFavourites: 'ブックマーク',
+  myFavourites: 'お気に入り',
   circles: 'サークル',
   tags: 'タグ',
   vas: '声優',
@@ -9,11 +9,11 @@ export default {
   sleepMode: 'スリープモード',
 
   // bottom
-  darkMode: 'ナイトモード',
+  darkMode: 'ダークモード',
   about: 'About',
   settings: '設定',
   logout: 'ログアウト',
-  doubleCheckLogout: '本当にログアウトしますか？',
+  doubleCheckLogout: 'ログアウトしますか？',
   doubleCheckLogoutCancel: 'いいえ',
   doubleCheckLogoutConfirm: 'はい',
 }
