@@ -37,6 +37,10 @@ const mutations = {
     state.playing = false
   },
 
+  SET_METADATA (state, metadata) {
+    state.metadata = metadata
+  },
+
   // Play a specific file from the queue.
   SET_TRACK: (state, index) => {
     if (index >= state.queue.length || index < 0) {

@@ -214,6 +214,8 @@ export default {
     if (this.$q.localStorage.has('swapSeekButton')) {
       this.swapSeekButton = this.$q.localStorage.getItem('swapSeekButton')
     }
+
+    this.setupMediaSessionActionHandler()
   },
 
   watch: {
@@ -352,6 +354,14 @@ export default {
       'EMPTY_QUEUE',
       'SET_VOLUME'
     ]),
+
+    setupMediaSessionActionHandler() {
+      if (!('mediaSession' in navigator)) return
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.nextTrack())
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.previousTrack())
+      navigator.mediaSession.setActionHandler('seekforward', () => this.forward(this.forwardSeekTime))
+      navigator.mediaSession.setActionHandler('seekbackward', () => this.rewind(this.rewindSeekTime))
+    },
 
     onLyricFileRejected() {
       this.showWarnNotif("仅支持 .lrc 格式的字幕")

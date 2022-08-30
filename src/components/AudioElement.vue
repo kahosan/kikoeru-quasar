@@ -24,6 +24,7 @@ import Lyric from 'lrc-file-parser'
 import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import VuePlyr from "vue-plyr";
+// import {coverURL} from "src/utils/apiURL";
 
 
 /**
@@ -77,7 +78,8 @@ export default {
       'forwardSeekTime',
       'rewindSeekMode',
       'forwardSeekMode',
-      'lyricContent'
+      'lyricContent',
+      'metadata'
     ]),
 
     ...mapGetters('AudioPlayer', [
@@ -233,6 +235,8 @@ export default {
       if (this.player.currentTime !== this.player.duration) {
         this.player.play()
       }
+
+      this.updateMediaMetadata()
     },
 
     onTimeupdate() {
@@ -350,6 +354,19 @@ export default {
             this.showErrNotif(error.message || error);
           }
         })
+    },
+
+    updateMediaMetadata() {
+      if (!('mediaSession' in navigator)) return
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: this.currentPlayingFile.title,
+        album: this.metadata.title,
+        artist: `RJ${this.metadata.id}`
+        // TODO blur image
+        // artwork: [
+          // { src: coverURL(this.metadata, 'sam'), type: 'image/png' },
+        // ]
+      })
     },
   },
 

@@ -86,13 +86,17 @@ export default {
       type: Array,
       required: true,
     },
+    metadata: {
+      type: Object,
+      required: true
+    }
   },
 
   watch: {
     tree () {
       this.initPath()
       this.prefetchAudioUrls()
-    }
+    },
   },
 
   computed: {
@@ -162,6 +166,7 @@ export default {
           index: this.queue.findIndex(file => file.hash === item.hash),
           resetPlaying: true
         })
+        this.$store.commit('AudioPlayer/SET_METADATA', this.metadata)
       }
     },
 
