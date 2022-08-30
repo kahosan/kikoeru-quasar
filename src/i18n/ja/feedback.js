@@ -1,17 +1,17 @@
 export default {
   title: "フィードバック",
 
-  whatKindOfIssue: "どのような問題があったのですか？",
+  whatKindOfIssue: "なにか問題が発生しましたか?",
   category: {
-    noFiles: "トラックなし",
-    missingFiles: "欠落しているファイル",
+    noFiles: "トラックがない",
+    missingFiles: "ファイルがない",
     fileBroken: "ファイルの破損",
     cantPlay: "再生できない",
-    notOriginal: "オリジナルファイルではない",
-    subtitleNotMatch: "字幕が一致しない（中国語のみ対応）",
+    notOriginal: "オリジナルのファイルではない",
+    subtitleNotMatch: "字幕が一致しない(中国語のみ)",
     other: "その他",
   },
 
-  tellUsDetail: "詳細をお書きください。",
-  thankYourFeedBack: "フィードバックをありがとうございました。"
+  tellUsDetail: "詳細を記載(英語もしくは中国語のみ)",
+  thankYourFeedBack: "フィードバックをいただきありがとうございました。"
 }
