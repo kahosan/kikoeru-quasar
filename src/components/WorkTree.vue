@@ -1,5 +1,5 @@
 <template>
-  <div class="q-ma-md " style="">
+  <div class="q-ma-md " style="" id="work-tree">
     <q-breadcrumbs gutter="xs" v-if="path.length">
       <q-breadcrumbs-el   >
         <q-btn no-caps flat dense size="md" icon="folder" style="height: 30px;" @click="path = []">ROOT</q-btn>
@@ -106,7 +106,8 @@ export default {
       set(path) {
         this.$router.push({
           name: this.$route.name,
-          query: { path: JSON.stringify(path) }
+          query: { path: JSON.stringify(path) },
+          hash: '#work-tree'
         })
       }
     },
