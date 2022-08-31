@@ -81,7 +81,7 @@ export default {
 ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
     },
     pageTitle() {
-      return `${this.rjCode} ${this.metadata.title} - ASMR Online`;
+      return `${this.rjCode} ${this.metadata.title || ''} - ASMR Online`;
     },
     searchDesc() {
       // 把文件展示出来
