@@ -94,7 +94,6 @@ export default {
 
   watch: {
     tree () {
-      // this.getInitialPath()
       this.prefetchAudioUrls()
     },
   },
@@ -113,6 +112,7 @@ export default {
     },
     ...mapState('AudioPlayer', ['qualityBehavior']),
     fatherFolder () {
+      if (!this.tree.length) { return }
       let fatherFolder = this.tree.concat()
       this.path.forEach(folderName => {
         fatherFolder = fatherFolder.find(item => item.type === 'folder' && item.title === folderName).children
