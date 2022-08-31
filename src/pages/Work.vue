@@ -94,8 +94,8 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
   },
 
   watch: {
-    $route (to) {
-      this.workid = to.params.id;
+    '$route.params.id' (workID) {
+      this.workid = workID;
       this.requestData();
     }
   },
