@@ -77,7 +77,7 @@ export default {
 
   data() {
     return {
-      path: []
+      // path: []
     }
   },
 
@@ -94,12 +94,23 @@ export default {
 
   watch: {
     tree () {
-      this.initPath()
+      // this.getInitialPath()
       this.prefetchAudioUrls()
     },
   },
 
   computed: {
+    path: {
+      get() {
+        return this.$route.query.path ? JSON.parse(this.$route.query.path) : this.getInitialPath()
+      },
+      set(path) {
+        this.$router.push({
+          name: this.$route.name,
+          query: { path: JSON.stringify(path) }
+        })
+      }
+    },
     ...mapState('AudioPlayer', ['qualityBehavior']),
     fatherFolder () {
       let fatherFolder = this.tree.concat()
@@ -136,7 +147,7 @@ export default {
       return this.playing && this.currentPlayingFile.hash === hash ? "pause" : "play_arrow"
     },
 
-    initPath () {
+    getInitialPath () {
       const initialPath = []
       let fatherFolder = this.tree.concat()
       while (fatherFolder.length === 1) {
@@ -146,7 +157,8 @@ export default {
         initialPath.push(fatherFolder[0].title)
         fatherFolder = fatherFolder[0].children
       }
-      this.path = initialPath
+      // this.path = initialPath
+      return initialPath
     },
 
     onClickBreadcrumb (index) {
@@ -155,7 +167,7 @@ export default {
 
     onClickItem (item) {
       if (item.type === 'folder') {
-        this.path.push(item.title);
+        this.path = [...this.path, item.title];
       } else if (item.type === 'text' || item.type === 'image') {
         this.openFile(item);
       } else if (item.type === 'other') {
