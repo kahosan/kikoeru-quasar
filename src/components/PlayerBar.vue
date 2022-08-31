@@ -1,7 +1,7 @@
 <template>
   <q-slide-transition class="bordered elevated">
     <div v-show="currentPlayingFile.hash && hide" class="row text-black" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-white'">
-      <q-item clickable v-ripple @click="toggleHide()" style="padding: 0px 5px;" class="col non-selectable">
+      <q-item clickable v-ripple @click="showPlayer()" style="padding: 0px 5px;" class="col non-selectable">
         <q-item-section avatar>
           <q-img transition="fade" :src="samCoverUrl" style="height: 50px; width: 50px" class="rounded-borders" />
         </q-item-section>
@@ -49,8 +49,8 @@ export default {
   },
 
   methods: {
-    toggleHide () {
-      this.$store.commit('AudioPlayer/TOGGLE_HIDE')
+    showPlayer () {
+      this.$store.commit('AudioPlayer/PLAYER_SHOW')
     },
 
     togglePlaying () {

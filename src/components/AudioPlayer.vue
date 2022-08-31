@@ -6,7 +6,7 @@
         <!-- 音声封面 -->
         <div class="bg-dark row items-center albumart">
           <q-img contain transition="fade" :src="coverUrl" :ratio="4/3" />
-          <q-btn dense round size="md" :color="color" :text-color="textColor" icon="keyboard_arrow_down" @click="toggleHide()" class="absolute-top-left q-ma-sm" />
+          <q-btn dense round size="md" :color="color" :text-color="textColor" icon="keyboard_arrow_down" @click="hidePlayer()" class="absolute-top-left q-ma-sm" />
           <q-btn dense round size="md" :color="color" :text-color="textColor" icon="more_vert" class="absolute-top-right q-ma-sm">
             <q-menu anchor="bottom right" self="top right">
               <q-item clickable v-ripple @click="hideSeekButton = !hideSeekButton">
@@ -219,6 +219,17 @@ export default {
   },
 
   watch: {
+    $route() {
+      if (this.$q.screen.lt.sm && !this.hide && this.currentPlayingFile.hash) {
+        this.hidePlayer()
+
+        // browser back button does only one action per press
+        // if the action is hide player
+        // then do not really go backward
+        this.$router.forward();
+      }
+    },
+
     currentPlayingFile() {
       // 播放文件发生变化时，清空字幕输入框
       this.localLyric = null
@@ -337,7 +348,7 @@ export default {
   methods: {
     formatSeconds,
     ...mapMutations('AudioPlayer', {
-      toggleHide: 'TOGGLE_HIDE',
+      hidePlayer: 'PLAYER_HIDE',
       togglePlay: 'TOGGLE_WANT_PLAYING',
       nextTrack: 'NEXT_TRACK',
       previousTrack: 'PREVIOUS_TRACK',
@@ -432,7 +443,7 @@ export default {
         this.$router.push(this.workDetailUrl)
       }
       if (this.$q.screen.lt.sm) {
-          this.toggleHide()
+          this.hidePlayer()
       }
     }
   }
