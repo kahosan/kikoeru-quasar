@@ -53,14 +53,14 @@
 
         <!-- 无缩略图的列表 -->
         <q-list v-if="displayMode === 'list'" bordered separator class="shadow-2">
-          <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel=true />
+          <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel=true :id="work.id" />
         </q-list>
 
         <!-- 缩略图或完整卡片 -->
         <div v-else class="row q-col-gutter-x-md q-col-gutter-y-lg">
           <div class="col-xs-12 col-sm-6 col-md-4"
                :class="displayMode === 'detail' ? 'col-lg-3 col-xl-2': 'col-lg-2 col-xl-2'" v-for="work in works"
-               :key="work.id">
+               :key="work.id" :id="work.id">
             <WorkCard :metadata="work" :thumbnailMode="displayMode === 'thumbnail'" class="fit"/>
           </div>
         </div>

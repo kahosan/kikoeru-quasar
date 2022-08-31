@@ -143,6 +143,10 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
           }
         })
     },
-  }
+  },
+  beforeRouteEnter(to, from, next) {
+    window.specifyBackTarget = {...from, hash: `#${to.params.id}`}
+    next()
+  },
 }
 </script>

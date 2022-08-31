@@ -428,6 +428,11 @@ export default {
     back () {
       if (this.$store.state.route.from === undefined) {
         this.$router.push('/')
+
+      } else if ('specifyBackTarget' in window && this.$store.state.route.from.name === 'work') {
+        this.$router.push(window.specifyBackTarget)
+        delete window.specifyBackTarget
+
       } else {
         this.$router.back()
       }
