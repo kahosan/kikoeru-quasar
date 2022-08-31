@@ -26,6 +26,7 @@ module.exports = function (ctx) {
       'axios',
       'i18n',
       'vue-meta',
+      'vuex-router-sync'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

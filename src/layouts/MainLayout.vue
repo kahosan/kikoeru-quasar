@@ -426,23 +426,12 @@ export default {
     },
 
     back () {
-      if (this.needBackToHome) {
+      if (this.$store.state.route.from === undefined) {
         this.$router.push('/')
-        this.needBackToHome = false
       } else {
         this.$router.back()
       }
     }
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      // 用户通过作品详情链接进入本站
-      // 此时后退按钮会把用户指向网站外
-      // 因此刚刚进入本站时，后退按钮应当指向网站首页，而不是 "上一页"
-      if (vm.isNotAtHomePage) {
-        vm.needBackToHome = true;
-      }
-    });
   },
 }
 </script>
