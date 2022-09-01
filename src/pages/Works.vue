@@ -127,7 +127,7 @@ export default {
       lastUrlBeforeDeactivate: '',
       lastPageBeforeDeactivate: 1,
       active: false,
-      displayMode: 'detail',
+      displayMode: window.navigator.userAgent.startsWith('special-ua-for-prerender-') ? 'thumbnail' : 'detail',
       showLabel: true,
       detailMode: false,
       stopLoad: false,
