@@ -8,6 +8,7 @@
   "author": "Watanuki-Kimihiro",
   "private": true,
   "scripts": {
+    "dev": "quasar dev",
     "test": "node_modules/.bin/eslint ."
   },
   "dependencies": {
