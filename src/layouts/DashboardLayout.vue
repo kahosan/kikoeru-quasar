@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hhh LpR fFf">
-    <q-header elevated class="bg-black">
+    <q-header elevated :class="classBackgroundColor">
       <q-toolbar>
-        <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-        <q-toolbar-title>仪表盘</q-toolbar-title>
+        <q-btn flat @click="drawer = !drawer" round dense icon="menu" :class="classTextColor"/>
+        <q-toolbar-title :class="classTextColor">仪表盘</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -21,7 +21,7 @@
       bordered
       content-class="bg-grey-3"
     >
-      <div class="column justify-between fit">
+      <div class="column justify-between fit" :class="classBackgroundColor">
         <q-list padding class="col-auto">
           <q-item 
             clickable
@@ -39,6 +39,23 @@
 
             <q-item-section>
               {{link.title}}
+            </q-item-section>
+          </q-item>
+          <q-item
+            clickable
+            v-ripple
+            exact
+            @click="$q.dark.toggle"
+            active-class="text-deep-purple text-weight-medium"
+          >
+            <q-item-section avatar>
+              <q-icon :name="`${this.$q.dark.isActive ? 'wb_sunny' : 'nights_stay'}`" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-subtitle1">
+                {{$t('sidebar.darkMode')}}
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -94,7 +111,6 @@ export default {
       ]
     }
   },
-
   sockets: {
     success (payload) {
       this.showSuccNotif(payload.message)
@@ -115,7 +131,7 @@ export default {
     // 从 LocalStorage 中读取 token
     const token = this.$q.localStorage.getItem('jwt-token') || ''
     this.$socket.io.opts.query.auth_token = token
-    
+
     if (!this.$socket.connected) {
       this.$socket.open()
     }
