@@ -27,7 +27,8 @@ module.exports = function (ctx) {
       'i18n',
       'vue-meta',
       'vuex-router-sync',
-      'sentry'
+      'sentry',
+      'socket.io'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -53,6 +54,10 @@ module.exports = function (ctx) {
     framework: {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'en-us', // Quasar language pack
+
+      config: {
+        dark: true
+      },
 
       // Possible values for "all":
       // * 'auto' - Auto-import needed Quasar components & directives
@@ -135,7 +140,7 @@ module.exports = function (ctx) {
           secure: false
         },
         '/socket.io': {
-          target: 'http://localhost:8888',
+          target: 'http://192.168.0.106:6789',
           ws: true
         }
       }
