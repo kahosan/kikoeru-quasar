@@ -293,6 +293,11 @@ export default {
           icon: 'mic',
           path: '/vas'
         },
+        {
+          title: this.$t('sidebar.configration'),
+          icon: "tune",
+          path: '/admin'
+        }
       ]
     },
     isNotAtHomePage () {

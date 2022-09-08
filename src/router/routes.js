@@ -1,5 +1,5 @@
 import MainLayout from 'layouts/MainLayout'
-// import DashboardLayout from 'layouts/DashboardLayout'
+import DashboardLayout from 'layouts/DashboardLayout'
 
 import Works from 'pages/Works'
 import Work from 'pages/Work'
@@ -8,10 +8,10 @@ import Login from 'pages/Login'
 // import Favourites from 'pages/Favourites'
 // import About from 'pages/About'
 
-// import Folders from 'pages/Dashboard/Folders'
-// import Scanner from 'pages/Dashboard/Scanner'
-// import Advanced from 'pages/Dashboard/Advanced'
-// import UserManage from 'pages/Dashboard/UserManage'
+import Folders from 'pages/Dashboard/Folders'
+import Scanner from 'pages/Dashboard/Scanner'
+import Advanced from 'pages/Dashboard/Advanced'
+import UserManage from 'pages/Dashboard/UserManage'
 
 function prefixRoutes(prefix, routes) {
   return routes.map((route) => {
@@ -21,6 +21,28 @@ function prefixRoutes(prefix, routes) {
 }
 
 const routes = [
+  {
+    path: '/admin',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        component: Folders
+      },
+      {
+        path: 'scanner',
+        component: Scanner
+      },
+      {
+        path: 'advanced',
+        component: Advanced
+      },
+      {
+        path: 'usermanage',
+        component: UserManage
+      }
+    ]
+  },
   {
     path: '/',
     component: MainLayout,

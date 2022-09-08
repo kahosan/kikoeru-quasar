@@ -5,6 +5,7 @@ export default {
   circles: '社团',
   tags: '标签',
   vas: '声优',
+  configration: '设定',
   randomPlay: '随心听',
   sleepMode: '睡眠模式',
 
