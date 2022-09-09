@@ -140,8 +140,8 @@ export default {
       subtitleOnly: false,
       previousUrl: '',
       sortOption: {
-        label: 'works.new',
-        order: 'create_date',
+        label: 'works.releaseDesc',
+        order: 'release',
         sort: 'desc'
       },
     }
@@ -272,11 +272,6 @@ export default {
         {
           label: 'works.releaseDesc',
           order: 'release',
-          sort: 'desc'
-        },
-        {
-          label: 'works.new',
-          order: 'create_date',
           sort: 'desc'
         },
         {
