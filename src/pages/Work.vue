@@ -2,7 +2,7 @@
   <div>
     <WorkDetails :metadata="metadata" @reset="requestData()" />
     <!-- <WorkQueue :queue="tracks" :editable="false" /> -->
-    <WorkTree :metadata="metadata" :tree="tree" :editable="false" />
+    <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md"/>
   </div>
 </template>
 
