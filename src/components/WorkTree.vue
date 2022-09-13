@@ -15,7 +15,7 @@
         <q-item
           clickable
           v-ripple
-          v-for="(item, index) in fatherFolder"
+          v-for="(item, index) in currentFolder"
           :key="index"
           :active="item.type === 'audio' && currentPlayingFile.hash === item.hash"
           active-class="text-white bg-teal"
@@ -112,8 +112,8 @@ export default {
       }
     },
     ...mapState('AudioPlayer', ['qualityBehavior']),
-    fatherFolder () {
-      if (!this.tree.length) { return }
+    currentFolder () {
+      if (!this.tree.length) { return [] }
       let fatherFolder = this.tree.concat()
       this.path.forEach(folderName => {
         fatherFolder = fatherFolder.find(item => item.type === 'folder' && item.title === folderName).children
@@ -124,7 +124,7 @@ export default {
 
     queue () {
       const queue = []
-      this.fatherFolder.forEach(item => {
+      this.currentFolder.forEach(item => {
         if (item.type === 'audio') {
           queue.push(item)
         }
