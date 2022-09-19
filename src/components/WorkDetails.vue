@@ -7,10 +7,10 @@
     <div class="q-pa-sm">
       <div class="q-px-sm q-py-none">
         <!-- 标题 -->
-        <div class="text-h6 text-weight-regular">
-          <router-link :to="`/work/${rjCode}`" :class="classTextColor">
+        <div class="text-h6 text-weight-regular" :class="classTextColor">
+<!--          <router-link :to="`/work/${rjCode}`" :class="classTextColor">-->
             {{metadata.title}}
-          </router-link>
+<!--          </router-link>-->
         </div>
 
         <!-- 社团名 -->
