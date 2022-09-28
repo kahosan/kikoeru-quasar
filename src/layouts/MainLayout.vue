@@ -426,7 +426,11 @@ export default {
     },
 
     back () {
-      if (this.$store.state.route.from === undefined) {
+      if (
+          this.$store.state.route.from === undefined ||
+          this.$store.state.route.from.path === '/' ||
+          this.$store.state.route.from.path === '/login'
+      ) {
         this.$router.push('/')
 
       } else if ('specifyBackTarget' in window && this.$store.state.route.from.name === 'work') {
