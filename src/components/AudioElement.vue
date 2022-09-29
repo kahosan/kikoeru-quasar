@@ -6,12 +6,9 @@
     @canplay="onCanplay()"
     @timeupdate="onTimeupdate()"
     @ended="onEnded()"
-    @seeked="onSeeked()"
     @playing="onPlaying()"
     @waiting="onWaiting()"
     @pause="onPause()"
-    @stalled="onStalled"
-    @loadedmetadata="onLoadedMetadata()"
   >
     <audio crossorigin="anonymous" >
       <source v-if="source" :src="source"/>
@@ -88,13 +85,13 @@ export default {
   },
 
   watch: {
-    // reference this.loadLrcFile() AudioPlayer.localLyric()
+    // reference this.findLrcFromRemote() AudioPlayer.localLyric()
     lyricContent(lyricContent) {
       console.log('LRC file loaded')
       this.lrcObj.setLyric(lyricContent);
       if (lyricContent) {
         this.lrcAvailable = true;
-        this.playLrc(this.playing)
+        this.setLrcPlayStatus(this.playing)
       } else {
         this.lrcAvailable = false;
         this.SET_CURRENT_LYRIC('')
@@ -115,7 +112,6 @@ export default {
       } else {
         this.CONSUME_PLAYING_CONTROL_SIGNAL()
       }
-      // this.playLrc(flag);
     },
 
     // watch source -> media.load() -> canPlay -> player.play()
@@ -124,7 +120,7 @@ export default {
         console.log('source changed')
         // 加载新音频/视频文件
         this.player.media.load();
-        this.loadLrcFile();
+        this.findLrcFromRemote();
       }
     },
 
@@ -146,40 +142,26 @@ export default {
       if (rewind) {
         this.player.rewind(this.rewindSeekTime);
         this.SET_REWIND_SEEK_MODE(false);
-        this.playLrc(true);
+        this.setLrcPlayStatus(true);
       }
     },
     forwardSeekMode(forward) {
       if (forward) {
         this.player.forward(this.forwardSeekTime);
         this.SET_FORWARD_SEEK_MODE(false);
-        this.playLrc(true);
+        this.setLrcPlayStatus(true);
       }
     }
   },
 
   methods: {
-    onLoadedMetadata() {
-      /**
-       * fuck you ios
-       */
-      console.log("onLoadedMetadata")
-    },
-
-    /**
-     * 音频加载失败
-     */
-    onStalled(e) {
-      console.log("onStalled", e)
-    },
-
     /**
      * 当 外部暂停（线控暂停、软件切换）、用户控制暂停、seek 时会触发本事件
      * 特别注意：在一些安卓浏览器上，seek 时会触发 onPause，随后会自动恢复播放
      */
     onPause() {
       console.log('onPause')
-      this.playLrc(false)
+      this.setLrcPlayStatus(false)
       this.ON_PAUSE()
     },
     /**
@@ -187,21 +169,15 @@ export default {
      */
     onPlaying() {
       console.log('onPlaying')
-      this.playLrc(true)
+      this.setLrcPlayStatus(true)
       this.ON_PLAY()
-
-      // 缓冲时用户暂停播放
-      // 可是缓冲结束后浏览器强制继续播放
-      // if (!this.wantPlaying) {
-      //   this.player.pause()
-      // }
     },
     /**
      * 当播放器缓冲区空，被迫暂停加载时会触发本事件
      */
     onWaiting() {
       console.log('onWaiting')
-      this.playLrc(false)
+      this.setLrcPlayStatus(false)
       this.ON_PLAY()
     },
     ...mapMutations('AudioPlayer', [
@@ -294,18 +270,7 @@ export default {
       }
     },
 
-    onSeeked() {
-      console.log("onSeeked")
-      // if (this.lrcAvailable) {
-      //   this.lrcObj.play(this.player.currentTime * 1000);
-      //   if (!this.playing) {
-      //     this.lrcObj.pause();
-      //   }
-      // }
-    },
-
-
-    playLrc(playStatus) {
+    setLrcPlayStatus(playStatus) {
       if (this.lrcAvailable) {
         if (playStatus) {
           this.lrcObj.play(this.player.currentTime * 1000);
@@ -323,7 +288,7 @@ export default {
       })
     },
 
-    loadLrcFile() {
+    findLrcFromRemote() {
       const token = this.$q.localStorage.getItem('jwt-token') || '';
       const fileHash = this.queue[this.queueIndex].hash;
       const url = `/api/media/check-lrc/${fileHash}?token=${token}`;
@@ -375,7 +340,7 @@ export default {
     this.SET_VOLUME(this.player.volume);
     this.initLrcObj();
     if (this.source) {
-      this.loadLrcFile();
+      this.findLrcFromRemote();
     }
   }
 }
