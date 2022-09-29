@@ -36,6 +36,7 @@ export default function () {
     shouldLoadPlayer: false,
 
     qualityBehavior: "fluentFirst", // "fluentFirst" or "qualityFirst"
-    metadata: {}
+    metadata: {},
+    subtitleDisplayMode: 'in-app',  // 'in-app' or 'pip'
   }
 }

@@ -4,7 +4,7 @@
     <q-slide-transition>
       <q-card square v-show="currentPlayingFile.hash && !hide" class="fixed-bottom-right audio-player" :class="classTextColor" @mousewheel.prevent @touchmove.prevent>
         <!-- 音声封面 -->
-        <div class="bg-dark row items-center albumart">
+        <div class="bg-dark row items-center albumart relative-position">
           <q-img contain transition="fade" :src="coverUrl" :ratio="4/3" />
           <q-btn dense round size="md" :color="color" :text-color="textColor" icon="keyboard_arrow_down" @click="hidePlayer()" class="absolute-top-left q-ma-sm" />
           <q-btn dense round size="md" :color="color" :text-color="textColor" icon="more_vert" class="absolute-top-right q-ma-sm">
@@ -51,6 +51,16 @@
             <q-btn v-if="!hideSeekButton" round size="lg" :color="color" :text-color="textColor" style="opacity: 0.8" @click="swapSeekButton ? previousTrack() : rewind(true)" :icon="swapSeekButton ? 'skip_previous': rewindIcon" />
             <q-btn v-if="!hideSeekButton" round size="lg" :color="color" :text-color="textColor" style="opacity: 0.8" @click="swapSeekButton ? nextTrack() : forward(true)" :icon="swapSeekButton ? 'skip_next' : forwardIcon" />
           </div>
+          <q-btn
+            dense rounded size="sm"
+            class="absolute-bottom-left q-ma-sm"
+            :text-color="textColor"
+            icon="subtitles"
+            :color="subtitleDisplayMode === 'pip' ? 'primary' : color"
+            @click="toggleSubtitleDisplayMode"
+            v-if="pipSubtitleAvailable"
+            label="桌面字幕"
+          />
         </div>
 
         <!-- 进度条控件 -->
@@ -214,8 +224,6 @@ export default {
     if (this.$q.localStorage.has('swapSeekButton')) {
       this.swapSeekButton = this.$q.localStorage.getItem('swapSeekButton')
     }
-
-    this.setupMediaSessionActionHandler()
   },
 
   watch: {
@@ -260,6 +268,14 @@ export default {
   },
 
   computed: {
+    pipSubtitleAvailable() {
+      // 当前只有中文支持
+      if (this.$i18n.locale !== 'zh-CN') {
+        return false
+
+      // 当前为 pip 模式，或者可以进入 pip 模式
+      } else return !!(this.subtitleDisplayMode === 'pip' || this.$store.state.AudioPlayer.lyricContent.length);
+    },
     coverUrl () {
       return coverURL(this.currentPlayingFile, 'main')
     },
@@ -337,7 +353,8 @@ export default {
       'queueIndex',
       'playMode',
       'rewindSeekTime',
-      'forwardSeekTime'
+      'forwardSeekTime',
+      'subtitleDisplayMode'
     ]),
 
     ...mapGetters('AudioPlayer', [
@@ -366,12 +383,23 @@ export default {
       'SET_VOLUME'
     ]),
 
-    setupMediaSessionActionHandler() {
-      if (!('mediaSession' in navigator)) return
-      navigator.mediaSession.setActionHandler('nexttrack', () => this.nextTrack())
-      navigator.mediaSession.setActionHandler('previoustrack', () => this.previousTrack())
-      navigator.mediaSession.setActionHandler('seekforward', () => this.forward(this.forwardSeekTime))
-      navigator.mediaSession.setActionHandler('seekbackward', () => this.rewind(this.rewindSeekTime))
+    toggleSubtitleDisplayMode() {
+      // 浏览器不支持 pip
+      if (!('pictureInPictureEnabled' in document)) {
+        this.showWarnNotif("你的浏览器不支持画中画功能，无法显示桌面字幕")
+        return false
+
+        // 用户已禁止 pip
+      } else if (!document.pictureInPictureEnabled) {
+        this.showWarnNotif("画中画功能被禁用，无法显示桌面字幕")
+        return false
+      }
+
+      if (this.subtitleDisplayMode === 'pip') {
+        this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'in-app')
+      } else {
+        this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'pip')
+      }
     },
 
     onLyricFileRejected() {

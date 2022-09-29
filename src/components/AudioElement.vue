@@ -1,19 +1,21 @@
 <template>
-  <vue-plyr
-    ref="plyr"
-    :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled', 'loadedmetadata']"
-    :options="{controls: ['progress']}"
-    @canplay="onCanplay()"
-    @timeupdate="onTimeupdate()"
-    @ended="onEnded()"
-    @playing="onPlaying()"
-    @waiting="onWaiting()"
-    @pause="onPause()"
-  >
-    <audio crossorigin="anonymous" >
-      <source v-if="source" :src="source"/>
-    </audio>
-  </vue-plyr>
+  <div>
+    <vue-plyr
+      ref="plyr"
+      :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled', 'loadedmetadata']"
+      :options="{controls: ['progress']}"
+      @canplay="onCanplay()"
+      @timeupdate="onTimeupdate()"
+      @ended="onEnded()"
+      @playing="onPlaying()"
+      @waiting="onWaiting()"
+      @pause="onPause()"
+    >
+      <audio crossorigin="anonymous" >
+        <source v-if="source" :src="source"/>
+      </audio>
+    </vue-plyr>
+  </div>
 </template>
 
 <script>
@@ -35,7 +37,7 @@ export default {
 
   components: {
     // 'vue-plyr': () => import('vue-plyr')
-    'vue-plyr': VuePlyr
+    'vue-plyr': VuePlyr,
   },
 
   data() {
@@ -212,10 +214,17 @@ export default {
         this.player.play()
       }
 
+      this.setMediaSessionActionHandler()
       this.updateMediaMetadata()
+      this.updatePositionState()
     },
 
     onTimeupdate() {
+      // 安卓必须要靠这种方式才能在后台更新字幕，用于 pip
+      if (this.playing && this.$store.state.AudioPlayer.subtitleDisplayMode === 'pip') {
+        this.setLrcPlayStatus(true)
+      }
+
       // 当目前的播放位置已更改时触发
       this.SET_CURRENT_TIME(this.player.currentTime)
       if (this.sleepMode && this.sleepTime) {
@@ -289,6 +298,8 @@ export default {
     },
 
     findLrcFromRemote() {
+      this.lrcAvailable = false;
+
       const token = this.$q.localStorage.getItem('jwt-token') || '';
       const fileHash = this.queue[this.queueIndex].hash;
       const url = `/api/media/check-lrc/${fileHash}?token=${token}`;
@@ -321,7 +332,22 @@ export default {
         })
     },
 
+    updatePositionState() {
+      console.log('updatePositionState')
+      if (!('mediaSession' in navigator)) return;
+      if (!('setPositionState' in navigator.mediaSession)) return;
+
+      const duration = this.player.duration
+      const currentTime = this.player.currentTime
+      navigator.mediaSession.setPositionState({
+        duration: Math.max(0, duration || 0),
+        playbackRate: 1,
+        position: Math.max(0, Math.min(duration || 0, currentTime || 0))
+      })
+    },
+
     updateMediaMetadata() {
+      console.log('updateMediaMetadata')
       if (!('mediaSession' in navigator)) return
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.currentPlayingFile.title,
@@ -333,6 +359,24 @@ export default {
         // ]
       })
     },
+
+    setMediaSessionActionHandler() {
+      console.log('setMediaSessionActionHandler')
+      if (!('mediaSession' in navigator)) return
+      navigator.mediaSession.setActionHandler('play', () => this.$store.commit('AudioPlayer/WANT_PLAY'))
+      navigator.mediaSession.setActionHandler('pause', () => this.$store.commit('AudioPlayer/WANT_PAUSE'))
+      navigator.mediaSession.setActionHandler('seekto', (event) => {
+        if (event.fastSeek && ('fastSeek' in this.player)) {
+          this.player.fastSeek(event.seekTime);
+          return;
+        }
+        this.player.currentTime = event.seekTime;
+      })
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.$store.commit('AudioPlayer/NEXT_TRACK'))
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.$store.commit('AudioPlayer/PREVIOUS_TRACK'))
+      navigator.mediaSession.setActionHandler('seekforward', () => this.$store.commit('AudioPlayer/SET_FORWARD_SEEK_MODE', this.$store.state.AudioPlayer.forwardSeekTime))
+      navigator.mediaSession.setActionHandler('seekbackward', () => this.$store.commit('AudioPlayer/SET_REWIND_SEEK_MODE', this.$store.state.AudioPlayer.rewindSeekTime))
+    },
   },
 
   mounted() {
@@ -342,6 +386,18 @@ export default {
     if (this.source) {
       this.findLrcFromRemote();
     }
+
+    addEventListener('enterpictureinpicture', () => {
+      this.setMediaSessionActionHandler()
+      this.updateMediaMetadata()
+      this.updatePositionState()
+    }, false)
+
+    addEventListener('leavepictureinpicture', () => {
+      this.setMediaSessionActionHandler()
+      this.updateMediaMetadata()
+      this.updatePositionState()
+    }, false)
   }
 }
 </script>
