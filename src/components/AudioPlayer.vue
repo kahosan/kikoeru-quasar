@@ -266,7 +266,7 @@ export default {
 
     workDetailUrl () {
       const hash = this.currentPlayingFile.hash
-      return hash ? `/work/RJ${hash.split('/')[0]}` : ""
+      return hash ? `/asmr/work/RJ${hash.split('/')[0]}` : ""
     },
 
     volume: {

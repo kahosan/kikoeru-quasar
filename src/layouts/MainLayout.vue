@@ -121,7 +121,7 @@
             clickable
             v-ripple
             exact
-            to="/about"
+            to="/asmr/about"
             @click="miniState = true"
             active-class="text-deep-purple text-weight-medium"
           >
@@ -140,7 +140,7 @@
             clickable
             v-ripple
             exact
-            to="/settings"
+            to="/asmr/settings"
             active-class="text-deep-purple text-weight-medium"
             @click="miniState = true"
           >
@@ -249,11 +249,11 @@ export default {
       this.$q.localStorage.set('dark', isActive)
     },
     keyword () {
-      this.$router.push(this.keyword ? `/works?keyword=${this.keyword}` : `/works`)
+      this.$router.push(this.keyword ? `/asmr/works?keyword=${this.keyword}` : `/asmr/works`)
     },
 
     randId () {
-      this.$router.push(`/work/RJ${this.randId}`)
+      this.$router.push(`/asmr/work/RJ${this.randId}`)
     },
   },
 
@@ -271,38 +271,38 @@ export default {
         {
           title: this.$t('sidebar.library'),
           icon: 'widgets',
-          path: '/'
+          path: '/asmr'
         },
         {
           title: this.$t('sidebar.myFavourites'),
           icon: 'favorite',
-          path: '/favourites'
+          path: '/asmr/favourites'
         },
         {
           title: this.$t('sidebar.circles'),
           icon: 'group',
-          path: '/circles'
+          path: '/asmr/circles'
         },
         {
           title: this.$t('sidebar.tags'),
           icon: 'label',
-          path: '/tags'
+          path: '/asmr/tags'
         },
         {
           title: this.$t('sidebar.vas'),
           icon: 'mic',
-          path: '/vas'
+          path: '/asmr/vas'
         },
         {
           title: this.$t('sidebar.configration'),
           icon: "tune",
-          path: '/admin'
+          path: '/asmr/admin'
         }
       ]
     },
     isNotAtHomePage () {
       const path = this.$route.path
-      return path && path !=='/' && path !=='/works' && path !== '/favourites';
+      return path && path !=='/' && path !=='/asmr/works' && path !== '/favourites';
     },
 
     ...mapState('User', {

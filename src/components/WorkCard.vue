@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <router-link :to="`/work/${rjCode}`">
+    <router-link :to="`/asmr/work/${rjCode}`">
       <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
@@ -9,14 +9,14 @@
     <div v-if="!thumbnailMode">
       <!-- 标题 -->
       <div class="q-mx-sm text-h6 text-weight-regular ellipsis-2-lines">
-        <router-link :to="`/work/${rjCode}`" style="color: inherit">
+        <router-link :to="`/asmr/work/${rjCode}`" style="color: inherit">
           {{ metadata.title }}
         </router-link>
       </div>
 
       <!-- 社团 -->
       <div class="q-ml-sm q-mt-sm q-mb-xs text-subtitle1 text-weight-regular ellipsis">
-        <router-link :to="`/works?circleId=${metadata.circle.id}`" class="text-grey">
+        <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="text-grey">
           {{ metadata.circle.name }}
         </router-link>
       </div>
@@ -102,7 +102,7 @@
       <div class="q-ma-xs" v-if="showTags">
         <router-link
           v-for="(tag, index) in metadata.tags"
-          :to="`/works?tagId=${tag.id}`"
+          :to="`/asmr/works?tagId=${tag.id}`"
           :key=index
         >
           <q-chip size="md" class="shadow-2" :class="$q.dark.isActive ? 'bg-grey-9' : ''">
@@ -115,7 +115,7 @@
       <div class="q-mx-xs q-my-sm">
         <router-link
           v-for="(va, index) in metadata.vas"
-          :to="`/works?vaId=${va.id}`"
+          :to="`/asmr/works?vaId=${va.id}`"
           :key=index
         >
           <q-chip square size="md" class="shadow-2" color="teal" text-color="white">

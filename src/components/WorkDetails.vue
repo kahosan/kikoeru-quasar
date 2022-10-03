@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="`/work/${rjCode}`">
+    <router-link :to="`/asmr/work/${rjCode}`">
       <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
@@ -8,14 +8,14 @@
       <div class="q-px-sm q-py-none">
         <!-- 标题 -->
         <div class="text-h6 text-weight-regular">
-          <router-link :to="`/work/${rjCode}`" :class="classTextColor">
+          <router-link :to="`/asmr/work/${rjCode}`" :class="classTextColor">
             {{metadata.title}}
           </router-link>
         </div>
 
         <!-- 社团名 -->
         <div class="text-subtitle1 text-weight-regular">
-          <router-link :to="`/works?circleId=${metadata.circle.id}`" class="text-grey">
+          <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="text-grey">
             {{metadata.circle.name}}
           </router-link>
         </div>
@@ -96,7 +96,7 @@
       <div class="q-px-none q-py-sm" v-if="showTags">
         <router-link
           v-for="(tag, index) in metadata.tags"
-          :to="`/works?tagId=${tag.id}`"
+          :to="`/asmr/works?tagId=${tag.id}`"
           :key=index
         >
           <q-chip size="md" class="shadow-4" :class="$q.dark.isActive ? 'bg-grey-9' : ''">
@@ -109,7 +109,7 @@
       <div class="q-px-none q-pt-sm q-py-sm">
         <router-link
           v-for="(va, index) in metadata.vas"
-          :to="`/works?vaId=${va.id}`"
+          :to="`/asmr/works?vaId=${va.id}`"
           :key=index
         >
           <q-chip square size="md" class="shadow-4" color="teal" text-color="white">

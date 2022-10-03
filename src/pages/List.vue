@@ -18,7 +18,7 @@
             <q-btn
               no-caps rounded color="primary"
               :label="`${restrict === 'tags' ? getLocaleTagName(item) : item.name} (${item.count})`"
-              :to="`/works?${queryField}=${item.id}`"
+              :to="`/asmr/works?${queryField}=${item.id}`"
             />
           </div>
         </div>

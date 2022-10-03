@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/work/${rjCode}`">
+  <router-link :to="`/asmr/work/${rjCode}`">
     <q-img
       :src="coverUrl"
       :ratio="4/3"

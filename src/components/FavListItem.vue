@@ -1,7 +1,7 @@
 <template>
   <q-item clickable class="row" :class="classBackgroundColor">
       <q-item-section class="col-auto" top>
-        <router-link :to="`/work/${rjCode}`">
+        <router-link :to="`/asmr/work/${rjCode}`">
           <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
         </router-link>
       </q-item-section>
@@ -9,13 +9,13 @@
 
       <q-item-section class="q-gutter-y-xs column items-start" top v-on:click.self="showReviewDialog = true">
         <q-item-label lines="2" class="text-body2">
-          <router-link :to="`/work/${rjCode}`" class="col-auto" style="color: inherit">
+          <router-link :to="`/asmr/work/${rjCode}`" class="col-auto" style="color: inherit">
             {{metadata.title}}
           </router-link>
         </q-item-label>
 
         <div class="row q-gutter-x-sm col-auto" >
-          <router-link :to="`/works?circleId=${metadata.circle.id}`" class="col-auto text-grey">
+          <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="col-auto text-grey">
             {{metadata.circle.name}}
           </router-link>
 
@@ -26,7 +26,7 @@
           <router-link
             v-for="(va, index) in metadata.vas"
             :key=index
-            :to="`/works?vaId=${va.id}`"
+            :to="`/asmr/works?vaId=${va.id}`"
             class="col-auto text-primary"
           >
             {{ va.name }}
