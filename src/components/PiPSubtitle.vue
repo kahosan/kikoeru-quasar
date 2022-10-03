@@ -2,12 +2,14 @@
   <!-- safari 必须让视频显示至少1像素，否则画中画黑屏 -->
   <div style="width: 1px; height: 1px; overflow: hidden; top: 0; left: 0; position: absolute">
     <canvas id="canvas" style="display: none"></canvas>
-    <video id="video" style="display: inline;" muted playsinline autoplay></video>
+    <video id="video" style="display: inline;" muted playsinline></video>
   </div>
 </template>
 
 <script>
 // import VuePlyr from "vue-plyr";
+import * as Sentry from "@sentry/vue";
+
 export default {
   name: "PiPSubtitle",
   props: {
@@ -28,6 +30,8 @@ export default {
      * 字幕也同时暂停
      */
     '$store.state.AudioPlayer.playing' (playing) {
+      // 只有 pip 显示时才跟随播放状态
+      if (!this.currentPiPStatus) { return }
       if (playing) {
         this.video.play()
       } else if (!playing) {
@@ -111,11 +115,21 @@ export default {
     show() {
       if (this.currentPiPStatus) { return }
 
-      if ('webkitSetPresentationMode' in this.video && typeof this.video.webkitSetPresentationMode === 'function') {
+      // iOS 15.3 必须先播放，再启动 PiP
+      this.video.play()
+
+      // 优先使用新版 api
+      if (typeof this.video.requestPictureInPicture === 'function') {
+        this.video.requestPictureInPicture().catch((e) => {
+          this.video.pause()
+          this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'in-app')
+          Sentry.captureException(e)
+        })
+
+      // 旧版 iOS 专用 api
+      } else if ('webkitSetPresentationMode' in this.video && typeof this.video.webkitSetPresentationMode === 'function') {
         this.video.webkitSetPresentationMode('picture-in-picture')
 
-      } else if (typeof this.video.requestPictureInPicture === 'function') {
-        this.video.requestPictureInPicture()
       }
     },
 
@@ -125,11 +139,14 @@ export default {
     hide() {
       if (!this.currentPiPStatus) { return }
 
-      if ('webkitSetPresentationMode' in this.video && typeof this.video.webkitSetPresentationMode === 'function') {
+      this.video.pause()
+
+      if (typeof document.exitPictureInPicture === 'function') {
+        document.exitPictureInPicture()
+
+      } else if ('webkitSetPresentationMode' in this.video && typeof this.video.webkitSetPresentationMode === 'function') {
         this.video.webkitSetPresentationMode('inline')
 
-      } else if (typeof document.exitPictureInPicture === 'function') {
-        document.exitPictureInPicture()
       }
     },
 
