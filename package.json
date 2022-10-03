@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "quasar dev",
+    "build": "quasar build",
     "test": "node_modules/.bin/eslint ."
   },
   "dependencies": {
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@quasar/app": "^2.4.1",
     "copy-webpack-plugin": "^5.1.1",
+    "core-js": "^3.25.1",
     "eslint": "^7.25.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",
