@@ -2,37 +2,17 @@
   <q-layout view="hhh LpR fFf">
     <q-header elevated :class="classBackgroundColor">
       <q-toolbar>
-        <q-btn flat @click="drawer = !drawer" round dense icon="menu" :class="classTextColor"/>
+        <q-btn flat @click="drawer = !drawer" round dense icon="menu" :class="classTextColor" />
         <q-toolbar-title :class="classTextColor">仪表盘</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="drawer"
-      show-if-above
-
-      :mini="miniState"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
-      mini-to-overlay
-
-      :width="200"
-      :breakpoint="500"
-      bordered
-      content-class="bg-grey-3"
-    >
+    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false"
+      @mouseout="miniState = true" mini-to-overlay :width="200" :breakpoint="500" bordered content-class="bg-grey-3">
       <div class="column justify-between fit" :class="classBackgroundColor">
         <q-list padding class="col-auto">
-          <q-item 
-            clickable
-            v-ripple
-            exact
-            :to="link.path"
-            active-class="text-primary text-weight-bold"
-            v-for="(link, index) in links"
-            :key="index"
-            class="col text-subtitle1"
-          >
+          <q-item clickable v-ripple exact :to="link.path" active-class="text-primary text-weight-bold"
+            v-for="(link, index) in links" :key="index" class="col text-subtitle1">
             <q-item-section avatar>
               <q-icon :name="link.icon" />
             </q-item-section>
@@ -41,13 +21,7 @@
               {{link.title}}
             </q-item-section>
           </q-item>
-          <q-item
-            clickable
-            v-ripple
-            exact
-            @click="$q.dark.toggle"
-            active-class="text-deep-purple text-weight-medium"
-          >
+          <q-item clickable v-ripple exact @click="$q.dark.toggle" active-class="text-deep-purple text-weight-medium">
             <q-item-section avatar>
               <q-icon :name="`${this.$q.dark.isActive ? 'wb_sunny' : 'nights_stay'}`" />
             </q-item-section>
@@ -75,9 +49,9 @@ import NotifyMixin from '../mixins/Notification.js'
 export default {
   name: 'DashboardLayout',
 
-  mixins: [DarkMode ,NotifyMixin],
+  mixins: [DarkMode, NotifyMixin],
 
-  data () {
+  data() {
     return {
       drawer: false,
       miniState: true,
@@ -85,41 +59,41 @@ export default {
         {
           title: '音声库',
           icon: 'folder',
-          path: '/admin'
+          path: '/asmr/admin'
         },
         {
           title: '扫描',
           icon: 'youtube_searched_for',
-          path: '/admin/scanner'
+          path: '/asmr/admin/scanner'
         },
         {
           title: '用户管理',
           icon: 'person',
-          path: '/admin/usermanage'
+          path: '/asmr/admin/usermanage'
         },
         {
           title: '高级设置',
           icon: 'settings',
-          path: '/admin/advanced'
+          path: '/asmr/admin/advanced'
         },
-        
+
         {
           title: '回到主页',
           icon: 'home',
-          path: '/'
+          path: '/asmr'
         }
       ]
     }
   },
   sockets: {
-    success (payload) {
+    success(payload) {
       this.showSuccNotif(payload.message)
       if (payload.auth) {
         this.$store.commit('User/INIT', payload.user)
         this.$store.commit('User/SET_AUTH', payload.auth)
       }
     },
-    error (err) {
+    error(err) {
       this.showWarnNotif(err.message || err)
       this.$socket.close()
       // 验证失败，跳转到登录页面
@@ -127,7 +101,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     // 从 LocalStorage 中读取 token
     const token = this.$q.localStorage.getItem('jwt-token') || ''
     this.$socket.io.opts.query.auth_token = token
@@ -140,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  a {
-    text-decoration:none;
-  }
+a {
+  text-decoration: none;
+}
 </style>
