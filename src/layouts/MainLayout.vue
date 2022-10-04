@@ -21,6 +21,7 @@
 
       </q-toolbar>
 
+      <PiPSubtitle v-if="shouldLoadPlayer && supportPiPSubtitle"/>
       <AudioPlayer v-if="shouldLoadPlayer" />
     </q-header>
 
@@ -206,8 +207,8 @@
     </q-page-container>
 
     <q-footer class="q-pa-none">
-      <LyricsBar v-if="shouldLoadPlayer"/>
-      <PlayerBar v-if="shouldLoadPlayer"/>
+      <LyricsBar v-if="shouldLoadPlayer" v-show="$store.state.AudioPlayer.subtitleDisplayMode === 'in-app'"/>
+      <PlayerBar v-if="shouldLoadPlayer" />
     </q-footer>
   </q-layout>
 </template>
@@ -230,6 +231,7 @@ export default {
     PlayerBar: () => import('components/PlayerBar'),
     AudioPlayer: () => import('components/AudioPlayer'),
     LyricsBar: () => import('components/LyricsBar'),
+    PiPSubtitle: () => import('components/PiPSubtitle'),
     SleepMode
   },
 
@@ -266,6 +268,20 @@ export default {
   },
 
   computed: {
+    supportPiPSubtitle() {
+      // return  ('mediaSession' in navigator) && ('setPositionState' in navigator.mediaSession)
+      // 浏览器不支持 pip，则不初始化 pip 模块
+      // 但播放器的 pip 按钮正常显示，用于提示用户升级浏览器
+      if (!('pictureInPictureEnabled' in document)) {
+        return false
+
+        // 用户已禁止 pip
+      } else if (!document.pictureInPictureEnabled) {
+        return false
+      }
+
+      return true
+    },
     links() {
       return [
         {
@@ -336,8 +352,7 @@ export default {
               // 验证失败，跳转到登录页面
               const path = this.$router.currentRoute.fullPath
               if (!path.startsWith('/login')) {
-                this.$q.sessionStorage.set("redirect", path)
-                this.$router.push('/login');
+                this.$router.replace('/login');
               }
             } else {
               this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
@@ -431,7 +446,11 @@ export default {
     },
 
     back () {
-      if (this.$store.state.route.from === undefined) {
+      if (
+          this.$store.state.route.from === undefined ||
+          this.$store.state.route.from.path === '/' ||
+          this.$store.state.route.from.path === '/login'
+      ) {
         this.$router.push('/')
 
       } else if ('specifyBackTarget' in window && this.$store.state.route.from.name === 'work') {

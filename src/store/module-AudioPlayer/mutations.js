@@ -177,6 +177,14 @@ const mutations = {
 
   SET_LYRIC_CONTENT: (state, lyricFile) => {
     state.lyricContent = lyricFile
+  },
+
+  SET_SUBTITLE_DISPLAY_MODE: (state, mode) => {
+    if (['in-app', 'pip'].includes(mode)) {
+      state.subtitleDisplayMode = mode
+    } else {
+      state.subtitleDisplayMode = 'in-app'
+    }
   }
 }
 
