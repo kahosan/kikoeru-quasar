@@ -299,6 +299,7 @@ export default {
 
     findLrcFromRemote() {
       this.lrcAvailable = false;
+      this.SET_CURRENT_LYRIC('');
 
       const token = this.$q.localStorage.getItem('jwt-token') || '';
       const fileHash = this.queue[this.queueIndex].hash;
