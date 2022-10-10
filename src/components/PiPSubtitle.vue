@@ -9,6 +9,7 @@
 <script>
 // import VuePlyr from "vue-plyr";
 import * as Sentry from "@sentry/vue";
+import { debounce } from 'quasar'
 
 export default {
   name: "PiPSubtitle",
@@ -29,15 +30,16 @@ export default {
      * 用户按了播放器的暂停
      * 字幕也同时暂停
      */
-    '$store.state.AudioPlayer.playing' (playing) {
+    '$store.state.AudioPlayer.playing': debounce(function(playing) {
       // 只有 pip 显示时才跟随播放状态
       if (!this.currentPiPStatus) { return }
+
       if (playing) {
         this.video.play()
       } else if (!playing) {
         this.video.pause()
       }
-    },
+    }, 10),
 
     /**
      * 用户调整桌面字幕开关时

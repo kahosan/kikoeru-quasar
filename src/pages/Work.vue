@@ -117,8 +117,21 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
       return files
     },
     requestData () {
+      const staticWorkInfoCancelToken = this.$axios.CancelToken.source();
+
+      // 这个接口有缓存，包含作品基础信息
+      this.$axios.get(`/api/workInfo/${this.workid}`, {cancelToken: staticWorkInfoCancelToken.token})
+        .then(response => {
+          this.metadata = {
+            ...this.metadata,
+            ...response.data
+          }
+        })
+
+      // 这个接口没缓存，包含当前用户对作品的评分和标记
       this.$axios.get(`/api/work/${this.workid}`)
         .then(response => {
+          staticWorkInfoCancelToken.cancel()
           this.metadata = response.data
         })
         .catch((error) => {
