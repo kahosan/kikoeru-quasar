@@ -220,7 +220,7 @@ export default {
     },
 
     onTimeupdate() {
-      // 安卓必须要靠这种方式才能在后台更新字幕，用于 pip
+      // 安卓在后台时，lyricObj 的 requestFrame 定时刷新不起作用，必须要靠这种方式才能在后台更新字幕，用于 pip
       if (this.playing && this.$store.state.AudioPlayer.subtitleDisplayMode === 'pip') {
         this.setLrcPlayStatus(true)
       }
