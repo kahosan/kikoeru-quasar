@@ -25,6 +25,9 @@ export default async ({ router }) => {
         'The fetching process for the media resource was aborted by the user agent at the user\'s request.',
         'NavigationDuplicated',
         'Cannot read properties of null (reading \'disconnect\')',
+
+        'Failed to execute \'setActionHandler\' on \'MediaSession\': The provided value \'seekto\' is not a valid enum value of type MediaSessionAction.',
+        'Non-Error promise rejection captured with keys: message',
       ]
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.

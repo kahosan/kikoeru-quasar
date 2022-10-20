@@ -11,7 +11,7 @@
               filled lazy-rules
               v-model="feedbackCategory"
               :label="$t('feedback.whatKindOfIssue')"
-              :options="['noFiles', 'missingFiles', 'fileBroken', 'cantPlay', 'notOriginal', 'subtitleNotMatch', 'other']"
+              :options="['noFiles', 'missingFiles', 'cantPlay', 'notOriginal', 'subtitleNotMatch', 'other']"
               :option-label="(item) => item && $t(`feedback.category.${item}`)"
               :rules="[ val => val && val.length > 0 || $t('feedback.whatKindOfIssue')]"
             />
@@ -24,8 +24,8 @@
                 lazy-rules
                 v-model="describeDetails"
                 type="textarea"
-                :label="$t('feedback.tellUsDetail') + (feedbackCategory === 'other' ? '' : ` (${$t('common.optional')})`)"
-                :rules="[ val => feedbackCategory !== 'other' || val.length > 0 || $t('feedback.tellUsDetail')]"
+                :label="$t('feedback.tellUsDetail')"
+                :rules="[ val => val.length > 0 || $t('feedback.tellUsDetail')]"
               />
             </div>
           </q-card-section>
