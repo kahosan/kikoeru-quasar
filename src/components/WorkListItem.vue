@@ -21,25 +21,17 @@
 
           <span class="col-auto">/</span>
 
-          <router-link
-            v-for="(va, index) in metadata.vas"
-            :to="`/asmr/works?vaId=${va.id}`"
-            :key=index
-            class="col-auto text-primary"
-          >
+          <router-link v-for="(va, index) in metadata.vas" :to="`/asmr/works?vaId=${va.id}`" :key=index
+            class="col-auto text-primary">
             {{ va.name }}
           </router-link>
         </div>
       </q-item-label>
 
-      <q-item-label v-if="showLabel && $q.screen.width> 700">
+      <q-item-label v-if="showLabel && $q.screen.width > 700">
         <div class="row q-gutter-x-sm q-gutter-y-xs">
-          <router-link
-            v-for="(tag, index) in metadata.tags"
-            :to="`/asmr/works?tagId=${tag.id}`"
-            :key=index
-            class="col-auto text-grey"
-          >
+          <router-link v-for="(tag, index) in metadata.tags" :to="`/asmr/works?tagId=${tag.id}`" :key=index
+            class="col-auto text-grey">
             {{ getLocaleTagName(tag) }}
           </router-link>
         </div>
@@ -53,8 +45,9 @@
 // import CoverSFW from 'components/CoverSFW'
 import TagI18N from "src/mixins/TagI18N";
 
-import {coverURL} from "src/utils/apiURL";
+import { coverURL } from "src/utils/apiURL";
 import DarkMode from '../mixins/DarkMode';
+import { formatProductID } from 'src/utils/formatProductID'
 
 export default {
   name: 'WorkListItem',
@@ -73,11 +66,11 @@ export default {
   },
 
   computed: {
-    samCoverUrl () {
+    samCoverUrl() {
       return coverURL(this.metadata, 'sam')
     },
     rjCode() {
-      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
+      return formatProductID(this.metadata.id, 'RJ')
     },
   }
 }

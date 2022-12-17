@@ -3,10 +3,10 @@
     <div class="text-h5 text-weight-regular q-ma-md flex">
       {{ pageTitle }}
       <span v-show="pagination.totalCount">
-          ({{ pagination.totalCount }})
+        ({{ pagination.totalCount }})
       </span>
       <q-space></q-space>
-      <Language class="col-auto"/>
+      <Language class="col-auto" />
     </div>
 
     <div :class="`row justify-center ${displayMode === 'list' ? 'list' : 'q-mx-md'}`">
@@ -15,39 +15,20 @@
         <!-- 不论是否有作品，都显示排序和浏览模式选项 -->
         <div class="row justify-between q-mb-md q-mr-sm">
           <!-- 排序选择框 -->
-          <q-select
-            dense
-            rounded
-            outlined
-            :bg-color="color"
-            transition-show="scale"
-            transition-hide="scale"
-            v-model="sortOption"
-            :options="options"
-            :option-label="option => $t(option.label)"
-            :label="$t('works.sort')"
-            class="col-auto"
-          />
+          <q-select dense rounded outlined :bg-color="color" transition-show="scale" transition-hide="scale"
+            v-model="sortOption" :options="options" :option-label="option => $t(option.label)" :label="$t('works.sort')"
+            class="col-auto" />
 
-          <q-checkbox v-model="subtitleOnly" :label="$t('common.translated')" class="row" v-if="$i18n.locale === 'zh-CN'"></q-checkbox>
+          <q-checkbox v-model="subtitleOnly" :label="$t('common.translated')" class="row"
+            v-if="$i18n.locale === 'zh-CN'"></q-checkbox>
 
           <!-- 切换显示模式按钮 -->
-          <q-btn-toggle
-            dense
-            spread
-            rounded
-            v-model="displayMode"
-            toggle-color="primary"
-            color="white"
-            text-color="primary"
-            :options="[
+          <q-btn-toggle dense spread rounded v-model="displayMode" toggle-color="primary" color="white"
+            text-color="primary" :options="[
               { icon: 'view_module', value: 'thumbnail' },
-              { icon: 'view_column', value: 'detail'},
+              { icon: 'view_column', value: 'detail' },
               { icon: 'list', value: 'list' }
-            ]"
-            style="width: 85px;"
-            class="col-auto"
-          />
+            ]" style="width: 85px;" class="col-auto" />
 
         </div>
 
@@ -59,9 +40,9 @@
         <!-- 缩略图或完整卡片 -->
         <div v-else class="row q-col-gutter-x-md q-col-gutter-y-lg">
           <div class="col-xs-12 col-sm-6 col-md-4"
-               :class="displayMode === 'detail' ? 'col-lg-3 col-xl-2': 'col-lg-2 col-xl-2'" v-for="work in works"
-               :key="work.id" :id="work.id">
-            <WorkCard :metadata="work" :thumbnailMode="displayMode === 'thumbnail'" class="fit"/>
+            :class="displayMode === 'detail' ? 'col-lg-3 col-xl-2' : 'col-lg-2 col-xl-2'" v-for="work in works"
+            :key="work.id" :id="work.id">
+            <WorkCard :metadata="work" :thumbnailMode="displayMode === 'thumbnail'" class="fit" />
           </div>
         </div>
 
@@ -70,29 +51,23 @@
 
         <!-- loading -->
         <div class="row justify-center q-my-md" v-show="loading">
-          <q-spinner-dots color="primary" size="40px"/>
+          <q-spinner-dots color="primary" size="40px" />
         </div>
 
         <!-- 分页 -->
         <div class="q-py-lg flex flex-center">
-<!--          <q-pagination-->
-<!--            v-model="page"-->
-<!--            :max="maxPage"-->
-<!--            :max-pages="7"-->
-<!--            :boundary-numbers="false"-->
-<!--            v-show="maxPage"-->
-<!--          />-->
-          <Pagination
-            show-quick-jumper
-            :class="this.$q.dark.isActive ? 'dark' : ''"
-            v-model="page"
-            :pageSize="pagination.pageSize"
-            :total="pagination.totalCount"
-            :itemRender="paginationItemRender"
-            />
+          <!--          <q-pagination-->
+          <!--            v-model="page"-->
+          <!--            :max="maxPage"-->
+          <!--            :max-pages="7"-->
+          <!--            :boundary-numbers="false"-->
+          <!--            v-show="maxPage"-->
+          <!--          />-->
+          <Pagination show-quick-jumper :class="this.$q.dark.isActive ? 'dark' : ''" v-model="page"
+            :pageSize="pagination.pageSize" :total="pagination.totalCount" :itemRender="paginationItemRender" />
         </div>
 
-        <div class="flex flex-center" v-show="userName === 'guest'">{{$t('works.guestLoginRateLimitTips')}}</div>
+        <div class="flex flex-center" v-show="userName === 'guest'">{{ $t('works.guestLoginRateLimitTips') }}</div>
 
       </q-page>
     </div>
@@ -104,11 +79,12 @@ import WorkCard from 'components/WorkCard'
 import WorkListItem from 'components/WorkListItem'
 import NotifyMixin from '../mixins/Notification.js'
 import TagI18N from "src/mixins/TagI18N";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 import DarkMode from '../mixins/DarkMode'
-import {Pagination} from 'ant-design-vue';
+import { Pagination } from 'ant-design-vue';
 import 'ant-design-vue/lib/pagination/style/css';
 import Language from "components/Language";
+import { formatProductID } from 'src/utils/formatProductID'
 
 export default {
   name: 'Works',
@@ -135,7 +111,7 @@ export default {
       works: [],
       pageTitle: '',
       // page: 1,
-      pagination: {currentPage: 0, pageSize: 12, totalCount: 0},
+      pagination: { currentPage: 0, pageSize: 12, totalCount: 0 },
       seed: 7, // random sort
       subtitleOnly: false,
       previousUrl: '',
@@ -154,7 +130,7 @@ export default {
     }).href
 
     // landing page
-    if (JSON.stringify({ ...this.$route.query, page: this.page }) === JSON.stringify({page: 1})) {
+    if (JSON.stringify({ ...this.$route.query, page: this.page }) === JSON.stringify({ page: 1 })) {
       return {
         title: "ASMR Online",
         link: [{ rel: 'canonical', href: process.env.URL }],
@@ -185,7 +161,7 @@ export default {
         { property: "og:image", content: this.metaCover },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metaCover },
-        { name: "description", content: this.description, vmid: "description"},
+        { name: "description", content: this.description, vmid: "description" },
         // { name: "robot", content: "noindex" }
       ]
     }
@@ -221,7 +197,7 @@ export default {
     }),
 
     description() {
-      const content = this.works.map?.(work => `RJ${work.id.toString().padStart(6, '0')} ${work.title}`).join('\n\n') + '\n...'
+      const content = this.works.map?.(work => `${formatProductID(work.id, 'RJ')} ${work.title}`).join('\n\n') + '\n...'
       return 'Listen Online For FREE!\n\n' + content;
     },
 
@@ -331,7 +307,7 @@ export default {
         }
       ]
     }
- },
+  },
 
   // keep-alive hooks
   // <keep-alive /> is set in MainLayout
@@ -426,7 +402,7 @@ export default {
         subtitle: this.subtitleOnly ? 1 : 0
       }
 
-      return this.$axios.get(this.url, {params})
+      return this.$axios.get(this.url, { params })
         .then((response) => {
           this.loading = false;
           const works = response.data.works
@@ -513,7 +489,7 @@ export default {
       // 不包含：翻页，keep-alive 返回，
       this.stopLoad = false
       this.refreshPageTitle()
-      this.pagination = {currentPage: 0, pageSize: 12, totalCount: 0}
+      this.pagination = { currentPage: 0, pageSize: 12, totalCount: 0 }
 
       // TODO 此处逻辑需要通过重写 query 规则进行优化
       if (this.page === 1) {
@@ -530,6 +506,7 @@ export default {
 
 <style lang="scss">
 .list {
+
   // 宽度 >= $breakpoint-sm-min
   @media (min-width: $breakpoint-sm-min) {
     padding: 0px 20px;
@@ -537,6 +514,7 @@ export default {
 }
 
 .work-card {
+
   // 宽度 > $breakpoint-xl-min
   @media (min-width: $breakpoint-md-min) {
     width: 560px;
@@ -568,7 +546,7 @@ export default {
   color: white;
 }
 
-.ant-pagination-item ,
+.ant-pagination-item,
 .ant-pagination-jump-next,
 .ant-pagination-jump-prev,
 .ant-pagination-next,
@@ -602,5 +580,4 @@ body.body--dark {
     margin-top: 2px !important;
   }
 }
-
 </style>

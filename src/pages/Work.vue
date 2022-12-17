@@ -2,7 +2,7 @@
   <div>
     <WorkDetails :metadata="metadata" @reset="requestData()" />
     <!-- <WorkQueue :queue="tracks" :editable="false" /> -->
-    <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md"/>
+    <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md" />
   </div>
 </template>
 
@@ -12,6 +12,7 @@ import TagI18N from "src/mixins/TagI18N";
 // import WorkQueue from 'components/WorkQueue'
 import WorkTree from 'components/WorkTree'
 import NotifyMixin from '../mixins/Notification.js'
+import { formatProductID } from 'src/utils/formatProductID'
 
 export default {
   name: 'Work',
@@ -24,7 +25,7 @@ export default {
     WorkTree
   },
 
-  data () {
+  data() {
     return {
       workid: this.$route.params.id,
       metadata: {
@@ -37,10 +38,10 @@ export default {
     }
   },
 
-  metaInfo () {
+  metaInfo() {
     const url = process.env.URL + this.$router.resolve({
       name: 'work',
-      params: { id: this.metadata.id.toString().padStart(6, '0') },
+      params: { id: formatProductID(this.metadata.id) },
     }).href
     return {
       title: this.pageTitle,
@@ -56,20 +57,20 @@ export default {
         { property: "og:image", content: this.metadata.mainCoverUrl },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
-        { name: "description", content: this.ogDesc, vmid: "description"}
+        { name: "description", content: this.ogDesc, vmid: "description" }
       ]
     }
   },
 
   computed: {
     rjCode() {
-      return 'RJ' + this.metadata.id.toString().padStart(6, '0')
+      return formatProductID(this.metadata.id, 'RJ')
     },
     ogTitle() {
       return `${this.metadata.title} - ASMR Online`;
     },
     ogDesc() {
-      return  `Listen Online For FREE!
+      return `Listen Online For FREE!
 🆔 RJ Code: ${this.rjCode}
 ⭕ Circle: ${this.metadata.circle.name}
 🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
@@ -94,13 +95,13 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
   },
 
   watch: {
-    '$route.params.id' (workID) {
+    '$route.params.id'(workID) {
       this.workid = workID;
       this.requestData();
     }
   },
 
-  created () {
+  created() {
     this.requestData()
   },
 
@@ -116,7 +117,7 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
       })
       return files
     },
-    requestData () {
+    requestData() {
       this.$axios.get(`/api/work/${this.workid}`)
         .then(response => {
           this.metadata = response.data
@@ -145,7 +146,7 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
     },
   },
   beforeRouteEnter(to, from, next) {
-    window.specifyBackTarget = {...from, hash: `#${to.params.id}`}
+    window.specifyBackTarget = { ...from, hash: `#${to.params.id}` }
     next()
   },
 }

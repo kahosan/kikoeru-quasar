@@ -1,85 +1,61 @@
 <template>
   <q-item clickable class="row" :class="classBackgroundColor">
-      <q-item-section class="col-auto" top>
-        <router-link :to="`/asmr/work/${rjCode}`">
-          <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
+    <q-item-section class="col-auto" top>
+      <router-link :to="`/asmr/work/${rjCode}`">
+        <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
+      </router-link>
+    </q-item-section>
+
+
+    <q-item-section class="q-gutter-y-xs column items-start" top v-on:click.self="showReviewDialog = true">
+      <q-item-label lines="2" class="text-body2">
+        <router-link :to="`/asmr/work/${rjCode}`" class="col-auto" style="color: inherit">
+          {{ metadata.title }}
         </router-link>
-      </q-item-section>
+      </q-item-label>
 
+      <div class="row q-gutter-x-sm col-auto">
+        <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="col-auto text-grey">
+          {{ metadata.circle.name }}
+        </router-link>
 
-      <q-item-section class="q-gutter-y-xs column items-start" top v-on:click.self="showReviewDialog = true">
-        <q-item-label lines="2" class="text-body2">
-          <router-link :to="`/asmr/work/${rjCode}`" class="col-auto" style="color: inherit">
-            {{metadata.title}}
-          </router-link>
-        </q-item-label>
+        <span class="col-auto">/</span>
+        <span class="col-auto text-grey"> {{ metadata.release }}</span>
+        <span class="col-auto">/</span>
 
-        <div class="row q-gutter-x-sm col-auto" >
-          <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="col-auto text-grey">
-            {{metadata.circle.name}}
-          </router-link>
+        <router-link v-for="(va, index) in metadata.vas" :key=index :to="`/asmr/works?vaId=${va.id}`"
+          class="col-auto text-primary">
+          {{ va.name }}
+        </router-link>
+      </div>
 
-          <span class="col-auto">/</span>
-          <span class="col-auto text-grey"> {{metadata.release}}</span>
-          <span class="col-auto">/</span>
+      <div class="row items-center q-gutter-x-xs">
+        <q-rating v-if="!hideRating" v-model="rating" @input="setRating" size="sm" color="blue" icon="star_border"
+          icon-selected="star" icon-half="star_half" class="col-auto" />
+        <span class="col-auto text-grey ">{{ metadata.updated_at }}</span>
+      </div>
 
-          <router-link
-            v-for="(va, index) in metadata.vas"
-            :key=index
-            :to="`/asmr/works?vaId=${va.id}`"
-            class="col-auto text-primary"
-          >
-            {{ va.name }}
-          </router-link>
-        </div>
+      <q-item-label class="q-pt-sm" v-if="mode === 'review'">
+        <q-card class="my-card col-auto" @click="showReviewDialog = true" v-show="metadata.review_text">
+          <q-card-section class="q-pa-sm">
+            {{ metadata.review_text }}
+          </q-card-section>
+        </q-card>
+      </q-item-label>
 
-        <div class="row items-center q-gutter-x-xs">
-          <q-rating
-            v-if="!hideRating"
-            v-model="rating"
-            @input="setRating"
-            size="sm"
-            color="blue"
-            icon="star_border"
-            icon-selected="star"
-            icon-half="star_half"
-            class="col-auto"
-          />
-          <span class="col-auto text-grey ">{{metadata.updated_at}}</span>
-        </div>
+      <q-item-label class="q-pt-xs" v-if="mode === 'progress'">
+        <q-btn-toggle v-if="mode === 'progress'" v-model="progress" @input="setProgress" dense no-caps rounded
+          toggle-color="primary" color="white" text-color="black" class="q-pa-sm" :options="[
+            { label: $t('common.progressEnum.marked'), value: 'marked' },
+            { label: $t('common.progressEnum.listening'), value: 'listening' },
+            { label: $t('common.progressEnum.listened'), value: 'listened' },
+            { label: $t('common.progressEnum.replay'), value: 'replay' },
+            { label: $t('common.progressEnum.postponed'), value: 'postponed' }
+          ]" />
+      </q-item-label>
+    </q-item-section>
 
-        <q-item-label class="q-pt-sm" v-if="mode === 'review'">
-          <q-card class="my-card col-auto" @click="showReviewDialog = true" v-show="metadata.review_text" >
-            <q-card-section class="q-pa-sm">
-            {{metadata.review_text}}
-            </q-card-section>
-          </q-card>
-        </q-item-label>
-
-        <q-item-label class="q-pt-xs" v-if="mode === 'progress'">
-          <q-btn-toggle
-            v-if="mode === 'progress'"
-            v-model="progress"
-            @input="setProgress"
-            dense
-            no-caps
-            rounded
-            toggle-color="primary"
-            color="white"
-            text-color="black"
-            class="q-pa-sm"
-            :options="[
-              {label: $t('common.progressEnum.marked'), value: 'marked'},
-              {label: $t('common.progressEnum.listening'), value: 'listening'},
-              {label: $t('common.progressEnum.listened'), value: 'listened'},
-              {label: $t('common.progressEnum.replay'), value: 'replay'},
-              {label: $t('common.progressEnum.postponed'), value: 'postponed'}
-            ]"
-          />
-          </q-item-label>
-      </q-item-section>
-
-      <WriteReview v-if="showReviewDialog" @closed="processReview" :workid="workid" :metadata="metadata"></WriteReview>
+    <WriteReview v-if="showReviewDialog" @closed="processReview" :workid="workid" :metadata="metadata"></WriteReview>
 
   </q-item>
 </template>
@@ -87,9 +63,9 @@
 <script>
 import WriteReview from './WriteReview'
 import NotifyMixin from '../mixins/Notification.js'
-import {coverURL} from "src/utils/apiURL";
+import { coverURL } from "src/utils/apiURL";
 import DarkMode from '../mixins/DarkMode'
-
+import { formatProductID } from "src/utils/formatProductID";
 
 export default {
   name: 'FavListItem',
@@ -101,21 +77,21 @@ export default {
   },
 
   props: {
-      workid: {
-        type: Number,
-        required: true
-      },
-      metadata: {
-        type: Object,
-        required: true
-      },
-      mode: {
-        type: String,
-        default: 'review'
-      }
+    workid: {
+      type: Number,
+      required: true
+    },
+    metadata: {
+      type: Object,
+      required: true
+    },
+    mode: {
+      type: String,
+      default: 'review'
+    }
   },
 
-  data () {
+  data() {
     return {
       rating: 0,
       showReviewDialog: false,
@@ -125,11 +101,11 @@ export default {
   },
 
   computed: {
-    coverUrl () {
+    coverUrl() {
       return coverURL(this.metadata, 'thumb')
     },
     rjCode() {
-      return `RJ${(`000000${this.metadata.id}`).slice(-6)}`
+      return formatProductID(this.metadata.id, "RJ")
     },
   },
 
@@ -140,13 +116,13 @@ export default {
 
   watch: {
     // 需要watch metadata 当父component刷新metadata时更新
-    metadata () {
+    metadata() {
       this.setMetadata();
     }
   },
 
   methods: {
-    setMetadata () {
+    setMetadata() {
       if (this.metadata.userRating) {
         this.rating = this.metadata.userRating;
       } else {
@@ -161,7 +137,7 @@ export default {
       this.progress = this.metadata.progress;
     },
 
-    processReview (modified) {
+    processReview(modified) {
       if (modified) {
         this.calledFromChild = true;
         this.$emit('reset');
@@ -169,7 +145,7 @@ export default {
       this.showReviewDialog = false;
     },
 
-    setRating (newRating) {
+    setRating(newRating) {
       // 取消标星可能是操作失误，所以不响应。应使用删除标记来删除打星
       if (newRating) {
         const submitPayload = {
@@ -181,7 +157,7 @@ export default {
       }
     },
 
-    submitRating (payload) {
+    submitRating(payload) {
       const params = {
         starOnly: true
       }
@@ -189,7 +165,7 @@ export default {
         .then((response) => {
           this.showSuccNotif(response.data.message)
         })
-        .then(()=> this.$emit('reset'))
+        .then(() => this.$emit('reset'))
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
@@ -200,7 +176,7 @@ export default {
         })
     },
 
-    setProgress (newProgress) {
+    setProgress(newProgress) {
       const submitPayload = {
         'user_name': this.$store.state.User.name, // 用户名不会被后端使用
         'work_id': this.metadata.id,
@@ -209,16 +185,16 @@ export default {
       this.submitProgress(submitPayload);
     },
 
-    submitProgress (payload) {
+    submitProgress(payload) {
       const params = {
         starOnly: false,
         progressOnly: true
       }
-      this.$axios.put('/api/review', payload, {params})
+      this.$axios.put('/api/review', payload, { params })
         .then((response) => {
           this.showSuccNotif(response.data.message)
         })
-        .then(()=> this.$emit('reset'))
+        .then(() => this.$emit('reset'))
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
