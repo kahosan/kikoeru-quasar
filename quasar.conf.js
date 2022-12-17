@@ -115,7 +115,10 @@ module.exports = function (ctx) {
         const STATIC_CDN = process.env.STATIC_CDN;
         if(cfg.mode === 'production' && STATIC_CDN) {
           cfg.output.publicPath = STATIC_CDN + '/'
+        } else if (cfg.mode === 'production') {
+          cfg.output.publicPath = './'
         }
+
       },
       modern: true,
       sourceMap: false,
@@ -128,19 +131,19 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 6788,
+      port: 6790,
       open: true, // opens browser window automatically
       proxy: {
         // https://webpack.js.org/configuration/dev-server/#devserverproxy
         // proxy all requests starting with /api to http://localhost:8888
         '/api': {
           // target: 'https://api.asmr.one',
-          target: 'http://192.168.0.106:6789',
+          target: 'http://10.88.88.106:6789',
           changeOrigin: true,
           secure: false
         },
         '/socket.io': {
-          target: 'http://192.168.0.106:6789',
+          target: 'http://10.88.88.106:6789',
           ws: true
         }
       }
