@@ -1,5 +1,7 @@
-import Vue from 'vue'
-import VueMeta from "vue-meta";
+import { boot } from 'quasar/wrappers';
+import { createMetaManager } from "vue-meta";
 
 // we tell Vue to use our Vue package:
-Vue.use(VueMeta)
+export default boot(({ app }) => {
+  app.use(createMetaManager())
+})

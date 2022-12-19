@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
 import AudioPlayer from './module-AudioPlayer'
 import User from './module-User'
-
-Vue.use(Vuex)
 
 /*
  * If not building with SSR mode, you can
@@ -16,7 +13,7 @@ Vue.use(Vuex)
  */
 
 export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
+  const Store = createStore({
     modules: {
       AudioPlayer,
       User

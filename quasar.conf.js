@@ -2,18 +2,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-/**
- * Quasar 1 传入的 build.env 参数值必须被 JSON.stringify('some-value') 包裹
- * @param {Object} env
- */
-function patchDotEnvForQuasar1(env) {
-  // map each value in env and JSON.stringify them
-  Object.keys(env).forEach(key => {
-    env[key] = JSON.stringify(env[key])
-  })
-  return env;
-}
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = function (ctx) {
   ctx.env = require('dotenv').config().parsed;
@@ -27,7 +16,6 @@ module.exports = function (ctx) {
       'i18n',
       'vue-meta',
       'vuex-router-sync',
-      'sentry',
       'socket.io'
     ],
 
@@ -53,7 +41,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
       iconSet: 'material-icons', // Quasar icon set
-      lang: 'en-us', // Quasar language pack
+      lang: 'zh-CN', // Quasar language pack
 
       config: {
         dark: true
@@ -102,18 +90,12 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
-        cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /[\\/]node_modules[\\/]/
-        })
-
+      extendWebpack(cfg) {
         cfg.plugins.push(new CopyWebpackPlugin([{ from: 'public/', to: '' }]));
+        cfg.plugins.push(new ESLintPlugin({ extensions: ['js', 'vue'] }))
 
         const STATIC_CDN = process.env.STATIC_CDN;
-        if(cfg.mode === 'production' && STATIC_CDN) {
+        if (cfg.mode === 'production' && STATIC_CDN) {
           cfg.output.publicPath = STATIC_CDN + '/'
         } else if (cfg.mode === 'production') {
           cfg.output.publicPath = './'
@@ -248,7 +230,7 @@ module.exports = function (ctx) {
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }

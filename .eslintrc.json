@@ -8,7 +8,7 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:vue/essential"
+        "plugin:vue/vue3-essential"
     ],
     "parserOptions": {
         "ecmaVersion": 12,
@@ -20,8 +20,8 @@
     ],
     "rules": {
       "import/named": 2,
-      "import/namespace": 2,
-      "import/default": 2,
+      "import/namespace": 0,
+      "import/default": 0,
       "import/export": 2
     }
 }
