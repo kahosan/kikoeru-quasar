@@ -1,24 +1,9 @@
-<template>
-    <q-card
-      id="draggable"
-      @mousedown="onCursorDown"
-      @mouseup="onCursorUp"
-      @touchstart="onCursorDown"
-      @touchend="onCursorUp"
-    >
-        <div id="lyricsBar" class="text-center text-h6 text-bold ellipsis-2-lines text-purple q-mb-md absolute-bottom">
-            <span id="lyric">
-              {{currentLyric}}
-            </span>
-        </div>
-    </q-card>
-</template>
-
 <script>
 import { mapState } from 'vuex'
 
-const onCursorMove = (that) => (ev) => {
-  if (!that.beTouched) { return }
+const onCursorMove = that => (ev) => {
+  if (!that.beTouched)
+    return
 
   // ev.preventDefault()
   const touch = that.getTouch(ev)
@@ -27,32 +12,36 @@ const onCursorMove = (that) => (ev) => {
   const eleX = touch.clientX - that.startX
   const eleY = touch.clientY - that.startY
 
-  that.draggable.style.left = eleX + 'px'
-  that.draggable.style.top = eleY + 'px'
-
+  that.draggable.style.left = `${eleX}px`
+  that.draggable.style.top = `${eleY}px`
 }
 
 export default {
   name: 'LyricsBar',
 
-  computed: {
-    ...mapState('AudioPlayer', [
-      'currentLyric'
-    ]),
-
-    draggable() {
-      return document.getElementById('draggable')
-    }
-  },
-
-  data () {
+  data() {
     return {
       beTouched: false,
 
       // 鼠标按下时的位置
       startX: 0,
-      startY: 0
+      startY: 0,
     }
+  },
+
+  computed: {
+    ...mapState('AudioPlayer', [
+      'currentLyric',
+    ]),
+
+    draggable() {
+      return document.getElementById('draggable')
+    },
+  },
+
+  mounted() {
+    addEventListener('mousemove', onCursorMove(this), false)
+    addEventListener('touchmove', onCursorMove(this), false)
   },
 
   methods: {
@@ -60,7 +49,7 @@ export default {
      * @param {TouchEvent|MouseEvent} ev
      */
     getTouch(ev) {
-      return ev.touches ? ev.touches[0] : ev;
+      return ev.touches ? ev.touches[0] : ev
     },
 
     onCursorDown(ev) {
@@ -76,15 +65,26 @@ export default {
     onCursorUp(ev) {
       ev.preventDefault()
       this.beTouched = false
-    }
+    },
   },
-
-  mounted() {
-    addEventListener('mousemove', onCursorMove(this), false)
-    addEventListener('touchmove', onCursorMove(this), false)
-  }
 }
 </script>
+
+<template>
+  <q-card
+    id="draggable"
+    @mousedown="onCursorDown"
+    @mouseup="onCursorUp"
+    @touchstart="onCursorDown"
+    @touchend="onCursorUp"
+  >
+    <div id="lyricsBar" class="text-center text-h6 text-bold ellipsis-2-lines text-purple q-mb-md absolute-bottom">
+      <span id="lyric">
+        {{ currentLyric }}
+      </span>
+    </div>
+  </q-card>
+</template>
 
 <style lang="scss">
   .moveable-line {

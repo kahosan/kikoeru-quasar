@@ -1,3 +1,107 @@
+<script>
+import NotifyMixin from '../../mixins/Notification.js'
+
+export default {
+  name: 'Scanner',
+
+  mixins: [NotifyMixin],
+
+  data() {
+    return {
+      tab: 'tasks',
+      state: null, // ['running', 'finished', 'error']
+      loggedIn: false,
+      tasks: [], // 正在处理中的并行任务
+      failedTasks: [], // 处理失败的任务
+      mainLogs: [],
+      results: [],
+    }
+  },
+
+  sockets: {
+    SCAN_TASKS(payload) {
+      this.tasks = payload.tasks
+    },
+    SCAN_FAILED_TASKS(payload) {
+      this.failedTasks = payload.failedTasks
+    },
+    SCAN_MAIN_LOGS(payload) {
+      this.mainLogs = payload.mainLogs
+    },
+    SCAN_RESULTS(payload) {
+      this.results = payload.results
+    },
+    SCAN_INIT_STATE(payload) {
+      this.state = 'running'
+      this.tasks = payload.tasks
+      this.failedTasks = payload.failedTasks
+      this.mainLogs = payload.mainLogs
+      this.results = payload.results
+    },
+
+    SCAN_FINISHED(payload) {
+      this.state = 'finished'
+      this.allLogs.push({
+        level: 'info',
+        message: payload.message,
+      })
+    },
+    SCAN_ERROR() {
+      this.state = 'error'
+    },
+
+    success() {
+      this.loggedIn = true
+    },
+  },
+
+  computed: {
+    allLogs() {
+      const resultLogs = this.results.map((res) => {
+        if (res.result === 'added')
+          return { level: 'info', message: `[RJ${res.rjcode}] 添加成功! Added: ${res.count}` }
+        else if (res.result === 'updated')
+          return { level: 'info', message: `[RJ${res.rjcode}] 更新成功! Updated: ${res.count}` }
+        else
+          return { level: 'error', message: `[RJ${res.rjcode}] 处理失败! Failed: ${res.count}` }
+      })
+      return this.mainLogs.concat(resultLogs)
+    },
+  },
+
+  mounted() {
+    this.$socket.emit('ON_SCANNER_PAGE')
+    this.$socket.on('connect_error', () => {
+      this.showErrNotif('连接Socket失败')
+    })
+  },
+
+  methods: {
+    performScan() {
+      this.tasks = []
+      this.failedTasks = []
+      this.mainLogs = []
+      this.results = []
+      this.state = 'running'
+      this.$socket.emit('PERFORM_SCAN')
+    },
+
+    performUpdate() {
+      this.tasks = []
+      this.failedTasks = []
+      this.mainLogs = []
+      this.results = []
+      this.state = 'running'
+      this.$socket.emit('PERFORM_UPDATE')
+    },
+
+    killScanProceess() {
+      this.$socket.emit('KILL_SCAN_PROCESS')
+    },
+  },
+}
+</script>
+
 <template>
   <div>
     <div class="row q-ma-sm">
@@ -34,7 +138,7 @@
 
     <q-card v-show="state" class="q-ma-md">
       <q-expansion-item expand-separator>
-        <template v-slot:header>
+        <template #header>
           <q-item-section avatar>
             <q-spinner-gears v-if="state === 'running'" color="primary" size="2em" />
             <q-icon v-else-if="state === 'finished'" name="done" color="positive" size="2em" />
@@ -42,14 +146,18 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label v-if="allLogs.length > 1" class="ellipsis">{{allLogs[allLogs.length - 2].message}}</q-item-label>
-            <q-item-label v-if="allLogs.length > 0" class="ellipsis">{{allLogs[allLogs.length - 1].message}}</q-item-label>
+            <q-item-label v-if="allLogs.length > 1" class="ellipsis">
+              {{ allLogs[allLogs.length - 2].message }}
+            </q-item-label>
+            <q-item-label v-if="allLogs.length > 0" class="ellipsis">
+              {{ allLogs[allLogs.length - 1].message }}
+            </q-item-label>
           </q-item-section>
         </template>
-        
+
         <q-scroll-area style="height: 256px;" class="bg-dark text-white q-pa-md">
-          <div v-for="(log, index) in allLogs" :key="index" >
-            <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{log.message}}</span>
+          <div v-for="(log, index) in allLogs" :key="index">
+            <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{ log.message }}</span>
           </div>
         </q-scroll-area>
       </q-expansion-item>
@@ -68,10 +176,14 @@
         narrow-indicator
       >
         <q-tab name="tasks" icon="hourglass_full" label="处理中">
-          <q-badge v-show="tasks.length > 0" color="primary" floating>{{tasks.length}}</q-badge>
+          <q-badge v-show="tasks.length > 0" color="primary" floating>
+            {{ tasks.length }}
+          </q-badge>
         </q-tab>
         <q-tab name="failedTasks" icon="error_outline" label="处理失败">
-          <q-badge v-show="failedTasks.length > 0" color="red" floating>{{failedTasks.length}}</q-badge>
+          <q-badge v-show="failedTasks.length > 0" color="red" floating>
+            {{ failedTasks.length }}
+          </q-badge>
         </q-tab>
       </q-tabs>
 
@@ -85,23 +197,27 @@
             :items="tasks"
             :virtual-scroll-item-size="52"
           >
-            <template v-slot="{ item, index }">
-              <q-expansion-item expand-separator :key="index">
-                <template v-slot:header>
+            <template #default="{ item, index }">
+              <q-expansion-item :key="index" expand-separator>
+                <template #header>
                   <q-item-section avatar>
                     <q-spinner-hourglass color="primary" size="2em" />
                   </q-item-section>
 
                   <q-item-section>
-                    <q-item-label v-if="item.logs.length > 0" class="ellipsis">{{item.logs[item.logs.length - 1].message}}</q-item-label>
-                    <q-item-label caption>{{`RJ${item.rjcode}`}}</q-item-label>
+                    <q-item-label v-if="item.logs.length > 0" class="ellipsis">
+                      {{ item.logs[item.logs.length - 1].message }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ `RJ${item.rjcode}` }}
+                    </q-item-label>
                   </q-item-section>
                 </template>
-                
+
                 <q-card>
                   <q-card-section class="bg-dark text-white">
-                    <div v-for="(log, index) in item.logs" :key="index">
-                      <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{log.message}}</span>
+                    <div v-for="(log, idx) in item.logs" :key="idx">
+                      <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{ log.message }}</span>
                     </div>
                   </q-card-section>
                 </q-card>
@@ -117,38 +233,37 @@
             :items="failedTasks"
             :virtual-scroll-item-size="52"
           >
-            <template v-slot="{ item, index }">
+            <template #default="{ item, index }">
               <q-expansion-item
-                expand-separator
                 :key="index"
+                expand-separator
                 expand-icon-class="text-white"
                 header-class="bg-negative"
               >
-                <template v-slot:header>
+                <template #header>
                   <q-item-section avatar>
                     <q-icon name="bug_report" color="white" size="2em" />
                   </q-item-section>
 
                   <q-item-section>
-                    <q-item-label class="text-white ellipsis" >
-                      {{item.logs[item.logs.length - 1].message}}
+                    <q-item-label class="text-white ellipsis">
+                      {{ item.logs[item.logs.length - 1].message }}
                     </q-item-label>
 
                     <q-item-label caption class="text-white">
-                      {{`RJ${item.rjcode}`}}
+                      {{ `RJ${item.rjcode}` }}
                     </q-item-label>
                   </q-item-section>
                 </template>
-                
+
                 <q-card>
                   <q-card-section class="bg-dark text-white">
-                    <div v-for="(log, index) in item.logs" :key="index">
-                      <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{log.message}}</span>
+                    <div v-for="(log, idx) in item.logs" :key="idx">
+                      <span :class="log.level === 'error' ? 'text-red' : ''">➜ {{ log.message }}</span>
                     </div>
                   </q-card-section>
                 </q-card>
               </q-expansion-item>
-              
             </template>
           </q-virtual-scroll>
         </q-tab-panel>
@@ -156,108 +271,3 @@
     </q-card>
   </div>
 </template>
-
-<script>
-import NotifyMixin from '../../mixins/Notification.js'
-
-export default {
-  name: 'Scanner',
-
-  mixins: [NotifyMixin],
-
-  data () {
-    return {
-      tab: 'tasks',
-      state: null, // ['running', 'finished', 'error']
-      loggedIn: false,
-      tasks: [], // 正在处理中的并行任务
-      failedTasks: [], // 处理失败的任务
-      mainLogs: [],
-      results: []
-    }
-  },
-
-  sockets: {
-    SCAN_TASKS (payload) {
-      this.tasks = payload.tasks
-    },
-    SCAN_FAILED_TASKS (payload) {
-      this.failedTasks = payload.failedTasks
-    },
-    SCAN_MAIN_LOGS (payload) {
-      this.mainLogs = payload.mainLogs
-    },
-    SCAN_RESULTS (payload) {
-      this.results = payload.results
-    },
-    SCAN_INIT_STATE (payload) {
-      this.state = 'running'
-      this.tasks = payload.tasks
-      this.failedTasks = payload.failedTasks
-      this.mainLogs = payload.mainLogs
-      this.results = payload.results
-    },
-
-    SCAN_FINISHED (payload) {
-      this.state = 'finished'
-      this.allLogs.push({
-        level: 'info',
-        message: payload.message
-      })
-    },
-    SCAN_ERROR () {
-      this.state = 'error'
-    },
-
-    success () {
-      this.loggedIn = true
-    }
-  },
-
-  methods: {
-    performScan () {
-      this.tasks = []
-      this.failedTasks = []
-      this.mainLogs = []
-      this.results = []
-      this.state = 'running'
-      this.$socket.emit('PERFORM_SCAN')
-    },
-
-    performUpdate () {
-      this.tasks = []
-      this.failedTasks = []
-      this.mainLogs = []
-      this.results = []
-      this.state = 'running'
-      this.$socket.emit('PERFORM_UPDATE')
-    },
-
-    killScanProceess () {
-      this.$socket.emit('KILL_SCAN_PROCESS')
-    },
-  },
-
-  computed: {
-    allLogs () {
-      const resultLogs = this.results.map(res => {
-        if (res.result === 'added') {
-          return { level: 'info', message: `[RJ${res.rjcode}] 添加成功! Added: ${res.count}` }
-        } else if (res.result === 'updated') {
-          return { level: 'info', message: `[RJ${res.rjcode}] 更新成功! Updated: ${res.count}` }
-        } else {
-          return { level: 'error', message: `[RJ${res.rjcode}] 处理失败! Failed: ${res.count}` }
-        }
-      })
-      return this.mainLogs.concat(resultLogs)
-    }
-  },
-
-  mounted () {
-    this.$socket.emit('ON_SCANNER_PAGE')
-    this.$socket.on('connect_error', () => {
-      this.showErrNotif('连接Socket失败')
-    });
-  },
-}
-</script>

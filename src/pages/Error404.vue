@@ -1,3 +1,18 @@
+<script>
+export default {
+  name: 'Error404',
+  head() {
+    return {
+      title: '404 - ASMR Online',
+      meta: [
+        { name: 'robot', content: 'noindex' },
+        { name: 'prerender-status-code', content: '404' },
+      ],
+    }
+  },
+}
+</script>
+
 <template>
   <div class="fixed-center text-center">
     <p>
@@ -18,18 +33,3 @@
     />
   </div>
 </template>
-
-<script>
-export default {
-  name: 'Error404',
-  head() {
-    return {
-      title: '404 - ASMR Online',
-      meta: [
-        { name: "robot", content: "noindex" },
-        { name: "prerender-status-code", content: "404" },
-      ]
-    }
-  }
-}
-</script>

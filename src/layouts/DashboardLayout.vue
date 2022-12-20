@@ -1,47 +1,3 @@
-<template>
-  <q-layout view="hhh LpR fFf">
-    <q-header elevated :class="classBackgroundColor">
-      <q-toolbar>
-        <q-btn flat @click="drawer = !drawer" round dense icon="menu" :class="classTextColor" />
-        <q-toolbar-title :class="classTextColor">仪表盘</q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false"
-      @mouseout="miniState = true" mini-to-overlay :width="200" :breakpoint="500" bordered content-class="bg-grey-3">
-      <div class="column justify-between fit" :class="classBackgroundColor">
-        <q-list padding class="col-auto">
-          <q-item clickable v-ripple exact :to="link.path" active-class="text-primary text-weight-bold"
-            v-for="(link, index) in links" :key="index" class="col text-subtitle1">
-            <q-item-section avatar>
-              <q-icon :name="link.icon" />
-            </q-item-section>
-
-            <q-item-section>
-              {{link.title}}
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple exact @click="$q.dark.toggle" active-class="text-deep-purple text-weight-medium">
-            <q-item-section avatar>
-              <q-icon :name="`${this.$q.dark.isActive ? 'wb_sunny' : 'nights_stay'}`" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label class="text-subtitle1">
-                {{$t('sidebar.darkMode')}}
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
-</template>
-
 <script>
 import DarkMode from 'src/mixins/DarkMode'
 import NotifyMixin from '../mixins/Notification.js'
@@ -59,30 +15,30 @@ export default {
         {
           title: '音声库',
           icon: 'folder',
-          path: '/asmr/admin'
+          path: '/asmr/admin',
         },
         {
           title: '扫描',
           icon: 'youtube_searched_for',
-          path: '/asmr/admin/scanner'
+          path: '/asmr/admin/scanner',
         },
         {
           title: '用户管理',
           icon: 'person',
-          path: '/asmr/admin/usermanage'
+          path: '/asmr/admin/usermanage',
         },
         {
           title: '高级设置',
           icon: 'settings',
-          path: '/asmr/admin/advanced'
+          path: '/asmr/admin/advanced',
         },
 
         {
           title: '回到主页',
           icon: 'home',
-          path: '/asmr'
-        }
-      ]
+          path: '/asmr',
+        },
+      ],
     }
   },
   sockets: {
@@ -98,7 +54,7 @@ export default {
       this.$socket.close()
       // 验证失败，跳转到登录页面
       this.$router.push('/login')
-    }
+    },
   },
 
   created() {
@@ -106,12 +62,61 @@ export default {
     const token = this.$q.localStorage.getItem('jwt-token') || ''
     this.$socket.io.opts.query.auth_token = token
 
-    if (!this.$socket.connected) {
+    if (!this.$socket.connected)
       this.$socket.open()
-    }
-  }
+  },
 }
 </script>
+
+<template>
+  <q-layout view="hhh LpR fFf">
+    <q-header elevated :class="classBackgroundColor">
+      <q-toolbar>
+        <q-btn flat round dense icon="menu" :class="classTextColor" @click="drawer = !drawer" />
+        <q-toolbar-title :class="classTextColor">
+          仪表盘
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="drawer" show-if-above :mini="miniState" mini-to-overlay
+      :width="200" :breakpoint="500" bordered content-class="bg-grey-3" @mouseover="miniState = false" @mouseout="miniState = true"
+    >
+      <div class="column justify-between fit" :class="classBackgroundColor">
+        <q-list padding class="col-auto">
+          <q-item
+            v-for="(link, index) in links" :key="index" v-ripple clickable exact
+            :to="link.path" active-class="text-primary text-weight-bold" class="col text-subtitle1"
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" />
+            </q-item-section>
+
+            <q-item-section>
+              {{ link.title }}
+            </q-item-section>
+          </q-item>
+          <q-item v-ripple clickable exact active-class="text-deep-purple text-weight-medium" @click="$q.dark.toggle">
+            <q-item-section avatar>
+              <q-icon :name="`${$q.dark.isActive ? 'wb_sunny' : 'nights_stay'}`" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-subtitle1">
+                {{ $t('sidebar.darkMode') }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
 
 <style lang="scss" scoped>
 a {

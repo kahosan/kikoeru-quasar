@@ -1,11 +1,11 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = function (ctx) {
-  ctx.env = require('dotenv').config().parsed;
+  ctx.env = require('dotenv').config().parsed
 
   return {
     // app boot file (/src/boot)
@@ -16,12 +16,12 @@ module.exports = function (ctx) {
       'i18n',
       'vue-meta',
       'vuex-router-sync',
-      'socket.io'
+      'socket.io',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: [
-      'app.scss'
+      'app.scss',
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -35,7 +35,7 @@ module.exports = function (ctx) {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -44,7 +44,7 @@ module.exports = function (ctx) {
       lang: 'zh-CN', // Quasar language pack
 
       config: {
-        dark: true
+        dark: true,
       },
 
       // Possible values for "all":
@@ -63,8 +63,8 @@ module.exports = function (ctx) {
       plugins: [
         'LocalStorage',
         'SessionStorage',
-        'Notify'
-      ]
+        'Notify',
+      ],
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -76,7 +76,7 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      env: require('dotenv').config().parsed,  // patchDotEnvForQuasar1(require('dotenv').config().parsed),
+      env: require('dotenv').config().parsed, // patchDotEnvForQuasar1(require('dotenv').config().parsed),
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
@@ -91,16 +91,14 @@ module.exports = function (ctx) {
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {
-        cfg.plugins.push(new CopyWebpackPlugin([{ from: 'public/', to: '' }]));
+        cfg.plugins.push(new CopyWebpackPlugin([{ from: 'public/', to: '' }]))
         cfg.plugins.push(new ESLintPlugin({ extensions: ['js', 'vue'] }))
 
-        const STATIC_CDN = process.env.STATIC_CDN;
-        if (cfg.mode === 'production' && STATIC_CDN) {
-          cfg.output.publicPath = STATIC_CDN + '/'
-        } else if (cfg.mode === 'production') {
+        const STATIC_CDN = process.env.STATIC_CDN
+        if (cfg.mode === 'production' && STATIC_CDN)
+          cfg.output.publicPath = `${STATIC_CDN}/`
+        else if (cfg.mode === 'production')
           cfg.output.publicPath = './'
-        }
-
       },
       modern: true,
       sourceMap: false,
@@ -122,13 +120,13 @@ module.exports = function (ctx) {
           // target: 'https://api.asmr.one',
           target: 'http://10.88.88.106:6789',
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
         '/socket.io': {
           target: 'http://10.88.88.106:6789',
-          ws: true
-        }
-      }
+          ws: true,
+        },
+      },
     },
 
     // animations: 'all', // --- includes all animations
@@ -137,7 +135,7 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
-      pwa: false
+      pwa: false,
     },
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
@@ -148,12 +146,12 @@ module.exports = function (ctx) {
         clientsClaim: true,
         exclude: [
           /manifest\.json$/,
-          /.*.js.map$/
+          /.*.js.map$/,
         ],
         navigateFallbackBlacklist: [
-          /^\/api\/.*$/
+          /^\/api\/.*$/,
         ],
-        importWorkboxFrom: 'local'
+        importWorkboxFrom: 'local',
       }, // only for GenerateSW
       manifest: {
         name: 'Kikoeru',
@@ -167,41 +165,41 @@ module.exports = function (ctx) {
           {
             src: 'statics/icons/icon-128x128.png',
             sizes: '128x128',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'statics/icons/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'statics/icons/icon-256x256.png',
             sizes: '256x256',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'statics/icons/icon-384x384.png',
             sizes: '384x384',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'statics/icons/icon-512x512.png',
             sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
+            type: 'image/png',
+          },
+        ],
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'org.cordova.quasar.kikoeru'
+      id: 'org.cordova.quasar.kikoeru',
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true
+      hideSplashscreen: true,
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
@@ -224,16 +222,16 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'kikoeru-quasar'
+        appId: 'kikoeru-quasar',
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack(cfg) {
+      extendWebpack() {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
-      }
-    }
+      },
+    },
   }
 }

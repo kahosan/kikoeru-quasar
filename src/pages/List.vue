@@ -1,36 +1,6 @@
-<template>
-  <div>
-    <div class="text-h5 text-weight-regular q-ma-md">
-      {{ title }}
-    </div>
-
-    <div class="row justify-center q-pb-xl q-pt-none">
-      <div class="col-11">
-        <q-input dense rounded outlined v-model="keyword" :placeholder="`Search for a ${restrict}...`" class="q-mb-md">
-          <template v-slot:append>
-            <q-icon v-if="keyword === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="keyword = ''" />
-          </template>
-        </q-input>
-
-        <div class="row justify-center q-gutter-sm">
-          <div class="col-auto" v-for="item in (keyword ? filteredItems : items)" :key="item.id">
-            <q-btn
-              no-caps rounded color="primary"
-              :label="`${restrict === 'tags' ? getLocaleTagName(item) : item.name} (${item.count})`"
-              :to="`/asmr/works?${queryField}=${item.id}`"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
+import TagI18N from 'src/mixins/TagI18N'
 import NotifyMixin from '../mixins/Notification.js'
-import TagI18N from "src/mixins/TagI18N";
-
 
 export default {
   name: 'List',
@@ -39,14 +9,14 @@ export default {
 
   props: {
     restrict: {
-      type: String
-    }
+      type: String,
+    },
   },
 
-  data () {
+  data() {
     return {
       items: [],
-      keyword: ''
+      keyword: '',
     }
   },
 
@@ -57,19 +27,15 @@ export default {
     }
   },
 
-  created () {
-    this.requestList()
-  },
-
   computed: {
     title() {
       return `All ${this.restrict}`
     },
-    url () {
+    url() {
       return `/api/${this.restrict}/`
     },
 
-    queryField () {
+    queryField() {
       switch (this.restrict) {
         case 'circles':
           return 'circleId'
@@ -82,19 +48,23 @@ export default {
       }
     },
 
-    filteredItems () {
-      return this.items.filter(item => item.name.toLowerCase().indexOf(this.keyword.toLowerCase()) !== -1)
-    }
+    filteredItems() {
+      return this.items.filter(item => item.name.toLowerCase().includes(this.keyword.toLowerCase()))
+    },
   },
 
   watch: {
-    url () {
+    url() {
       this.requestList()
-    }
+    },
+  },
+
+  created() {
+    this.requestList()
   },
 
   methods: {
-    requestList () {
+    requestList() {
       this.$axios.get(this.url)
         .then((response) => {
           this.items = response.data.concat()
@@ -102,14 +72,43 @@ export default {
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            if (error.response.status !== 401) {
+            if (error.response.status !== 401)
               this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-            }
-          } else {
+          }
+          else {
             this.showErrNotif(error.message || error)
           }
         })
     },
-  }
+  },
 }
 </script>
+
+<template>
+  <div>
+    <div class="text-h5 text-weight-regular q-ma-md">
+      {{ title }}
+    </div>
+
+    <div class="row justify-center q-pb-xl q-pt-none">
+      <div class="col-11">
+        <q-input v-model="keyword" dense rounded outlined :placeholder="`Search for a ${restrict}...`" class="q-mb-md">
+          <template #append>
+            <q-icon v-if="keyword === ''" name="search" />
+            <q-icon v-else name="clear" class="cursor-pointer" @click="keyword = ''" />
+          </template>
+        </q-input>
+
+        <div class="row justify-center q-gutter-sm">
+          <div v-for="item in (keyword ? filteredItems : items)" :key="item.id" class="col-auto">
+            <q-btn
+              no-caps rounded color="primary"
+              :label="`${restrict === 'tags' ? getLocaleTagName(item) : item.name} (${item.count})`"
+              :to="`/asmr/works?${queryField}=${item.id}`"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

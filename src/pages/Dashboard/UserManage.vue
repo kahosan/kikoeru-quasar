@@ -1,3 +1,153 @@
+<script>
+import NotifyMixin from '../../mixins/Notification.js'
+
+export default {
+  mixins: [NotifyMixin],
+
+  data() {
+    return {
+      selected: [],
+      columns: [
+        { name: 'desc', required: true, label: '用户名', align: 'left', field: 'name', sortable: true },
+        { name: 'calories', required: true, label: '用户组', align: 'center', field: 'group', sortable: true },
+      ],
+      users: [],
+      loadingDeleteUsers: false,
+
+      newuser: {
+        name: '',
+        password: '',
+        group: 'user',
+      },
+      groups: ['user', 'guest'],
+      loadingAddNewUser: false,
+
+      adminNewPassword: '',
+      adminConfirmPassword: '',
+      loadingUpdateAdminPassword: false,
+
+      confirm: false,
+    }
+  },
+
+  created() {
+    this.requestUsers()
+  },
+
+  methods: {
+    getSelectedString() {
+      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''} selected of ${this.users.length}`
+    },
+
+    addNewUser() {
+      this.loadingAddNewUser = true
+      this.$axios.post('/api/credentials/user', {
+        name: this.newuser.name,
+        password: this.newuser.password,
+        group: this.newuser.group,
+      })
+        .then((response) => {
+          this.users.push(this.newuser)
+          this.loadingAddNewUser = false
+          this.showSuccNotif(response.data.message)
+          this.requestUsers()
+        })
+        .catch((error) => {
+          this.loadingAddNewUser = false
+          // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+          if (error.response.status === 422)
+            this.showErrNotif(error.response.data.errors[0].msg)
+          else if (error.response.status === 403)
+            this.showWarnNotif(error.response.data.error)
+          else
+            this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
+        })
+    },
+
+    deleteUsers() {
+      this.loadingDeleteUsers = true
+      this.$axios.delete('/api/credentials/user', {
+        data: { users: this.selected },
+      })
+        .then((response) => {
+          this.selected.forEach((selectedUser) => {
+            const index = this.users.findIndex(user => user.name === selectedUser.name)
+            this.users.splice(index, 1)
+          })
+          this.loadingDeleteUsers = false
+          this.showSuccNotif(response.data.message)
+          this.requestUsers()
+        })
+        .catch((error) => {
+          this.loadingDeleteUsers = false
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if (error.response.status === 403)
+              this.showWarnNotif(error.response.data.error)
+            else
+              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
+          }
+          else {
+            this.showErrNotif(error.message || error)
+          }
+        })
+    },
+
+    updateAdminPassword() {
+      this.loadingUpdateAdminPassword = true
+      this.$axios.put('/api/credentials/user', {
+        name: 'admin',
+        newPassword: this.adminNewPassword,
+      })
+        .then((response) => {
+          this.loadingUpdateAdminPassword = false
+          try {
+            // 删除旧 token
+            this.$q.localStorage.set('jwt-token', '')
+          }
+          catch (err) {
+            this.showErrNotif(err.message)
+          }
+          this.showSuccNotif(response.data.message)
+
+          // 仅当启用鉴权时跳转到登录页面
+          if (this.$store.state.User.auth) {
+            console.info('Got here')
+            this.$router.push('/login')
+          }
+        })
+        .catch((error) => {
+          this.loadingUpdateAdminPassword = false
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
+          }
+          else {
+            this.showErrNotif(error.message || error)
+          }
+        })
+    },
+
+    requestUsers() {
+      this.$axios.get('/api/credentials/users')
+        .then((response) => {
+          this.users = response.data.users
+        })
+        .catch((error) => {
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if (error.response.status !== 401)
+              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
+          }
+          else {
+            this.showErrNotif(error.message || error)
+          }
+        })
+    },
+  },
+}
+</script>
+
 <template>
   <div>
     <q-card class="q-ma-md">
@@ -7,18 +157,20 @@
         </q-toolbar>
 
         <div class="q-pa-sm">
-          <q-input outlined dense type="password" label="新密码"
-            v-model="adminNewPassword"
+          <q-input
+            v-model="adminNewPassword" outlined dense type="password"
+            label="新密码"
             lazy-rules
-            :rules="[ val => val.length >= 5 || '密码长度至少为 5' ]"
+            :rules="[val => val.length >= 5 || '密码长度至少为 5']"
           />
 
-          <q-input outlined dense type="password" label="确认密码"
-            v-model="adminConfirmPassword"
+          <q-input
+            v-model="adminConfirmPassword" outlined dense type="password"
+            label="确认密码"
             lazy-rules
             :rules="[
               val => val.length >= 5 || '密码长度至少为 5',
-              val => val === adminNewPassword || '两次密码输入不一致'
+              val => val === adminNewPassword || '两次密码输入不一致',
             ]"
           />
 
@@ -36,22 +188,24 @@
         </q-toolbar>
 
         <div class="q-pa-sm">
-          <q-select dense outlined label="用户组" v-model="newuser.group" :options="groups" class="q-mb-md" />
+          <q-select v-model="newuser.group" dense outlined label="用户组" :options="groups" class="q-mb-md" />
 
-          <q-input outlined dense
-            v-model="newuser.name" label="用户名"
+          <q-input
+            v-model="newuser.name" outlined
+            dense label="用户名"
             required
             lazy-rules
             :rules="[
-                val => val.length >= 5 || '用户名长度至少为 5',
-                val => !users.find(user => user.name === val) || '该名称已存在，用户名不能重复',
-              ]" 
+              val => val.length >= 5 || '用户名长度至少为 5',
+              val => !users.find(user => user.name === val) || '该名称已存在，用户名不能重复',
+            ]"
           />
 
-          <q-input outlined dense label="密码"
-            v-model="newuser.password"
+          <q-input
+            v-model="newuser.password" outlined dense
+            label="密码"
             lazy-rules
-            :rules="[ val => val.length >= 5 || '密码长度至少为 5' ]"
+            :rules="[val => val.length >= 5 || '密码长度至少为 5']"
           />
 
           <div class="row justify-end">
@@ -63,16 +217,16 @@
 
     <q-card class="q-ma-md q-pa-sm">
       <q-table
+        v-model:selected.sync="selected"
         title="所有用户"
         :data="users"
         :columns="columns"
         row-key="name"
         :selected-rows-label="getSelectedString"
         selection="multiple"
-        v-model:selected.sync="selected"
       />
       <div class="row justify-end">
-        <q-btn :loading="loadingDeleteUsers" :disable="selected.length === 0" @click="confirm = true" color="primary" label="删除" />
+        <q-btn :loading="loadingDeleteUsers" :disable="selected.length === 0" color="primary" label="删除" @click="confirm = true" />
       </div>
     </q-card>
 
@@ -83,161 +237,10 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="取消" color="primary" v-close-popup />
-          <q-btn flat label="确认" color="primary" @click="deleteUsers()" v-close-popup />
+          <q-btn v-close-popup flat label="取消" color="primary" />
+          <q-btn v-close-popup flat label="确认" color="primary" @click="deleteUsers()" />
         </q-card-actions>
       </q-card>
     </q-dialog>
   </div>
 </template>
-
-<script>
-import NotifyMixin from '../../mixins/Notification.js'
-
-export default {
-  mixins: [NotifyMixin],
-
-  data () {
-    return {
-      selected: [],
-      columns: [
-        { name: 'desc', required: true, label: '用户名', align: 'left', field: 'name', sortable: true },
-        { name: 'calories', required: true, label: '用户组', align: 'center', field: 'group', sortable: true },
-      ],
-      users: [],
-      loadingDeleteUsers: false,
-
-      newuser: {
-        name: '',
-        password: '',
-        group: 'user'
-      },
-      groups: ['user', 'guest'],
-      loadingAddNewUser: false,
-
-      
-      adminNewPassword: '',
-      adminConfirmPassword: '',
-      loadingUpdateAdminPassword: false,
-
-      confirm: false
-    }
-  },
-
-  methods: {
-    getSelectedString () {
-      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''} selected of ${this.users.length}`
-    },
-
-    addNewUser () {
-      this.loadingAddNewUser = true
-      this.$axios.post('/api/credentials/user', {
-        name: this.newuser.name,
-        password: this.newuser.password,
-        group: this.newuser.group
-      })
-        .then((response) => {
-          this.users.push(this.newuser)
-          this.loadingAddNewUser = false
-          this.showSuccNotif(response.data.message)
-          this.requestUsers()
-        })
-        .catch((error) => {
-          this.loadingAddNewUser = false
-          // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-          if (error.response.status === 422) {
-            this.showErrNotif(error.response.data.errors[0].msg)
-          } else if (error.response.status === 403) {
-            this.showWarnNotif(error.response.data.error)
-          } else {
-            this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-          }
-        })
-
-    },
-
-    deleteUsers () {
-      this.loadingDeleteUsers = true
-      this.$axios.delete('/api/credentials/user', {
-        data: { users: this.selected },
-      })
-        .then((response) => {
-          this.selected.forEach(selectedUser => {
-            const index = this.users.findIndex(user => user.name === selectedUser.name)
-            this.users.splice(index, 1)
-          })
-          this.loadingDeleteUsers = false
-          this.showSuccNotif(response.data.message)
-          this.requestUsers()
-        })
-        .catch((error) => {
-          this.loadingDeleteUsers = false
-          if (error.response) {
-            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            if (error.response.status === 403) {
-              this.showWarnNotif(error.response.data.error)
-            } else {
-              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-            }
-          } else {
-            this.showErrNotif(error.message || error)
-          }
-        })
-    },
-
-    updateAdminPassword () {
-      this.loadingUpdateAdminPassword = true
-      this.$axios.put('/api/credentials/user', {
-        name: 'admin',
-        newPassword: this.adminNewPassword
-      })
-        .then((response) => {
-          this.loadingUpdateAdminPassword = false
-          try {
-            // 删除旧 token
-            this.$q.localStorage.set('jwt-token', '')
-          } catch (err) {
-            this.showErrNotif(err.message)
-          }
-          this.showSuccNotif(response.data.message)
-
-          // 仅当启用鉴权时跳转到登录页面
-          if (this.$store.state.User.auth) {
-            console.log('Got here')
-            this.$router.push('/login')
-          }
-        })
-        .catch((error) => {
-          this.loadingUpdateAdminPassword = false
-          if (error.response) {
-            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-          } else {
-            this.showErrNotif(error.message || error)
-          }
-        })
-    },
-
-    requestUsers () {
-      this.$axios.get('/api/credentials/users')
-        .then((response) => {
-          this.users = response.data.users
-        })
-        .catch((error) => {
-          if (error.response) {
-            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            if (error.response.status !== 401) {
-              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-            }
-          } else {
-            this.showErrNotif(error.message || error)
-          }
-        })
-    },
-  },
-
-  created () {
-    this.requestUsers()
-  }
-}
-</script>

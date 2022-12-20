@@ -13,34 +13,28 @@ import User from './module-User'
  */
 
 export default function (/* { ssrContext } */) {
-  const Store = createStore({
+  const store = createStore({
     modules: {
       AudioPlayer,
-      User
+      User,
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    // eslint-disable-next-line
-    strict: process.env.DEV
+    strict: process.env.DEV,
   })
 
-  // eslint-disable-next-line
   if (process.env.DEV && module.hot) {
-    // eslint-disable-next-line
     module.hot.accept(['./module-AudioPlayer'], () => {
-      // eslint-disable-next-line
       const newAudioPlayer = require('./module-AudioPlayer').default
-      Store.hotUpdate({ modules: { AudioPlayer: newAudioPlayer } })
+      store.hotUpdate({ modules: { AudioPlayer: newAudioPlayer } })
     })
 
-    // eslint-disable-next-line
     module.hot.accept(['./module-User'], () => {
-      // eslint-disable-next-line
       const newUser = require('./module-User').default
-      Store.hotUpdate({ modules: { User: newUser } })
+      store.hotUpdate({ modules: { User: newUser } })
     })
   }
 
-  return Store
+  return store
 }

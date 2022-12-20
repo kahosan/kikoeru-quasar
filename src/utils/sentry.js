@@ -1,5 +1,5 @@
-import * as Sentry from "@sentry/vue";
-import { Integrations } from "@sentry/tracing";
+import * as Sentry from '@sentry/vue'
+import { Integrations } from '@sentry/tracing'
 
 export default (vue, router) => {
   if (process.env.SENTRY_URL) {
@@ -20,11 +20,11 @@ export default (vue, router) => {
         'AbortError: The play() request was interrupted by a new load request. https://goo.gl/LdLk22',
 
         'The fetching process for the media resource was aborted by the user agent at the user\'s request.',
-      ]
+      ],
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production
       // tracesSampleRate: 0.25,
-    });
+    })
   }
 }

@@ -5,7 +5,7 @@ import { createI18n } from 'vue-i18n'
 import messages from 'src/i18n'
 
 // detect default language
-import { Quasar, LocalStorage } from 'quasar'
+import { LocalStorage, Quasar } from 'quasar'
 import { quasarLocaleToAvailableLocale } from 'src/utils/localeMap'
 import { boot } from 'quasar/wrappers'
 
@@ -17,14 +17,13 @@ export default boot(({ app }) => {
   // new Vue({..., i18n: ... }).$mount(...)
 
   let userPreferredLocale = LocalStorage.getItem('userPreferredLang')
-  if (window.navigator.userAgent.startsWith('special-ua-for-prerender-')) {
+  if (window.navigator.userAgent.startsWith('special-ua-for-prerender-'))
     userPreferredLocale = 'ja'
-  }
 
   const i18n = createI18n({
     locale: userPreferredLocale || quasarLocaleToAvailableLocale(Quasar.lang.getLocale()),
     fallbackLocale: 'en',
-    messages
+    messages,
   })
 
   app.use(i18n)

@@ -1,30 +1,9 @@
-<template>
-  <div>
-    <vue-plyr
-      ref="plyr"
-      :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled', 'loadedmetadata']"
-      :options="{controls: ['progress']}"
-      @canplay="onCanplay()"
-      @timeupdate="onTimeupdate()"
-      @ended="onEnded()"
-      @playing="onPlaying()"
-      @waiting="onWaiting()"
-      @pause="onPause()"
-    >
-      <audio crossorigin="anonymous" >
-        <source v-if="source" :src="source"/>
-      </audio>
-    </vue-plyr>
-  </div>
-</template>
-
 <script>
 import Lyric from 'lrc-file-parser'
-import {mapState, mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
+import VuePlyr from 'vue-plyr'
 import NotifyMixin from '../mixins/Notification.js'
-import VuePlyr from "vue-plyr";
 import 'vue-plyr/dist/vue-plyr.css'
-
 
 /**
  * 点击 音频文件后， wantPlaying = true，触发 watch(wantPlaying)，但是 duration = 0，什么都不会发生
@@ -33,11 +12,11 @@ import 'vue-plyr/dist/vue-plyr.css'
 export default {
   name: 'AudioElement',
 
-  mixins: [NotifyMixin],
-
   components: {
-    'vue-plyr': VuePlyr,
+    VuePlyr,
   },
+
+  mixins: [NotifyMixin],
 
   data() {
     return {
@@ -49,11 +28,11 @@ export default {
   computed: {
     ...mapState('AudioPlayer', ['qualityBehavior']),
 
-    player () {
+    player() {
       return this.$refs.plyr.player
     },
 
-    source () {
+    source() {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
       const source = this.qualityBehavior === 'fluentFirst' && this.currentPlayingFile.streamLowQualityUrl
@@ -77,40 +56,43 @@ export default {
       'rewindSeekMode',
       'forwardSeekMode',
       'lyricContent',
-      'metadata'
+      'metadata',
     ]),
 
     ...mapGetters('AudioPlayer', [
-      'currentPlayingFile'
-    ])
+      'currentPlayingFile',
+    ]),
   },
 
   watch: {
     // reference this.findLrcFromRemote() AudioPlayer.localLyric()
     lyricContent(lyricContent) {
-      console.log('LRC file loaded')
-      this.lrcObj.setLyric(lyricContent);
+      console.info('LRC file loaded')
+      this.lrcObj.setLyric(lyricContent)
       if (lyricContent) {
-        this.lrcAvailable = true;
+        this.lrcAvailable = true
         this.setLrcPlayStatus(this.playing)
-      } else {
-        this.lrcAvailable = false;
+      }
+      else {
+        this.lrcAvailable = false
         this.SET_CURRENT_LYRIC('')
       }
     },
 
-    playingControlSignal (flag) {
+    playingControlSignal(flag) {
       if (this.player.duration) {
         // 缓冲至可播放状态
-        console.log("playingControlSignal: ", flag)
+        console.info('playingControlSignal: ', flag)
         if (flag === 'wantPlay') {
           this.player.play()
           this.CONSUME_PLAYING_CONTROL_SIGNAL()
-        } else if (flag === 'wantPause') {
+        }
+        else if (flag === 'wantPause') {
           this.player.pause()
           this.CONSUME_PLAYING_CONTROL_SIGNAL()
         }
-      } else {
+      }
+      else {
         this.CONSUME_PLAYING_CONTROL_SIGNAL()
       }
     },
@@ -118,10 +100,10 @@ export default {
     // watch source -> media.load() -> canPlay -> player.play()
     source(url) {
       if (url) {
-        console.log('source changed')
+        console.info('source changed')
         // 加载新音频/视频文件
-        this.player.media.load();
-        this.findLrcFromRemote();
+        this.player.media.load()
+        this.findLrcFromRemote()
       }
     },
 
@@ -132,27 +114,46 @@ export default {
 
     volume(val) {
       // 屏蔽非法数值
-      if (val < 0 || val > 1) {
+      if (val < 0 || val > 1)
         return
-      }
 
       // 调节音量
       this.player.volume = val
     },
     rewindSeekMode(rewind) {
       if (rewind) {
-        this.player.rewind(this.rewindSeekTime);
-        this.SET_REWIND_SEEK_MODE(false);
-        this.setLrcPlayStatus(true);
+        this.player.rewind(this.rewindSeekTime)
+        this.SET_REWIND_SEEK_MODE(false)
+        this.setLrcPlayStatus(true)
       }
     },
     forwardSeekMode(forward) {
       if (forward) {
-        this.player.forward(this.forwardSeekTime);
-        this.SET_FORWARD_SEEK_MODE(false);
-        this.setLrcPlayStatus(true);
+        this.player.forward(this.forwardSeekTime)
+        this.SET_FORWARD_SEEK_MODE(false)
+        this.setLrcPlayStatus(true)
       }
-    }
+    },
+  },
+
+  mounted() {
+    // 初始化音量
+    this.SET_VOLUME(this.player.volume)
+    this.initLrcObj()
+    if (this.source)
+      this.findLrcFromRemote()
+
+    addEventListener('enterpictureinpicture', () => {
+      this.setMediaSessionActionHandler()
+      this.updateMediaMetadata()
+      this.updatePositionState()
+    }, false)
+
+    addEventListener('leavepictureinpicture', () => {
+      this.setMediaSessionActionHandler()
+      this.updateMediaMetadata()
+      this.updatePositionState()
+    }, false)
   },
 
   methods: {
@@ -161,7 +162,7 @@ export default {
      * 特别注意：在一些安卓浏览器上，seek 时会触发 onPause，随后会自动恢复播放
      */
     onPause() {
-      console.log('onPause')
+      console.info('onPause')
       this.setLrcPlayStatus(false)
       this.ON_PAUSE()
     },
@@ -169,7 +170,7 @@ export default {
      * 当播放器真正开始播放时会触发本事件
      */
     onPlaying() {
-      console.log('onPlaying')
+      console.info('onPlaying')
       this.setLrcPlayStatus(true)
       this.ON_PLAY()
     },
@@ -177,7 +178,7 @@ export default {
      * 当播放器缓冲区空，被迫暂停加载时会触发本事件
      */
     onWaiting() {
-      console.log('onWaiting')
+      console.info('onWaiting')
       this.setLrcPlayStatus(false)
       this.ON_PLAY()
     },
@@ -199,19 +200,18 @@ export default {
       'CLEAR_SLEEP_MODE',
       'SET_REWIND_SEEK_MODE',
       'SET_FORWARD_SEEK_MODE',
-      'SET_LYRIC_CONTENT'
+      'SET_LYRIC_CONTENT',
     ]),
 
     onCanplay() {
-      console.log('onCanPlay')
+      console.info('onCanPlay')
 
       // 缓冲至可播放状态时触发 (只有缓冲至可播放状态, 才能获取媒体文件的播放时长)
       this.SET_DURATION(this.player.duration)
 
       // 播放
-      if (this.player.currentTime !== this.player.duration) {
+      if (this.player.currentTime !== this.player.duration)
         this.player.play()
-      }
 
       this.setMediaSessionActionHandler()
       this.updateMediaMetadata()
@@ -220,9 +220,8 @@ export default {
 
     onTimeupdate() {
       // 安卓必须要靠这种方式才能在后台更新字幕，用于 pip
-      if (this.playing && this.$store.state.AudioPlayer.subtitleDisplayMode === 'pip') {
+      if (this.playing && this.$store.state.AudioPlayer.subtitleDisplayMode === 'pip')
         this.setLrcPlayStatus(true)
-      }
 
       // 当目前的播放位置已更改时触发
       this.SET_CURRENT_TIME(this.player.currentTime)
@@ -243,78 +242,77 @@ export default {
     },
 
     onEnded() {
-      console.log("onEnded")
+      console.info('onEnded')
       // 当前文件播放结束时触发
       switch (this.playMode.name) {
-        case "all repeat":
+        case 'all repeat':
           // 循环播放
-          if (this.queueIndex === this.queue.length - 1) {
+          if (this.queueIndex === this.queue.length - 1)
             this.SET_TRACK(0)
-          } else {
+          else
             this.NEXT_TRACK()
-          }
+
           break
-        case "repeat once":
+        case 'repeat once':
           // 单曲循环
           this.player.currentTime = 0
           this.WANT_PLAY()
           break
-        case "shuffle": {
+        case 'shuffle': {
           // 随机播放
           const index = Math.floor(Math.random() * this.queue.length)
           this.SET_TRACK(index)
-          if (index === this.queueIndex) {
+          if (index === this.queueIndex)
             this.player.currentTime = 0
-          }
+
           break
         }
         default:
           // 顺序播放
-          if (this.queueIndex === this.queue.length - 1) {
+          if (this.queueIndex === this.queue.length - 1)
             this.WANT_PAUSE()
-          } else {
+          else
             this.NEXT_TRACK()
-          }
       }
     },
 
     setLrcPlayStatus(playStatus) {
       if (this.lrcAvailable) {
-        if (playStatus) {
-          this.lrcObj.play(this.player.currentTime * 1000);
-        } else {
-          this.lrcObj.pause();
-        }
+        if (playStatus)
+          this.lrcObj.play(this.player.currentTime * 1000)
+        else
+          this.lrcObj.pause()
       }
     },
 
     initLrcObj() {
       this.lrcObj = new Lyric({
         onPlay: (line, text) => {
-          this.SET_CURRENT_LYRIC(text);
+          this.SET_CURRENT_LYRIC(text)
         },
       })
     },
 
     findLrcFromRemote() {
-      this.lrcAvailable = false;
+      this.lrcAvailable = false
 
-      const token = this.$q.localStorage.getItem('jwt-token') || '';
-      const fileHash = this.queue[this.queueIndex].hash;
-      const url = `/api/media/check-lrc/${fileHash}?token=${token}`;
+      const token = this.$q.localStorage.getItem('jwt-token') || ''
+      const fileHash = this.queue[this.queueIndex].hash
+      const url = `/api/media/check-lrc/${fileHash}?token=${token}`
 
       this.$axios.get(url)
         .then((response) => {
           if (response.data.result) {
             // 有lrc歌词文件
-            console.log('读入歌词');
-            const lrcUrl = `/api/media/stream/${response.data.hash}?token=${token}`;
+            console.info('读入歌词')
+            const lrcUrl = `/api/media/stream/${response.data.hash}?token=${token}`
             this.$axios.get(lrcUrl)
-              .then(response => {
-                console.log('歌词读入成功');
+              .then((response) => {
+                console.info('歌词读入成功')
                 this.SET_LYRIC_CONTENT(response.data)
-              });
-          } else {
+              })
+          }
+          else {
             // 无歌词文件
             this.SET_LYRIC_CONTENT('')
           }
@@ -322,54 +320,58 @@ export default {
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            if (error.response.status !== 401) {
-              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`);
-            }
-          } else {
-            this.showErrNotif(error.message || error);
+            if (error.response.status !== 401)
+              this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
+          }
+          else {
+            this.showErrNotif(error.message || error)
           }
         })
     },
 
     updatePositionState() {
-      console.log('updatePositionState')
-      if (!('mediaSession' in navigator)) return;
-      if (!('setPositionState' in navigator.mediaSession)) return;
+      console.info('updatePositionState')
+      if (!('mediaSession' in navigator))
+        return
+      if (!('setPositionState' in navigator.mediaSession))
+        return
 
       const duration = this.player.duration
       const currentTime = this.player.currentTime
       navigator.mediaSession.setPositionState({
         duration: Math.max(0, duration || 0),
         playbackRate: 1,
-        position: Math.max(0, Math.min(duration || 0, currentTime || 0))
+        position: Math.max(0, Math.min(duration || 0, currentTime || 0)),
       })
     },
 
     updateMediaMetadata() {
-      console.log('updateMediaMetadata')
-      if (!('mediaSession' in navigator)) return
+      console.info('updateMediaMetadata')
+      if (!('mediaSession' in navigator))
+        return
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.currentPlayingFile.title,
         album: this.metadata.title,
-        artist: `RJ${this.metadata.id}`
+        artist: `RJ${this.metadata.id}`,
         // TODO blur image
         // artwork: [
-          // { src: coverURL(this.metadata, 'sam'), type: 'image/png' },
+        // { src: coverURL(this.metadata, 'sam'), type: 'image/png' },
         // ]
       })
     },
 
     setMediaSessionActionHandler() {
-      console.log('setMediaSessionActionHandler')
-      if (!('mediaSession' in navigator)) return
+      console.info('setMediaSessionActionHandler')
+      if (!('mediaSession' in navigator))
+        return
       navigator.mediaSession.setActionHandler('play', () => this.$store.commit('AudioPlayer/WANT_PLAY'))
       navigator.mediaSession.setActionHandler('pause', () => this.$store.commit('AudioPlayer/WANT_PAUSE'))
       navigator.mediaSession.setActionHandler('seekto', (event) => {
         if (event.fastSeek && ('fastSeek' in this.player)) {
-          this.player.fastSeek(event.seekTime);
-          return;
+          this.player.fastSeek(event.seekTime)
+          return
         }
-        this.player.currentTime = event.seekTime;
+        this.player.currentTime = event.seekTime
       })
       navigator.mediaSession.setActionHandler('nexttrack', () => this.$store.commit('AudioPlayer/NEXT_TRACK'))
       navigator.mediaSession.setActionHandler('previoustrack', () => this.$store.commit('AudioPlayer/PREVIOUS_TRACK'))
@@ -377,29 +379,28 @@ export default {
       navigator.mediaSession.setActionHandler('seekbackward', () => this.$store.commit('AudioPlayer/SET_REWIND_SEEK_MODE', this.$store.state.AudioPlayer.rewindSeekTime))
     },
   },
-
-  mounted() {
-    // 初始化音量
-    this.SET_VOLUME(this.player.volume);
-    this.initLrcObj();
-    if (this.source) {
-      this.findLrcFromRemote();
-    }
-
-    addEventListener('enterpictureinpicture', () => {
-      this.setMediaSessionActionHandler()
-      this.updateMediaMetadata()
-      this.updatePositionState()
-    }, false)
-
-    addEventListener('leavepictureinpicture', () => {
-      this.setMediaSessionActionHandler()
-      this.updateMediaMetadata()
-      this.updatePositionState()
-    }, false)
-  }
 }
 </script>
+
+<template>
+  <div>
+    <VuePlyr
+      ref="plyr"
+      :emit="['canplay', 'timeupdate', 'ended', 'seeked', 'playing', 'waiting', 'pause', 'stalled', 'loadedmetadata']"
+      :options="{ controls: ['progress'] }"
+      @canplay="onCanplay()"
+      @timeupdate="onTimeupdate()"
+      @ended="onEnded()"
+      @playing="onPlaying()"
+      @waiting="onWaiting()"
+      @pause="onPause()"
+    >
+      <audio crossorigin="anonymous">
+        <source v-if="source" :src="source">
+      </audio>
+    </VuePlyr>
+  </div>
+</template>
 
 <style>
 .plyr--audio .plyr__controls {

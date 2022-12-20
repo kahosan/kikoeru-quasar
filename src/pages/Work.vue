@@ -1,28 +1,24 @@
-<template>
-  <div>
-    <WorkDetails :metadata="metadata" @reset="requestData()" />
-    <!-- <WorkQueue :queue="tracks" :editable="false" /> -->
-    <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md" />
-  </div>
-</template>
-
 <script>
 import WorkDetails from 'components/WorkDetails'
-import TagI18N from "src/mixins/TagI18N";
+import TagI18N from 'src/mixins/TagI18N'
 // import WorkQueue from 'components/WorkQueue'
 import WorkTree from 'components/WorkTree'
-import NotifyMixin from '../mixins/Notification.js'
 import { formatProductID } from 'src/utils/formatProductID'
+import NotifyMixin from '../mixins/Notification.js'
 
 export default {
   name: 'Work',
 
-  mixins: [NotifyMixin, TagI18N],
-
   components: {
     WorkDetails,
     // WorkQueue,
-    WorkTree
+    WorkTree,
+  },
+
+  mixins: [NotifyMixin, TagI18N],
+  beforeRouteEnter(to, from, next) {
+    window.specifyBackTarget = { ...from, hash: `#${to.params.id}` }
+    next()
   },
 
   data() {
@@ -35,7 +31,7 @@ export default {
         tags: [],
         release: '',
       },
-      tree: []
+      tree: [],
     }
   },
 
@@ -48,19 +44,19 @@ export default {
     return {
       title: this.pageTitle,
       link: [
-        { rel: 'canonical', href: url }
+        { rel: 'canonical', href: url },
       ],
       meta: [
-        { property: "og:site_name", content: "ASMR Online" },
-        { property: "og:url", content: url },
-        { property: "og:type", content: "website" },
-        { property: "og:title", content: `${this.ogTitle}` },
-        { property: "og:description", content: this.ogDesc },
-        { property: "og:image", content: this.metadata.mainCoverUrl },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:image:src", content: this.metadata.mainCoverUrl },
-        { name: "description", content: this.ogDesc, vmid: "description" }
-      ]
+        { property: 'og:site_name', content: 'ASMR Online' },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: `${this.ogTitle}` },
+        { property: 'og:description', content: this.ogDesc },
+        { property: 'og:image', content: this.metadata.mainCoverUrl },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image:src', content: this.metadata.mainCoverUrl },
+        { name: 'description', content: this.ogDesc, vmid: 'description' },
+      ],
     }
   },
 
@@ -69,7 +65,7 @@ export default {
       return formatProductID(this.metadata.id, 'RJ')
     },
     ogTitle() {
-      return `${this.metadata.title} - ASMR Online`;
+      return `${this.metadata.title} - ASMR Online`
     },
     ogDesc() {
       return `Listen Online For FREE!
@@ -81,10 +77,10 @@ export default {
 📅 Release: ${this.metadata.release}
 💰 DLSite Price: ${this.metadata.price}￥
 📦 DLSite Sales: ${this.metadata.dl_count}
-${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
+${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
     },
     pageTitle() {
-      return `${this.rjCode} ${this.metadata.title || ''} - ASMR Online`;
+      return `${this.rjCode} ${this.metadata.title || ''} - ASMR Online`
     },
     searchDesc() {
       // 把文件展示出来
@@ -93,14 +89,16 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
         desc += `${file.title}    \n`
       })
       return desc
-    }
+    },
   },
 
   watch: {
-    '$route.params.id'(workID) {
-      this.workid = workID;
-      this.requestData();
-    }
+    '$route.params.id': function (workID) {
+      if (workID !== undefined) {
+        this.workid = workID
+        this.requestData()
+      }
+    },
   },
 
   created() {
@@ -110,46 +108,51 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`;
   methods: {
     getFiles(tree) {
       const files = []
-      tree.forEach(item => {
-        if (item.type === 'audio') {
+      tree.forEach((item) => {
+        if (item.type === 'audio')
           files.push(item)
-        } else if (item.type === 'folder') {
+        else if (item.type === 'folder')
           files.push(...this.getFiles(item.children))
-        }
       })
       return files
     },
     requestData() {
       this.$axios.get(`/api/work/${this.workid}`)
-        .then(response => {
+        .then((response) => {
           this.metadata = response.data
         })
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-          } else {
+          }
+          else {
             this.showErrNotif(error.message || error)
           }
         })
 
       this.$axios.get(`/api/tracks/${this.workid}`)
-        .then(response => {
+        .then((response) => {
           this.tree = response.data
         })
         .catch((error) => {
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             this.showErrNotif(error.response.data.error || `${error.response.status} ${error.response.statusText}`)
-          } else {
+          }
+          else {
             this.showErrNotif(error.message || error)
           }
         })
     },
   },
-  beforeRouteEnter(to, from, next) {
-    window.specifyBackTarget = { ...from, hash: `#${to.params.id}` }
-    next()
-  },
 }
 </script>
+
+<template>
+  <div>
+    <WorkDetails :metadata="metadata" @reset="requestData()" />
+    <!-- <WorkQueue :queue="tracks" :editable="false" /> -->
+    <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md" />
+  </div>
+</template>

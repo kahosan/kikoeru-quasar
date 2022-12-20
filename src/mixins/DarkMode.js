@@ -12,6 +12,6 @@ export default {
     },
     classBackgroundColor() {
       return this.$q.dark.isActive ? 'bg-black' : 'bg-white'
-    }
-  }
+    },
+  },
 }

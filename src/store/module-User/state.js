@@ -3,6 +3,6 @@ export default function () {
     auth: false, // 是否启用用户验证
     name: '',
     group: '',
-    reg: false // 是否开启注册功能
+    reg: false, // 是否开启注册功能
   }
 }

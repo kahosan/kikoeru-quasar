@@ -9,9 +9,9 @@ const getters = {
       streamLowQualityUrl: '',
       samCoverUrl: '',
       thumbnailCoverUrl: '',
-      mainCoverUrl: ''
+      mainCoverUrl: '',
     }
-  }
+  },
 }
 
 export default getters

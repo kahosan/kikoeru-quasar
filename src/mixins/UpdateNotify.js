@@ -1,34 +1,33 @@
 // 本 Mixin 用于提醒用户，他的前端已经升级到最新版
 
-import pa from '../../package.json';
 import { openURL } from 'quasar'
-
+import pa from '../../package.json'
 
 export default {
   methods: {
     /**
      * 当检测到更新时，通过本方法通知用户
      */
-    notifyUpdate: function (remoteVersion) {
-      let actions = [{ label: '忽略', color: 'white' }]
+    notifyUpdate(remoteVersion) {
+      const actions = [{ label: '忽略', color: 'white' }]
       if (process.env.BLOG_URL) {
-        let changeLogUrl = process.env.BLOG_URL + '/frontend-' + pa.version.replace('.', '-');
+        const changeLogUrl = `${process.env.BLOG_URL}/frontend-${pa.version.replace('.', '-')}`
         actions.push({
           label: '查看',
           color: 'yellow',
           handler: () => {
             openURL(changeLogUrl)
-          }
+          },
         })
       }
       this.$q.notify({
         message: '新版本发布！',
-        caption: 'v' + remoteVersion,
+        caption: `v${remoteVersion}`,
         color: 'positive',
         icon: 'done',
         timeout: 10000,
         multiLine: false,
-        actions
+        actions,
       })
     },
 
@@ -36,8 +35,8 @@ export default {
      * 检查版本号是否有更新
      */
     hasUpdate(localVersion, remoteVersion) {
-      let v1 = localVersion.split('.').slice(0, -1).join('.')
-      let v2 = remoteVersion.split('.').slice(0, -1).join('.')
+      const v1 = localVersion.split('.').slice(0, -1).join('.')
+      const v2 = remoteVersion.split('.').slice(0, -1).join('.')
       return v1 !== v2
     },
 
@@ -52,21 +51,19 @@ export default {
      * 检查 iOS 版本，提醒用户升级到最新版，最新版支持后台播放
      */
     checkIOSNeedUpdate() {
-      const iPhoneOS = navigator.userAgent.match(/OS ((\d+_?){2,3})\s/);
+      const iPhoneOS = navigator.userAgent.match(/OS ((\d+_?){2,3})\s/)
       const iPadOS = navigator.userAgent.match(/Version\/((\d+.?){2,3})/)
-      if (!(iPhoneOS || iPadOS)) {
+      if (!(iPhoneOS || iPadOS))
         return
-      }
 
-      let a, b;
+      let a, b
 
-      if (iPhoneOS) {
+      if (iPhoneOS)
         [a, b] = iPhoneOS[1].split('_').map(v => parseInt(v))
-      } else {
+      else
         [a, b] = iPadOS[1].split('.').map(v => parseInt(v))
-      }
 
-      console.log("ios version", a, b)
+      console.info('ios version', a, b)
 
       // 15 > iOS > 15.6
       if (a === 15 && b < 6 && !this.$q.localStorage.getItem('never_shown_need_upgrade_iOS_15_6_1')) {
@@ -83,26 +80,27 @@ export default {
               color: 'secondary',
               handler: () => {
                 this.$q.localStorage.set('never_shown_need_upgrade_iOS_15_6_1', true)
-              }
+              },
             },
             {
               label: this.$t('common.dismiss'),
-              color: 'primary'
-            }
-          ]
+              color: 'primary',
+            },
+          ],
         })
       }
-    }
+    },
   },
   mounted() {
     this.checkIOSNeedUpdate()
 
-    let localVersion = this.$q.localStorage.getItem('localVersion')
+    const localVersion = this.$q.localStorage.getItem('localVersion')
     if (localVersion && this.hasUpdate(localVersion, pa.version)) {
       this.notifyUpdate(pa.version)
       this.doUpdate(pa.version)
-    } else if (!localVersion) {
+    }
+    else if (!localVersion) {
       this.doUpdate(pa.version)
     }
-  }
+  },
 }

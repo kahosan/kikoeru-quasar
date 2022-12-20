@@ -16,5 +16,5 @@ export default {
   sfwOnly: 'SFW only',
   random: 'Random',
 
-  guestLoginRateLimitTips: 'Tip: If you use guest login, you will be limited by speed. It\'s better to register your own account.'
+  guestLoginRateLimitTips: 'Tip: If you use guest login, you will be limited by speed. It\'s better to register your own account.',
 }

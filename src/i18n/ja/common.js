@@ -9,9 +9,9 @@ export default {
     postponed: '後で聴く',
   },
   comingSoon: '実装までお待ちください',
-  cancel: "キャンセル",
-  submit: "送信する",
-  optional: "任意",
-  item: "{n} 項目",
+  cancel: 'キャンセル',
+  submit: '送信する',
+  optional: '任意',
+  item: '{n} 項目',
   dismiss: '取消',
 }

@@ -1,59 +1,25 @@
-<template>
-    <q-dialog v-bind:value="value" v-on:input="$emit('input')" >
-      <q-card>
-        <div class="q-pa-sm">
-          <q-time
-            v-model="time"
-            now-btn
-          />
-        </div>
-
-        <div class="row justify-between">
-          <q-card-actions>
-            <q-btn flat label="取消定时" color="primary" @click="clearSleepTimer" :disable="!sleepMode" v-close-popup />
-          </q-card-actions>
-
-          <q-card-actions align="right">
-            <q-btn flat label="取消" color="primary" v-close-popup />
-            <q-btn flat label="确定" color="primary" @click="setSleepTimer" v-close-popup />
-          </q-card-actions>
-        </div>
-
-      </q-card>
-    </q-dialog>
-</template>
-
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SleepMode',
 
   // v-model: showTimer from MainLayout
   props: ['value'],
+  emits: ['input'],
 
   data() {
     return {
       // for q-time component only
-      time: '00:00'
+      time: '00:00',
     }
   },
 
   computed: {
     ...mapState('AudioPlayer', [
       'sleepTime',
-      'sleepMode'
-    ])
-  },
-
-  mounted() {
-    try {
-      if (this.$q.sessionStorage.getItem('sleepMode')) {
-        this.SET_SLEEP_TIMER(this.$q.sessionStorage.getItem('sleepTime'));
-      }
-    } catch {
-      console.log('Web Storage API error');
-    }
+      'sleepMode',
+    ]),
   },
 
   watch: {
@@ -61,52 +27,89 @@ export default {
     value(visible) {
       if (visible) {
         if (!this.sleepMode) {
-          const currentTime = new Date();
-          this.time = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');
-        } else {
-          this.time = this.sleepTime;
+          const currentTime = new Date()
+          this.time = `${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`
+        }
+        else {
+          this.time = this.sleepTime
         }
       }
+    },
+  },
+
+  mounted() {
+    try {
+      if (this.$q.sessionStorage.getItem('sleepMode'))
+        this.SET_SLEEP_TIMER(this.$q.sessionStorage.getItem('sleepTime'))
+    }
+    catch {
+      console.info('Web Storage API error')
     }
   },
 
   methods: {
     ...mapMutations('AudioPlayer', [
       'SET_SLEEP_TIMER',
-      'CLEAR_SLEEP_MODE'
+      'CLEAR_SLEEP_MODE',
     ]),
 
     setSleepTimer() {
-      this.SET_SLEEP_TIMER(this.time);
+      this.SET_SLEEP_TIMER(this.time)
       // Persist sleep timer
       try {
-        this.$q.sessionStorage.set('sleepTime', this.time);
-        this.$q.sessionStorage.set('sleepMode', true);
-      } catch {
-        console.log('Web Storage API error');
+        this.$q.sessionStorage.set('sleepTime', this.time)
+        this.$q.sessionStorage.set('sleepMode', true)
       }
-      this.showSuccNotif(`将于${this.time}停止播放`);
+      catch {
+        console.info('Web Storage API error')
+      }
+      this.showSuccNotif(`将于${this.time}停止播放`)
     },
 
     clearSleepTimer() {
-      this.CLEAR_SLEEP_MODE();
+      this.CLEAR_SLEEP_MODE()
       try {
-        this.$q.sessionStorage.set('sleepTime', null);
-        this.$q.sessionStorage.set('sleepMode', false);
-      } catch {
-        console.log('Web Storage API error');
+        this.$q.sessionStorage.set('sleepTime', null)
+        this.$q.sessionStorage.set('sleepMode', false)
       }
-      this.showSuccNotif('已关闭睡眠模式');
+      catch {
+        console.info('Web Storage API error')
+      }
+      this.showSuccNotif('已关闭睡眠模式')
     },
 
-    showSuccNotif (message) {
+    showSuccNotif(message) {
       this.$q.notify({
         message,
         color: 'primary',
         icon: 'bedtime',
-        timeout: 5000
+        timeout: 5000,
       })
     },
-  }
+  },
 }
 </script>
+
+<template>
+  <q-dialog :value="value" @input="$emit('input')">
+    <q-card>
+      <div class="q-pa-sm">
+        <q-time
+          v-model="time"
+          now-btn
+        />
+      </div>
+
+      <div class="row justify-between">
+        <q-card-actions>
+          <q-btn v-close-popup flat label="取消定时" color="primary" :disable="!sleepMode" @click="clearSleepTimer" />
+        </q-card-actions>
+
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat label="取消" color="primary" />
+          <q-btn v-close-popup flat label="确定" color="primary" @click="setSleepTimer" />
+        </q-card-actions>
+      </div>
+    </q-card>
+  </q-dialog>
+</template>

@@ -15,15 +15,15 @@ import UserManage from 'pages/Dashboard/UserManage'
 
 function prefixRoutes(prefix, routes) {
   return routes.map((route) => {
-    route.path = prefix + '' + route.path;
-    return route;
-  });
+    route.path = `${prefix}${route.path}`
+    return route
+  })
 }
 
 const routes = [
   {
     path: '/',
-    redirect: '/asmr'
+    redirect: '/asmr',
   },
   {
     path: '/asmr/admin',
@@ -31,21 +31,21 @@ const routes = [
     children: [
       {
         path: '',
-        component: Folders
+        component: Folders,
       },
       {
         path: 'scanner',
-        component: Scanner
+        component: Scanner,
       },
       {
         path: 'advanced',
-        component: Advanced
+        component: Advanced,
       },
       {
         path: 'usermanage',
-        component: UserManage
-      }
-    ]
+        component: UserManage,
+      },
+    ],
   },
   {
     path: '/asmr',
@@ -59,109 +59,109 @@ const routes = [
       {
         path: '',
         redirect: {
-          name: 'works'
-        }
+          name: 'works',
+        },
       },
       {
         path: 'works',
         name: 'works',
-        component: Works
+        component: Works,
       },
       {
         name: 'work',
         path: 'work/RJ:id',
-        component: Work
+        component: Work,
       },
       {
         path: 'work/:id',
-        component: Work
+        component: Work,
       },
       {
         path: 'circles',
-        props: { restrict: "circles" },
-        component: () => import('pages/List')
+        props: { restrict: 'circles' },
+        component: () => import('pages/List'),
       },
       {
         path: 'tags',
-        props: { restrict: "tags" },
-        component: () => import('pages/List')
+        props: { restrict: 'tags' },
+        component: () => import('pages/List'),
       },
       {
         path: 'vas',
-        props: { restrict: "vas" },
-        component: () => import('pages/List')
+        props: { restrict: 'vas' },
+        component: () => import('pages/List'),
       },
       {
-        path: "about",
-        props: { restrict: "about" },
-        component: () => import('pages/About')
+        path: 'about',
+        props: { restrict: 'about' },
+        component: () => import('pages/About'),
       },
       ...prefixRoutes('favourites', [
         {
           path: '',
-          props: { route: 'review'},
+          props: { route: 'review' },
           component: () => import('pages/Favourites'),
         },
         {
           path: '/review',
-          props: { route: 'review'},
+          props: { route: 'review' },
           component: () => import('pages/Favourites'),
         },
         ...prefixRoutes('/progress', [
           {
             path: '',
-            props: { route: 'progress', progress: 'marked'},
+            props: { route: 'progress', progress: 'marked' },
             component: () => import('pages/Favourites'),
           },
           {
             path: '/marked',
-            props: { route: 'progress', progress: 'marked'},
+            props: { route: 'progress', progress: 'marked' },
             component: () => import('pages/Favourites'),
           },
           {
             path: '/listening',
-            props: { route: 'progress', progress: 'listening'},
+            props: { route: 'progress', progress: 'listening' },
             component: () => import('pages/Favourites'),
           },
           {
             path: '/listened',
-            props: { route: 'progress', progress: 'listened'},
+            props: { route: 'progress', progress: 'listened' },
             component: () => import('pages/Favourites'),
           },
           {
             path: '/replay',
-            props: { route: 'progress', progress: 'replay'},
+            props: { route: 'progress', progress: 'replay' },
             component: () => import('pages/Favourites'),
           },
           {
             path: '/postponed',
-            props: { route: 'progress', progress: 'postponed'},
+            props: { route: 'progress', progress: 'postponed' },
             component: () => import('pages/Favourites'),
           },
         ]),
         {
           path: '/folder',
-          props: { route: 'folder'},
+          props: { route: 'folder' },
           component: () => import('pages/Favourites'),
         },
       ]),
     ],
     meta: {
-      auth: true
-    }
+      auth: true,
+    },
   },
   {
     path: '/asmr/login',
-    component: Login
-  }
+    component: Login,
+  },
 ]
 
 // Always leave this as last one
-// eslint-disable-next-line
+
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '/:catchAll(.*)',
-    component: () => import('pages/Error404.vue')
+    component: () => import('pages/Error404.vue'),
   })
 }
 

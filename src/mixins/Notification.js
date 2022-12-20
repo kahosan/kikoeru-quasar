@@ -1,15 +1,15 @@
 export default {
   methods: {
-    showSuccNotif (message) {
+    showSuccNotif(message) {
       this.$q.notify({
         message,
         color: 'positive',
         icon: 'done',
-        timeout: 500
+        timeout: 500,
       })
     },
 
-    showWarnNotif (message) {
+    showWarnNotif(message) {
       this.$q.notify({
         message,
         color: 'warning',
@@ -17,12 +17,12 @@ export default {
       })
     },
 
-    showErrNotif (message) {
+    showErrNotif(message) {
       this.$q.notify({
         message,
         color: 'negative',
-        icon: 'bug_report'
+        icon: 'bug_report',
       })
-    }
-  }
+    },
+  },
 }

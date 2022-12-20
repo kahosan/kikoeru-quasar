@@ -1,59 +1,57 @@
 const mutations = {
-  SET_QUALITY_BEHAVIOR (state, payload) {
+  SET_QUALITY_BEHAVIOR(state, payload) {
     state.qualityBehavior = payload
   },
 
-  TOGGLE_HIDE (state) {
+  TOGGLE_HIDE(state) {
     state.hide = !state.hide
   },
 
-  PLAYER_HIDE (state) {
+  PLAYER_HIDE(state) {
     state.hide = true
   },
 
-  PLAYER_SHOW (state) {
+  PLAYER_SHOW(state) {
     state.hide = false
   },
 
   // 进入 WorkDetail 页面后提前加载 AudioPlayer，否则 ios 无法自动播放
-  LOAD_PLAYER (state) {
+  LOAD_PLAYER(state) {
     state.shouldLoadPlayer = true
   },
 
-  WANT_PLAY (state) {
+  WANT_PLAY(state) {
     state.playingControlSignal = 'wantPlay'
   },
-  WANT_PAUSE (state) {
+  WANT_PAUSE(state) {
     state.playingControlSignal = 'wantPause'
   },
-  CONSUME_PLAYING_CONTROL_SIGNAL (state) {
+  CONSUME_PLAYING_CONTROL_SIGNAL(state) {
     state.playingControlSignal = 'nothing'
   },
-  TOGGLE_WANT_PLAYING (state) {
-    if (state.playing) {
+  TOGGLE_WANT_PLAYING(state) {
+    if (state.playing)
       state.playingControlSignal = 'wantPause'
-    } else {
+    else
       state.playingControlSignal = 'wantPlay'
-    }
   },
 
   // 这里控制的是播放器实际的播放状态
-  ON_PLAY (state) {
+  ON_PLAY(state) {
     state.playing = true
   },
-  ON_PAUSE (state) {
+  ON_PAUSE(state) {
     state.playing = false
   },
 
-  SET_METADATA (state, metadata) {
+  SET_METADATA(state, metadata) {
     state.metadata = metadata
   },
 
   // Play a specific file from the queue.
   SET_TRACK: (state, index) => {
-    if (index >= state.queue.length || index < 0) {
-      return; // Invalid index, bail.
-    }
+    if (index >= state.queue.length || index < 0)
+      return // Invalid index, bail.
 
     state.playingControlSignal = 'wantPlay'
     state.queueIndex = index
@@ -73,13 +71,12 @@ const mutations = {
     }
   },
 
-  SET_QUEUE (state, payload) {
+  SET_QUEUE(state, payload) {
     state.queue = payload.queue
     state.queueIndex = payload.index
 
-    if (payload.resetPlaying) {
+    if (payload.resetPlaying)
       state.playingControlSignal = 'wantPlay'
-    }
   },
   EMPTY_QUEUE: (state) => {
     state.playingControlSignal = 'wantPause'
@@ -97,43 +94,43 @@ const mutations = {
       state.playingControlSignal = 'wantPause'
 
       state.queueIndex = 0
-    } else if (index < state.queueIndex) {
+    }
+    else if (index < state.queueIndex) {
       state.queueIndex -= 1
     }
   },
 
-
-  SET_DURATION (state, second) {
+  SET_DURATION(state, second) {
     state.duration = second
   },
 
-  SET_CURRENT_TIME (state, second) {
+  SET_CURRENT_TIME(state, second) {
     state.currentTime = second
   },
 
   // Add a file after the current playing item in the queue.
   PLAY_NEXT: (state, file) => {
-    state.queue.splice(state.queueIndex + 1, 0, file);
+    state.queue.splice(state.queueIndex + 1, 0, file)
   },
 
   CHANGE_PLAY_MODE: (state) => {
     const playModes = [
       {
         id: 0,
-        name: "order"
+        name: 'order',
       },
       {
         id: 1,
-        name: "all repeat"
+        name: 'all repeat',
       },
       {
         id: 2,
-        name: "repeat once"
+        name: 'repeat once',
       },
       {
         id: 3,
-        name: "shuffle"
-      }
+        name: 'shuffle',
+      },
     ]
     const index = (state.playMode.id >= playModes.length - 1) ? 0 : (state.playMode.id + 1)
 
@@ -145,9 +142,9 @@ const mutations = {
   },
 
   SET_VOLUME: (state, val) => {
-    if (val < 0 || val > 1) {
+    if (val < 0 || val > 1)
       return
-    }
+
     state.volume = val
   },
   SET_REWIND_SEEK_TIME: (state, value) => {
@@ -180,12 +177,11 @@ const mutations = {
   },
 
   SET_SUBTITLE_DISPLAY_MODE: (state, mode) => {
-    if (['in-app', 'pip'].includes(mode)) {
+    if (['in-app', 'pip'].includes(mode))
       state.subtitleDisplayMode = mode
-    } else {
+    else
       state.subtitleDisplayMode = 'in-app'
-    }
-  }
+  },
 }
 
 export default mutations

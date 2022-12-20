@@ -1,3 +1,39 @@
+<script>
+// import WorkDetails from 'components/WorkDetails'
+// import CoverSFW from 'components/CoverSFW'
+import TagI18N from 'src/mixins/TagI18N'
+
+import { coverURL } from 'src/utils/apiURL'
+import { formatProductID } from 'src/utils/formatProductID'
+import DarkMode from '../mixins/DarkMode'
+
+export default {
+  name: 'WorkListItem',
+
+  mixins: [DarkMode, TagI18N],
+
+  props: {
+    metadata: {
+      type: Object,
+      required: true,
+    },
+    showLabel: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  computed: {
+    samCoverUrl() {
+      return coverURL(this.metadata, 'sam')
+    },
+    rjCode() {
+      return formatProductID(this.metadata.id, 'RJ')
+    },
+  },
+}
+</script>
+
 <template>
   <q-item clickable :to="`/asmr/work/${rjCode}`" :class="classBackgroundColor" style="padding: 5px;">
     <q-item-section avatar style="padding: 0px 5px 0px 0px;">
@@ -21,8 +57,10 @@
 
           <span class="col-auto">/</span>
 
-          <router-link v-for="(va, index) in metadata.vas" :to="`/asmr/works?vaId=${va.id}`" :key=index
-            class="col-auto text-primary">
+          <router-link
+            v-for="(va, index) in metadata.vas" :key="index" :to="`/asmr/works?vaId=${va.id}`"
+            class="col-auto text-primary"
+          >
             {{ va.name }}
           </router-link>
         </div>
@@ -30,8 +68,10 @@
 
       <q-item-label v-if="showLabel && $q.screen.width > 700">
         <div class="row q-gutter-x-sm q-gutter-y-xs">
-          <router-link v-for="(tag, index) in metadata.tags" :to="`/asmr/works?tagId=${tag.id}`" :key=index
-            class="col-auto text-grey">
+          <router-link
+            v-for="(tag, index) in metadata.tags" :key="index" :to="`/asmr/works?tagId=${tag.id}`"
+            class="col-auto text-grey"
+          >
             {{ getLocaleTagName(tag) }}
           </router-link>
         </div>
@@ -39,39 +79,3 @@
     </q-item-section>
   </q-item>
 </template>
-
-<script>
-// import WorkDetails from 'components/WorkDetails'
-// import CoverSFW from 'components/CoverSFW'
-import TagI18N from "src/mixins/TagI18N";
-
-import { coverURL } from "src/utils/apiURL";
-import DarkMode from '../mixins/DarkMode';
-import { formatProductID } from 'src/utils/formatProductID'
-
-export default {
-  name: 'WorkListItem',
-
-  mixins: [DarkMode, TagI18N],
-
-  props: {
-    metadata: {
-      type: Object,
-      required: true
-    },
-    showLabel: {
-      type: Boolean,
-      default: true
-    },
-  },
-
-  computed: {
-    samCoverUrl() {
-      return coverURL(this.metadata, 'sam')
-    },
-    rjCode() {
-      return formatProductID(this.metadata.id, 'RJ')
-    },
-  }
-}
-</script>

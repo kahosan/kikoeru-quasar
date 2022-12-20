@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import routes from './routes'
 
@@ -20,13 +20,12 @@ export default function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     scrollBehavior: (to, from, savedPosition) => {
-      if (savedPosition) {
+      if (savedPosition)
         return savedPosition
-      } else if (to.hash) {
+      else if (to.hash)
         return { selector: to.hash }
-      } else {
+      else
         return { x: 0, y: 0 }
-      }
     },
     routes,
     history: createWebHistory(base),

@@ -8,8 +8,8 @@ export default boot(({ app }) => {
     options: {
       autoConnect: false,
       query: {
-        auth_token: ''
-      }
-    }
+        auth_token: '',
+      },
+    },
   }))
 })
