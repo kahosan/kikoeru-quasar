@@ -51,38 +51,38 @@ export default {
         {
           title: this.$t('sidebar.library'),
           icon: 'widgets',
-          path: '/asmr',
+          path: '/',
         },
         {
           title: this.$t('sidebar.myFavourites'),
           icon: 'favorite',
-          path: '/asmr/favourites',
+          path: '/favourites',
         },
         {
           title: this.$t('sidebar.circles'),
           icon: 'group',
-          path: '/asmr/circles',
+          path: '/circles',
         },
         {
           title: this.$t('sidebar.tags'),
           icon: 'label',
-          path: '/asmr/tags',
+          path: '/tags',
         },
         {
           title: this.$t('sidebar.vas'),
           icon: 'mic',
-          path: '/asmr/vas',
+          path: '/vas',
         },
         {
           title: this.$t('sidebar.configration'),
           icon: 'tune',
-          path: '/asmr/admin',
+          path: '/admin',
         },
       ]
     },
     isNotAtHomePage() {
       const path = this.$route.path
-      return path && path !== '/' && path !== '/asmr/works' && path !== '/favourites'
+      return path && path !== '/' && path !== '/works' && path !== '/favourites'
     },
 
     ...mapState('User', {
@@ -100,11 +100,11 @@ export default {
       this.$q.localStorage.set('dark', isActive)
     },
     keyword() {
-      this.$router.push(this.keyword ? `/asmr/works?keyword=${this.keyword}` : '/asmr/works')
+      this.$router.push(this.keyword ? `/works?keyword=${this.keyword}` : '/works')
     },
 
     randId() {
-      this.$router.push(`/asmr/work/RJ${this.randId}`)
+      this.$router.push(`/work/RJ${this.randId}`)
     },
   },
 
@@ -345,7 +345,7 @@ export default {
           </q-item>
 
           <q-item
-            v-ripple clickable exact to="/asmr/about" active-class="text-deep-purple text-weight-medium"
+            v-ripple clickable exact to="/about" active-class="text-deep-purple text-weight-medium"
             @click="miniState = true"
           >
             <q-item-section avatar>
@@ -360,7 +360,7 @@ export default {
           </q-item>
 
           <q-item
-            v-ripple clickable exact to="/asmr/settings" active-class="text-deep-purple text-weight-medium"
+            v-ripple clickable exact to="/settings" active-class="text-deep-purple text-weight-medium"
             @click="miniState = true"
           >
             <q-item-section avatar>

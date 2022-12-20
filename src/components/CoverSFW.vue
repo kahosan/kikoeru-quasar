@@ -68,7 +68,7 @@ export default {
 </script>
 
 <template>
-  <router-link :to="`/asmr/work/${rjCode}`">
+  <router-link :to="`/work/${rjCode}`">
     <q-img
       :src="coverUrl" :ratio="4 / 3" :img-class="imgClass" style="max-width: 560px;" transition="fade"
       native-context-menu @mouseover="toggleBlurFlag()" @mouseout="toggleBlurFlag()"

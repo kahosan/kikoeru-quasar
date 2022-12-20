@@ -22,11 +22,7 @@ function prefixRoutes(prefix, routes) {
 
 const routes = [
   {
-    path: '/',
-    redirect: '/asmr',
-  },
-  {
-    path: '/asmr/admin',
+    path: '/admin',
     component: DashboardLayout,
     children: [
       {
@@ -48,7 +44,7 @@ const routes = [
     ],
   },
   {
-    path: '/asmr',
+    path: '/',
     component: MainLayout,
     children: [
       {
@@ -151,7 +147,7 @@ const routes = [
     },
   },
   {
-    path: '/asmr/login',
+    path: '/login',
     component: Login,
   },
 ]

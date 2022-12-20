@@ -16,7 +16,7 @@ export default function (/* { store, ssrContext } */) {
   // quasar.conf.js -> build -> vueRouterMode
   // quasar.conf.js -> build -> publicPath
 
-  const base = process.env.VUE_ROUTER_BASE || '/'
+  const base = process.env.ROUTER_BASE || '/'
 
   const Router = createRouter({
     scrollBehavior: (to, from, savedPosition) => {

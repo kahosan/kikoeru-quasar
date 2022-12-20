@@ -143,7 +143,7 @@ export default {
 
 <template>
   <div>
-    <router-link :to="`/asmr/work/${rjCode}`">
+    <router-link :to="`/work/${rjCode}`">
       <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
     </router-link>
 
@@ -151,14 +151,14 @@ export default {
       <div class="q-px-sm q-py-none">
         <!-- 标题 -->
         <div class="text-h6 text-weight-regular" :class="classTextColor">
-          <!--          <router-link :to="`/asmr/work/${rjCode}`" :class="classTextColor"> -->
+          <!--          <router-link :to="`/work/${rjCode}`" :class="classTextColor"> -->
           {{ metadata.title }}
           <!--          </router-link> -->
         </div>
 
         <!-- 社团名 -->
         <div class="text-subtitle1 text-weight-regular">
-          <router-link :to="`/asmr/works?circleId=${metadata.circle.id}`" class="text-grey">
+          <router-link :to="`/works?circleId=${metadata.circle.id}`" class="text-grey">
             {{ metadata.circle.name }}
           </router-link>
         </div>
@@ -238,7 +238,7 @@ export default {
 
       <!-- 标签 -->
       <div v-if="showTags" class="q-px-none q-py-sm">
-        <router-link v-for="(tag, index) in metadata.tags" :key="index" :to="`/asmr/works?tagId=${tag.id}`">
+        <router-link v-for="(tag, index) in metadata.tags" :key="index" :to="`/works?tagId=${tag.id}`">
           <q-chip size="md" :class="$q.dark.isActive ? 'bg-grey-9' : 'shadow-4'">
             {{ getLocaleTagName(tag) }}
           </q-chip>
@@ -247,7 +247,7 @@ export default {
 
       <!-- 声优 -->
       <div class="q-px-none q-pt-sm q-py-sm">
-        <router-link v-for="(va, index) in metadata.vas" :key="index" :to="`/asmr/works?vaId=${va.id}`">
+        <router-link v-for="(va, index) in metadata.vas" :key="index" :to="`/works?vaId=${va.id}`">
           <q-chip square size="md" :class="!$q.dark.isActive ? 'shadow-4' : ''" color="teal" text-color="white">
             {{ va.name }}
           </q-chip>

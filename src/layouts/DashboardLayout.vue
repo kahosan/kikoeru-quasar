@@ -15,28 +15,28 @@ export default {
         {
           title: '音声库',
           icon: 'folder',
-          path: '/asmr/admin',
+          path: '/admin',
         },
         {
           title: '扫描',
           icon: 'youtube_searched_for',
-          path: '/asmr/admin/scanner',
+          path: '/admin/scanner',
         },
         {
           title: '用户管理',
           icon: 'person',
-          path: '/asmr/admin/usermanage',
+          path: '/admin/usermanage',
         },
         {
           title: '高级设置',
           icon: 'settings',
-          path: '/asmr/admin/advanced',
+          path: '/admin/advanced',
         },
 
         {
           title: '回到主页',
           icon: 'home',
-          path: '/asmr',
+          path: '/',
         },
       ],
     }
