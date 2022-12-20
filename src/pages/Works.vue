@@ -33,7 +33,7 @@
         </div>
 
         <!-- 无缩略图的列表 -->
-        <q-list v-if="displayMode === 'list'" bordered separator class="shadow-2">
+        <q-list v-if="displayMode === 'list'" bordered separator :class="!$q.dark.isActive ? 'shadow-2' : ''">
           <WorkListItem v-for="work in works" :key="work.id" :metadata="work" :showLabel=true :id="work.id" />
         </q-list>
 
@@ -56,15 +56,12 @@
 
         <!-- 分页 -->
         <div class="q-py-lg flex flex-center">
-          <!--          <q-pagination-->
-          <!--            v-model="page"-->
-          <!--            :max="maxPage"-->
-          <!--            :max-pages="7"-->
-          <!--            :boundary-numbers="false"-->
-          <!--            v-show="maxPage"-->
-          <!--          />-->
-          <Pagination show-quick-jumper :class="this.$q.dark.isActive ? 'dark' : ''" v-model="page"
-            :pageSize="pagination.pageSize" :total="pagination.totalCount" :itemRender="paginationItemRender" />
+          <q-pagination
+            v-model="page"
+            :max="Math.ceil(pagination.totalCount / pagination.pageSize)"
+            :max-pages="6"
+            input
+          />
         </div>
 
         <div class="flex flex-center" v-show="userName === 'guest'">{{ $t('works.guestLoginRateLimitTips') }}</div>
@@ -81,8 +78,6 @@ import NotifyMixin from '../mixins/Notification.js'
 import TagI18N from "src/mixins/TagI18N";
 import { mapState } from "vuex";
 import DarkMode from '../mixins/DarkMode'
-import { Pagination } from 'ant-design-vue';
-import 'ant-design-vue/lib/pagination/style/css';
 import Language from "components/Language";
 import { formatProductID } from 'src/utils/formatProductID'
 
@@ -94,7 +89,6 @@ export default {
   components: {
     WorkCard,
     WorkListItem,
-    Pagination,
     Language
   },
 
@@ -123,7 +117,7 @@ export default {
     }
   },
 
-  metaInfo() {
+  head() {
     const url = process.env.URL + this.$router.resolve({
       name: 'works',
       query: { ...this.$route.query, page: this.page },
@@ -518,66 +512,6 @@ export default {
   // 宽度 > $breakpoint-xl-min
   @media (min-width: $breakpoint-md-min) {
     width: 560px;
-  }
-}
-
-.dark .ant-pagination-item-link,
-.dark .ant-pagination-options-quick-jumper {
-  color: #fff !important;
-  background-color: transparent !important;
-  border: none !important;
-}
-
-.dark .ant-pagination-item {
-  //border: none !important;
-  background-color: transparent !important;
-}
-
-.dark .ant-pagination-item a {
-  color: #fff !important;
-}
-
-.dark .ant-pagination-item-ellipsis {
-  color: #fff !important;
-}
-
-.dark .ant-pagination-options-quick-jumper input {
-  background-color: transparent !important;
-  color: white;
-}
-
-.ant-pagination-item,
-.ant-pagination-jump-next,
-.ant-pagination-jump-prev,
-.ant-pagination-next,
-.ant-pagination-prev {
-  @media (max-width: $breakpoint-xs-max) {
-    // compact mode
-    margin-top: 4px;
-    margin-right: 4px;
-    margin-bottom: 4px;
-    //height: 28px;
-    //line-height: 28px;
-    //min-width: 28px;
-    //border: none !important;
-  }
-}
-
-body {
-  // side effect of antd
-  color: black !important;
-}
-
-body.body--dark {
-  // side effect of antd
-  color: #fff !important;
-}
-
-.ant-pagination-options {
-  @media (max-width: 576px) {
-    display: block !important;
-    text-align: center !important;
-    margin-top: 2px !important;
   }
 }
 </style>

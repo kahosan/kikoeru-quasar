@@ -82,7 +82,7 @@
       <!-- 标签 -->
       <div class="q-ma-xs" v-if="showTags">
         <router-link v-for="(tag, index) in metadata.tags" :to="`/asmr/works?tagId=${tag.id}`" :key=index>
-          <q-chip size="md" class="shadow-2" :class="$q.dark.isActive ? 'bg-grey-9' : ''">
+          <q-chip size="md" :class="$q.dark.isActive ? 'bg-grey-9' : 'shadow-2'">
             {{ getLocaleTagName(tag) }}
           </q-chip>
         </router-link>
@@ -91,7 +91,7 @@
       <!-- 声优 -->
       <div class="q-mx-xs q-my-sm">
         <router-link v-for="(va, index) in metadata.vas" :to="`/asmr/works?vaId=${va.id}`" :key=index>
-          <q-chip square size="md" class="shadow-2" color="teal" text-color="white">
+          <q-chip square size="md" :class="!$q.dark.isActive ? 'shadow-2' : ''" color="teal" text-color="white">
             {{ va.name }}
           </q-chip>
         </router-link>

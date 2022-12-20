@@ -23,7 +23,7 @@ import Lyric from 'lrc-file-parser'
 import {mapState, mapGetters, mapMutations} from 'vuex'
 import NotifyMixin from '../mixins/Notification.js'
 import VuePlyr from "vue-plyr";
-// import {coverURL} from "src/utils/apiURL";
+import 'vue-plyr/dist/vue-plyr.css'
 
 
 /**
@@ -36,7 +36,6 @@ export default {
   mixins: [NotifyMixin],
 
   components: {
-    // 'vue-plyr': () => import('vue-plyr')
     'vue-plyr': VuePlyr,
   },
 

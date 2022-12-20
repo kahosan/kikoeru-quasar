@@ -22,12 +22,12 @@
 <script>
 export default {
   name: 'Error404',
-  metaInfo() {
+  head() {
     return {
       title: '404 - ASMR Online',
       meta: [
-        {name: "robot", content: "noindex"},
-        {name: "prerender-status-code", content: "404"},
+        { name: "robot", content: "noindex" },
+        { name: "prerender-status-code", content: "404" },
       ]
     }
   }

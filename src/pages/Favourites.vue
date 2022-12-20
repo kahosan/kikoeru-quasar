@@ -65,7 +65,7 @@
       <div class="q-px-sm q-py-md">
         <q-infinite-scroll @load="onLoad" :offset="500" :disable="stopLoad" ref="scroll" v-if="mode !=='folder'">
           <div class="row justify-center text-grey" v-if="works.length === 0">{{$t('favourites.favouriteEmptyTips')}}</div>
-          <q-list bordered separator class="shadow-2" v-if="works.length">
+          <q-list bordered separator :class="!$q.dark.isActive ? 'shadow-2' : ''" v-if="works.length">
              <FavListItem v-for="work in works" :key="work.id" :workid="work.id" :metadata="work" @reset="reset()" :mode="mode"></FavListItem>
           </q-list>
           <template v-slot:loading>
@@ -161,12 +161,14 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: 'Favourites',
-    titleTemplate: '%s - ASMR Online',
-    meta: [
-      {name: "robot", content: "noindex"}
-    ]
+  head() {
+    return {
+      title: 'Favourites',
+      titleTemplate: '%s - ASMR Online',
+      meta: [
+        { name: "robot", content: "noindex" }
+      ]
+    }
   },
 
   created() {

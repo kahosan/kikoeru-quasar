@@ -23,8 +23,10 @@ export default {
   components: {},
   mixins: [DarkMode],
 
-  metaInfo: {
-    title: 'About - ASMR Online',
+  head() {
+    return {
+      title: 'About - ASMR Online',
+    }
   },
   data() {
     return {

@@ -10,22 +10,23 @@
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build",
-    "test": "node_modules/.bin/eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@quasar/extras": "^1.10.4",
     "@sentry/tracing": "^7.11.1",
     "@sentry/vue": "^7.11.1",
+    "@unhead/vue": "^1.0.13",
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "lrc-file-parser": "^1.0.7",
     "plyr": "^3.6.7",
-    "quasar": "^2.11.1",
+    "quasar": "^2.10.2",
     "vue": "^3.2.45",
     "vue-3-socket.io": "^1.0.5",
     "vue-i18n": "^9.2.2",
-    "vue-meta": "^3.0.0-alpha.10",
-    "vue-plyr": "^6.0.4",
+    "vue-plyr": "^7.0.0",
     "vue-router": "^4.1.6",
     "vue-slider-component": "^3.2.11",
     "vue-template-compiler": "^2.6.14",
@@ -38,6 +39,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.25.1",
     "eslint": "^7.25.0",
+    "eslint-config-kaho": "^0.9.4",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^7.9.0",
     "eslint-webpack-plugin": "^3.2.0"

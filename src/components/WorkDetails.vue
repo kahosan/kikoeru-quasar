@@ -78,7 +78,7 @@
       <!-- 标签 -->
       <div class="q-px-none q-py-sm" v-if="showTags">
         <router-link v-for="(tag, index) in metadata.tags" :to="`/asmr/works?tagId=${tag.id}`" :key=index>
-          <q-chip size="md" class="shadow-4" :class="$q.dark.isActive ? 'bg-grey-9' : ''">
+          <q-chip size="md" :class="$q.dark.isActive ? 'bg-grey-9' : 'shadow-4'">
             {{getLocaleTagName(tag)}}
           </q-chip>
         </router-link>
@@ -87,13 +87,13 @@
       <!-- 声优 -->
       <div class="q-px-none q-pt-sm q-py-sm">
         <router-link v-for="(va, index) in metadata.vas" :to="`/asmr/works?vaId=${va.id}`" :key=index>
-          <q-chip square size="md" class="shadow-4" color="teal" text-color="white">
+          <q-chip square size="md" :class="!$q.dark.isActive ? 'shadow-4' : ''" color="teal" text-color="white">
             {{va.name}}
           </q-chip>
         </router-link>
       </div>
 
-      <q-btn-dropdown dense class="q-mt-sm shadow-4 q-mx-xs q-pl-sm" color="cyan" :label="$t('workDetail.progress')">
+      <q-btn-dropdown dense class="'q-mt-sm' q-mx-xs q-pl-sm" :class="!$q.dark.isActive ? 'shadow-4' : ''" color="cyan" :label="$t('workDetail.progress')">
         <q-list>
           <q-item clickable @click="setProgress('marked')" class="q-pa-xs">
             <q-item-section avatar>
@@ -139,14 +139,14 @@
         </q-list>
       </q-btn-dropdown>
 
-      <q-btn dense @click="showReviewDialog = true" color="cyan" class="q-mt-sm shadow-4 q-mx-xs q-px-sm"
+      <q-btn dense @click="showReviewDialog = true" color="cyan" class="q-mt-sm q-mx-xs q-px-sm" :class="!$q.dark.isActive ? 'shadow-4' : ''"
         :label="$t('workDetail.writeReview')" />
       <WriteReview v-if="showReviewDialog" @closed="processReview" :workid="metadata.id" :metadata="metadata">
       </WriteReview>
 
-      <q-btn dense @click="showFeedbackDialog = true" color="grey-8" class="q-mt-sm shadow-4 q-mx-xs q-px-sm"
+      <q-btn dense @click="showFeedbackDialog = true" color="grey-8" class="q-mt-sm q-mx-xs q-px-sm" :class="!$q.dark.isActive ? 'shadow-4' : ''"
         :label="$t('feedback.title')" icon="report_gmailerrorred" />
-      <WorkFeedback v-model="showFeedbackDialog" :workid="metadata.id" :metadata="metadata"></WorkFeedback>
+      <WorkFeedback v-model="showFeedbackDialog" :workid="metadata.id" :metadata="metadata" value=""></WorkFeedback>
     </div>
   </div>
 </template>

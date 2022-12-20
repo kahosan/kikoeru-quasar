@@ -33,16 +33,18 @@ export default {
         circle: {},
         vas: [],
         tags: [],
+        release: '',
       },
       tree: []
     }
   },
 
-  metaInfo() {
+  head() {
     const url = process.env.URL + this.$router.resolve({
       name: 'work',
       params: { id: formatProductID(this.metadata.id) },
     }).href
+
     return {
       title: this.pageTitle,
       link: [

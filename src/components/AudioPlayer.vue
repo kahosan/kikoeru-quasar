@@ -186,7 +186,7 @@
 </template>
 
 <script>
-// import draggable from 'vuedraggable'
+import Draggable from 'vuedraggable'
 import AudioElement from 'components/AudioElement'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import {coverURL} from '../utils/apiURL';
@@ -199,7 +199,7 @@ export default {
   name: 'AudioPlayer',
 
   components: {
-    draggable: () => import('vuedraggable'),
+    Draggable,
     AudioElement
   },
 

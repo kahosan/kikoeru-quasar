@@ -1,6 +1,6 @@
 // 本 Mixin 用于提醒用户，他的前端已经升级到最新版
 
-import {version} from '../../package.json';
+import pa from '../../package.json';
 import { openURL } from 'quasar'
 
 
@@ -10,9 +10,9 @@ export default {
      * 当检测到更新时，通过本方法通知用户
      */
     notifyUpdate: function (remoteVersion) {
-      let actions = [{label: '忽略', color: 'white'}]
+      let actions = [{ label: '忽略', color: 'white' }]
       if (process.env.BLOG_URL) {
-        let changeLogUrl = process.env.BLOG_URL + '/frontend-' + version.replace('.', '-');
+        let changeLogUrl = process.env.BLOG_URL + '/frontend-' + pa.version.replace('.', '-');
         actions.push({
           label: '查看',
           color: 'yellow',
@@ -98,11 +98,11 @@ export default {
     this.checkIOSNeedUpdate()
 
     let localVersion = this.$q.localStorage.getItem('localVersion')
-    if (localVersion && this.hasUpdate(localVersion, version)) {
-      this.notifyUpdate(version)
-      this.doUpdate(version)
+    if (localVersion && this.hasUpdate(localVersion, pa.version)) {
+      this.notifyUpdate(pa.version)
+      this.doUpdate(pa.version)
     } else if (!localVersion) {
-      this.doUpdate(version)
+      this.doUpdate(pa.version)
     }
   }
 }

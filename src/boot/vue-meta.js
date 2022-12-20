@@ -1,7 +1,8 @@
 import { boot } from 'quasar/wrappers';
-import { createMetaManager } from "vue-meta";
+import { createHead, VueHeadMixin  } from "@unhead/vue"
 
 // we tell Vue to use our Vue package:
 export default boot(({ app }) => {
-  app.use(createMetaManager())
+  app.mixin(VueHeadMixin)
+  app.use(createHead())
 })

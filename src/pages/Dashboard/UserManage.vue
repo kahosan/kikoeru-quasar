@@ -69,7 +69,7 @@
         row-key="name"
         :selected-rows-label="getSelectedString"
         selection="multiple"
-        :selected.sync="selected"
+        v-model:selected.sync="selected"
       />
       <div class="row justify-end">
         <q-btn :loading="loadingDeleteUsers" :disable="selected.length === 0" @click="confirm = true" color="primary" label="删除" />

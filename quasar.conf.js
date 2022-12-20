@@ -114,7 +114,7 @@ module.exports = function (ctx) {
     devServer: {
       https: false,
       port: 6790,
-      open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
       proxy: {
         // https://webpack.js.org/configuration/dev-server/#devserverproxy
         // proxy all requests starting with /api to http://localhost:8888
