@@ -1,7 +1,4 @@
 <script>
-// import VuePlyr from "vue-plyr";
-import * as Sentry from '@sentry/vue'
-
 export default {
   name: 'PiPSubtitle',
   props: {

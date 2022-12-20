@@ -1,5 +1,4 @@
 <script>
-import * as Sentry from '@sentry/vue'
 import NotifyMixin from '../mixins/Notification.js'
 
 export default {
