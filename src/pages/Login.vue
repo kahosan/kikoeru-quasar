@@ -64,7 +64,7 @@ export default {
           setAxiosHeaders(res.data.token)
           this.showSuccNotif(type === 'reg' ? this.$t('login.registerSuccess') : this.$t('login.loginSuccess'))
 
-          this.$router.replace(this.$store.state.route.from || '/')
+          this.$router.replace(this.$route.from || '/')
         }
         catch (error) {
           // 由于Web Storage API错误，

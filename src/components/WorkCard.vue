@@ -105,9 +105,7 @@ export default {
 
 <template>
   <q-card>
-    <router-link :to="`/work/${rjCode}`">
-      <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
-    </router-link>
+    <CoverSFW :cover-url="coverUrl" :workid="metadata.id" :nsfw="false" :release="metadata.release" />
 
     <q-separator />
 

@@ -1,7 +1,6 @@
 <script>
 import WorkDetails from 'components/WorkDetails'
 import TagI18N from 'src/mixins/TagI18N'
-// import WorkQueue from 'components/WorkQueue'
 import WorkTree from 'components/WorkTree'
 import { formatProductID } from 'src/utils/formatProductID'
 import NotifyMixin from '../mixins/Notification.js'
@@ -11,19 +10,13 @@ export default {
 
   components: {
     WorkDetails,
-    // WorkQueue,
     WorkTree,
   },
 
   mixins: [NotifyMixin, TagI18N],
-  beforeRouteEnter(to, from, next) {
-    window.specifyBackTarget = { ...from, hash: `#${to.params.id}` }
-    next()
-  },
 
   data() {
     return {
-      workid: this.$route.params.id,
       metadata: {
         id: parseInt(this.$route.params.id),
         circle: {},
@@ -64,11 +57,14 @@ export default {
     rjCode() {
       return formatProductID(this.metadata.id, 'RJ')
     },
+
     ogTitle() {
       return `${this.metadata.title} - ASMR Online`
     },
+
     ogDesc() {
-      return `Listen Online For FREE!
+      return this.metadata.circle.name
+        ? `Listen Online For FREE!
 🆔 RJ Code: ${this.rjCode}
 ⭕ Circle: ${this.metadata.circle.name}
 🎙️ Actors: ${this.metadata.vas.map(v => v.name).join(', ')}
@@ -78,10 +74,13 @@ export default {
 💰 DLSite Price: ${this.metadata.price}￥
 📦 DLSite Sales: ${this.metadata.dl_count}
 ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
+        : ''
     },
+
     pageTitle() {
       return `${this.rjCode} ${this.metadata.title || ''} - ASMR Online`
     },
+
     searchDesc() {
       // 把文件展示出来
       let desc = ''
@@ -92,17 +91,21 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
     },
   },
 
-  watch: {
-    '$route.params.id': function (workID) {
-      if (workID !== undefined) {
-        this.workid = workID
-        this.requestData()
-      }
-    },
+  // 升级 vue3 后，会先显示之前缓存的详细信息，然后再用请求的数据替换，这里是为了解决这个问题
+  activated() {
+    this.metadata = {
+      id: parseInt(this.$route.params.id),
+      circle: {},
+      vas: [],
+      tags: [],
+      release: '',
+    }
+
+    this.requestData(this.$route.params.id)
   },
 
   created() {
-    this.requestData()
+    this.requestData(this.$route.params.id)
   },
 
   methods: {
@@ -116,8 +119,8 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
       })
       return files
     },
-    requestData() {
-      this.$axios.get(`/api/work/${this.workid}`)
+    requestData(workId) {
+      this.$axios.get(`/api/work/${workId}`)
         .then((response) => {
           this.metadata = response.data
         })
@@ -131,7 +134,7 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
           }
         })
 
-      this.$axios.get(`/api/tracks/${this.workid}`)
+      this.$axios.get(`/api/tracks/${workId}`)
         .then((response) => {
           this.tree = response.data
         })
@@ -150,7 +153,7 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
 </script>
 
 <template>
-  <div>
+  <div v-if="metadata.circle.name">
     <WorkDetails :metadata="metadata" @reset="requestData()" />
     <!-- <WorkQueue :queue="tracks" :editable="false" /> -->
     <WorkTree :metadata="metadata" :tree="tree" :editable="false" class="q-pb-md" />
