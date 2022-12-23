@@ -15,7 +15,6 @@ module.exports = function (ctx) {
       'axios',
       'i18n',
       'vue-meta',
-      'vuex-router-sync',
       'socket.io',
     ],
 
