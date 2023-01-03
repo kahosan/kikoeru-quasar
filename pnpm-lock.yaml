@@ -12,14 +12,14 @@ specifiers:
   eslint-config-kaho: ^0.9.4
   eslint-webpack-plugin: ^3.2.0
   lrc-file-parser: ^1.0.7
-  quasar: ^2.10.2
+  quasar: ^2.11.3
   typescript: ^4.9.4
   vue: ^3.2.45
   vue-3-socket.io: ^1.0.5
   vue-i18n: ^9.2.2
   vue-plyr: ^7.0.0
   vue-router: ^4.1.6
-  vuedraggable: ^2.24.3
+  vuedraggable: ^4.1.0
   vuex: ^4.1.0
 
 dependencies:
@@ -28,13 +28,13 @@ dependencies:
   axios: 0.21.4
   dotenv: 10.0.0
   lrc-file-parser: 1.2.7
-  quasar: 2.11.1
+  quasar: 2.11.3
   vue: 3.2.45
   vue-3-socket.io: 1.0.5
   vue-i18n: 9.2.2_vue@3.2.45
   vue-plyr: 7.0.0
   vue-router: 4.1.6_vue@3.2.45
-  vuedraggable: 2.24.3
+  vuedraggable: 4.1.0_vue@3.2.45
   vuex: 4.1.0_vue@3.2.45
 
 devDependencies:
@@ -6721,8 +6721,8 @@ packages:
       side-channel: 1.0.4
     dev: true
 
-  /quasar/2.11.1:
-    resolution: {integrity: sha512-3whiJaOXbectd2R6Vfjr/vHKeY92zdDpx41zfZ5vrG+Yx16Q76euUQsdKlYr1PD7q33yvHvjegxuILgKJg5GqA==}
+  /quasar/2.11.3:
+    resolution: {integrity: sha512-a+PApE126fwtCsuPvbDLuSSgcFUy5bGu9WjqvVRP3z0xw+7pH93Hva2M+QQLMsYs4a5tpT4N/qXlsI591nxuxA==}
     engines: {node: '>= 10.18.1', npm: '>= 6.13.4', yarn: '>= 1.21.1'}
     dev: false
 
@@ -7318,8 +7318,8 @@ packages:
       websocket-driver: 0.7.4
     dev: true
 
-  /sortablejs/1.10.2:
-    resolution: {integrity: sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==}
+  /sortablejs/1.14.0:
+    resolution: {integrity: sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==}
     dev: false
 
   /source-list-map/2.0.1:
@@ -8004,10 +8004,13 @@ packages:
       '@vue/server-renderer': 3.2.45_vue@3.2.45
       '@vue/shared': 3.2.45
 
-  /vuedraggable/2.24.3:
-    resolution: {integrity: sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==}
+  /vuedraggable/4.1.0_vue@3.2.45:
+    resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}
+    peerDependencies:
+      vue: ^3.0.1
     dependencies:
-      sortablejs: 1.10.2
+      sortablejs: 1.14.0
+      vue: 3.2.45
     dev: false
 
   /vuex/4.1.0_vue@3.2.45:
@@ -8358,7 +8361,7 @@ packages:
     dev: true
 
   github.com/sampotts/plyr/d434c9af16e641400aaee93188594208d88f2658:
-    resolution: {tarball: https://codeload.github.com/sampotts/plyr/tar.gz/d434c9af16e641400aaee93188594208d88f2658}
+    resolution: {commit: d434c9af16e641400aaee93188594208d88f2658, repo: git+ssh://git@github.com/sampotts/plyr.git, type: git}
     name: plyr
     version: 3.7.0
     dependencies:

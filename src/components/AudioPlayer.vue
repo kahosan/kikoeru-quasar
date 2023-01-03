@@ -441,42 +441,44 @@ export default {
         <q-list style="max-height: 450px" class="scroll">
           <Draggable
             v-if="showCurrentPlayList"
-            v-model="queueCopy"
+            :list="queueCopy"
             handle=".handle"
+            item-key="hash"
             @change="val => onMoved(val.moved)"
           >
-            <q-item
-              v-for="(track, index) in queueCopy"
-              :key="index"
-              v-ripple
-              clickable
-              :active="queueIndex === index"
-              active-class="text-white bg-teal"
-              class="non-selectable"
-              style="height: 48px; padding: 0px 10px;"
-              @click="onClickTrack(index)"
-            >
-              <q-item-section v-show="editCurrentPlayList" side>
-                <q-icon name="clear" :color="queueIndex === index ? 'white' : 'red'" @click="removeFromQueue(index)" />
-              </q-item-section>
+            <template #item="{ element: track, index }">
+              <q-item
+                :key="track.hash"
+                v-ripple
+                clickable
+                :active="queueIndex === index"
+                active-class="text-white bg-teal"
+                class="non-selectable"
+                style="height: 48px; padding: 0px 10px;"
+                @click="onClickTrack(index)"
+              >
+                <q-item-section v-show="editCurrentPlayList" side>
+                  <q-icon name="clear" :color="queueIndex === index ? 'white' : 'red'" @click="removeFromQueue(index)" />
+                </q-item-section>
 
-              <q-item-section avatar>
-                <q-img transition="fade" :src="samCoverUrl(track)" style="height: 38px; width: 38px" class="rounded-borders" />
-              </q-item-section>
+                <q-item-section avatar>
+                  <q-img transition="fade" :src="samCoverUrl(track)" style="height: 38px; width: 38px" class="rounded-borders" />
+                </q-item-section>
 
-              <q-item-section>
-                <q-item-label lines="1">
-                  {{ track.title }}
-                </q-item-label>
-                <q-item-label caption lines="1">
-                  {{ track.workTitle }}
-                </q-item-label>
-              </q-item-section>
+                <q-item-section>
+                  <q-item-label lines="1">
+                    {{ track.title }}
+                  </q-item-label>
+                  <q-item-label caption lines="1">
+                    {{ track.workTitle }}
+                  </q-item-label>
+                </q-item-section>
 
-              <q-item-section v-show="editCurrentPlayList" side class="handle">
-                <q-icon name="reorder" :color="queueIndex === index ? 'white' : 'dark'" />
-              </q-item-section>
-            </q-item>
+                <q-item-section v-show="editCurrentPlayList" side class="handle">
+                  <q-icon name="reorder" :color="queueIndex === index ? 'white' : 'dark'" />
+                </q-item-section>
+              </q-item>
+            </template>
           </Draggable>
         </q-list>
       </q-card>

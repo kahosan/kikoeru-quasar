@@ -24,13 +24,13 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "lrc-file-parser": "^1.0.7",
-    "quasar": "^2.10.2",
+    "quasar": "^2.11.3",
     "vue": "^3.2.45",
     "vue-3-socket.io": "^1.0.5",
     "vue-i18n": "^9.2.2",
     "vue-plyr": "^7.0.0",
     "vue-router": "^4.1.6",
-    "vuedraggable": "^2.24.3",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
