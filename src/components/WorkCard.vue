@@ -170,7 +170,7 @@ export default {
           <q-icon name="launch" size="xs" />
           <a
             class="text-blue"
-            :href="`https://www.dlsite.com/home/work/=/product_id/RJ${formatProductID(metadata.id, 'RJ')}.html`"
+            :href="`https://www.dlsite.com/home/work/=/product_id/${formatProductID(metadata.id, 'RJ')}.html`"
             rel="noreferrer noopener" target="_blank"
           >DLsite</a>
         </div>

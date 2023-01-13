@@ -3,6 +3,7 @@ import CoverSFW from 'components/CoverSFW'
 import TagI18N from 'src/mixins/TagI18N'
 import { coverURL } from 'src/utils/apiURL'
 import WorkFeedback from 'components/WorkFeedback'
+import { formatProductID } from 'src/utils/formatProductID'
 import DarkMode from '../mixins/DarkMode'
 import NotifyMixin from '../mixins/Notification.js'
 import WriteReview from './WriteReview'
@@ -77,6 +78,7 @@ export default {
   },
 
   methods: {
+    formatProductID,
     setProgress(newProgress) {
       this.progress = newProgress
       const submitPayload = {
@@ -208,7 +210,7 @@ export default {
           <div class="col-auto">
             <q-icon name="launch" size="xs" /><a
               class="text-blue"
-              :href="`https://www.dlsite.com/home/work/=/product_id/RJ${String(metadata.id).padStart(6, '0')}.html`"
+              :href="`https://www.dlsite.com/home/work/=/product_id/${formatProductID(metadata.id, 'RJ')}.html`"
               rel="noreferrer noopener" target="_blank"
             >DLsite</a>
           </div>
