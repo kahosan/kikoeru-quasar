@@ -1,5 +1,7 @@
 export default {
   sfw: 'SFW',
+  r18: '18禁',
+  r15: 'R-15',
   translated: 'Translated',
   progressEnum: {
     marked: 'Marked',

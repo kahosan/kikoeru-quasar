@@ -1,5 +1,7 @@
 export default {
   sfw: '全年龄',
+  r18: '18禁',
+  r15: 'R-15',
   translated: '带字幕',
   progressEnum: {
     marked: '想听',

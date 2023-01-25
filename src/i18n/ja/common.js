@@ -1,5 +1,7 @@
 export default {
   sfw: '全年齢向け',
+  r18: '18禁',
+  r15: 'R-15',
   translated: '字幕付き',
   progressEnum: {
     marked: 'お気に入り',
