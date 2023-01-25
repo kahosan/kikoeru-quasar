@@ -184,20 +184,20 @@ export default {
         <!--        <span v-if="metadata.has_subtitle" class="q-mx-sm" style="background: dodgerblue">{{ $t('common.translated') }}</span> -->
 
         <!--        <div class="inline-block "> -->
-        <q-chip
+        <!-- <q-chip
           v-if="metadata.nsfw === '18禁'" dense outline square class="text-green q-py-sm" size="sm"
           style="margin-top: 0;"
         >
           {{ $t('common.r18') }}
-        </q-chip>
+        </q-chip> -->
         <q-chip
-          v-elif="metadata.nsfw === 'R-15'" dense outline square class="text-green q-py-sm" size="sm"
+          v-if="metadata.nsfw === 'R-15'" dense outline square class="text-green q-py-sm" size="sm"
           style="margin-top: 0;"
         >
           {{ $t('common.r15') }}
         </q-chip>
         <q-chip
-          v-elif="metadata.nsfw === '全年齢'" dense outline square class="text-green q-py-sm" size="sm"
+          v-else-if="metadata.nsfw === '全年齢'" dense outline square class="text-green q-py-sm" size="sm"
           style="margin-top: 0;"
         >
           {{ $t('common.sfw') }}
