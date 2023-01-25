@@ -197,7 +197,7 @@ export default {
           {{ $t('common.r15') }}
         </q-chip>
         <q-chip
-          v-else-if="metadata.nsfw === '全年齢'" dense outline square class="text-green q-py-sm" size="sm"
+          v-else-if="metadata.nsfw === '全年龄'" dense outline square class="text-green q-py-sm" size="sm"
           style="margin-top: 0;"
         >
           {{ $t('common.sfw') }}
