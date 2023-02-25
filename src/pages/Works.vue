@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       lastUrlBeforeDeactivate: '',
-      lastPageBeforeDeactivate: 1,
+      lastPageBeforeDeactivate: +this.$route.query.page || 1,
       active: false,
       displayMode: window.navigator.userAgent.startsWith('special-ua-for-prerender-') ? 'thumbnail' : 'detail',
       showLabel: true,
@@ -295,21 +295,6 @@ export default {
   },
 
   methods: {
-    paginationItemRender(current, type, originalElement) {
-      // prerender 不支持 script，所以回落到 href 跳转
-      if (window.navigator.userAgent.startsWith('special-ua-for-prerender-')) {
-        const url = this.$router.resolve({
-          name: 'works',
-          query: { ...this.$route.query, page: current },
-        }).href
-
-        originalElement.data = originalElement.data || {}
-        originalElement.data.attrs = originalElement.data.attrs || {}
-        originalElement.data.attrs.href = url
-      }
-
-      return originalElement
-    },
     requestWorksQueue() {
       this.loading = true
       this.works = {}
@@ -320,6 +305,7 @@ export default {
         page: this.page,
         seed: this.seed,
         subtitle: this.subtitleOnly ? 1 : 0,
+        ...this.$route.query,
       }
 
       return this.$axios.get(this.url, { params })
@@ -415,14 +401,10 @@ export default {
       this.pagination = { currentPage: 0, pageSize: 12, totalCount: 0 }
 
       // TODO 此处逻辑需要通过重写 query 规则进行优化
-      if (this.page === 1) {
-        // 当 page === 1 时，由本方法调用 requestWorksQueue
-        this.requestWorksQueue()
-      }
-      else {
-        // 否则通过设定 page = 1，触发 this.page 的 watcher，间接调用 requestWorksQueue
-        this.page = 1
-      }
+      // if (this.page === 1) {
+      // 当 page === 1 时，由本方法调用 requestWorksQueue
+      this.requestWorksQueue()
+    //  }
     },
   },
 }
@@ -497,8 +479,8 @@ export default {
         <div class="q-py-lg flex flex-center">
           <q-pagination
             v-model="page"
-            :max="Math.ceil(pagination.totalCount / pagination.pageSize)"
-            :max-pages="6"
+            :max="Math.ceil(pagination.totalCount / pagination.pageSize) || 10"
+            :min="1"
             input
           />
         </div>
