@@ -62,8 +62,8 @@ export default {
     }, true)
 
     // 设置默认 canvas 画布大小
-    this.canvas.width = 2 * window.innerWidth
-    this.canvas.height = this.canvas.width / 20 * 3
+    this.canvas.width = window.innerWidth
+    this.canvas.height = this.canvas.width * 8 / 20
 
     // 手动绘制第一句字幕
     this.setSubtitle('')
@@ -154,7 +154,7 @@ export default {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // 背景を白色にする
-      ctx.fillStyle = 'rgb(255, 255, 255)'
+      ctx.fillStyle = 'rgb(255, 255, 255, 0.7)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // ctx.fillStyle = "rgb(0, 0, 0)";
