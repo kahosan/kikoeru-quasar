@@ -1,26 +1,29 @@
-import MainLayout from 'layouts/MainLayout'
-import DashboardLayout from 'layouts/DashboardLayout'
+import MainLayout from 'layouts/MainLayout.vue'
+import DashboardLayout from 'layouts/DashboardLayout.vue'
 
-import Works from 'pages/Works'
-import Work from 'pages/Work'
+import Works from 'pages/Works.vue'
+import Work from 'pages/Work.vue'
+import Login from 'pages/Login.vue'
+
 // import List from 'pages/List'
-import Login from 'pages/Login'
 // import Favourites from 'pages/Favourites'
 // import About from 'pages/About'
 
-import Folders from 'pages/Dashboard/Folders'
-import Scanner from 'pages/Dashboard/Scanner'
-import Advanced from 'pages/Dashboard/Advanced'
-import UserManage from 'pages/Dashboard/UserManage'
+import Folders from 'pages/Dashboard/Folders.vue'
+import Scanner from 'pages/Dashboard/Scanner.vue'
+import Advanced from 'pages/Dashboard/Advanced.vue'
+import UserManage from 'pages/Dashboard/UserManage.vue'
 
-function prefixRoutes(prefix, routes) {
+import type { RouteRecordRaw } from 'vue-router'
+
+function prefixRoutes(prefix: string, routes: RouteRecordRaw[]) {
   return routes.map((route) => {
     route.path = `${prefix}${route.path}`
     return route
   })
 }
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/admin',
     component: DashboardLayout,
@@ -50,7 +53,7 @@ const routes = [
       {
         path: 'settings',
         name: 'settings',
-        component: () => import('pages/Settings'),
+        component: () => import('pages/Settings.vue'),
       },
       {
         path: '',
@@ -75,70 +78,70 @@ const routes = [
       {
         path: 'circles',
         props: { restrict: 'circles' },
-        component: () => import('pages/List'),
+        component: () => import('pages/List.vue'),
       },
       {
         path: 'tags',
         props: { restrict: 'tags' },
-        component: () => import('pages/List'),
+        component: () => import('pages/List.vue'),
       },
       {
         path: 'vas',
         props: { restrict: 'vas' },
-        component: () => import('pages/List'),
+        component: () => import('pages/List.vue'),
       },
       {
         path: 'about',
         props: { restrict: 'about' },
-        component: () => import('pages/About'),
+        component: () => import('pages/About.vue'),
       },
       ...prefixRoutes('favourites', [
         {
           path: '',
           props: { route: 'review' },
-          component: () => import('pages/Favourites'),
+          component: () => import('pages/Favourites.vue'),
         },
         {
           path: '/review',
           props: { route: 'review' },
-          component: () => import('pages/Favourites'),
+          component: () => import('pages/Favourites.vue'),
         },
         ...prefixRoutes('/progress', [
           {
             path: '',
             props: { route: 'progress', progress: 'marked' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
           {
             path: '/marked',
             props: { route: 'progress', progress: 'marked' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
           {
             path: '/listening',
             props: { route: 'progress', progress: 'listening' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
           {
             path: '/listened',
             props: { route: 'progress', progress: 'listened' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
           {
             path: '/replay',
             props: { route: 'progress', progress: 'replay' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
           {
             path: '/postponed',
             props: { route: 'progress', progress: 'postponed' },
-            component: () => import('pages/Favourites'),
+            component: () => import('pages/Favourites.vue'),
           },
         ]),
         {
           path: '/folder',
           props: { route: 'folder' },
-          component: () => import('pages/Favourites'),
+          component: () => import('pages/Favourites.vue'),
         },
       ]),
     ],

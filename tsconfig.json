@@ -1,7 +1,45 @@
 {
-  "extends": "@quasar/app-webpack/tsconfig-preset",
+  "extends": "@quasar/app-webpack/tsconfig-preset.json",
   "compilerOptions": {
+    "allowJs": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
     "baseUrl": ".",
-    "allowJs": true
-  }
+    "paths": {
+      "src/*": [
+        "src/*"
+      ],
+      "app/*": [
+        "*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "layouts/*": [
+        "src/layouts/*"
+      ],
+      "pages/*": [
+        "src/pages/*"
+      ],
+      "assets/*": [
+        "src/assets/*"
+      ],
+      "boot/*": [
+        "src/boot/*"
+      ],
+      "vue$": [
+        "node_modules/vue/dist/vue.esm.js"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "babel.config.js",
+    "quasar.conf.js"
+  ],
+  "exclude": [
+    "dist",
+    ".quasar",
+    "node_modules"
+  ]
 }

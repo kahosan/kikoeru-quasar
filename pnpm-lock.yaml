@@ -8361,7 +8361,7 @@ packages:
     dev: true
 
   github.com/sampotts/plyr/d434c9af16e641400aaee93188594208d88f2658:
-    resolution: {commit: d434c9af16e641400aaee93188594208d88f2658, repo: git+ssh://git@github.com/sampotts/plyr.git, type: git}
+    resolution: {tarball: https://codeload.github.com/sampotts/plyr/tar.gz/d434c9af16e641400aaee93188594208d88f2658}
     name: plyr
     version: 3.7.0
     dependencies:
