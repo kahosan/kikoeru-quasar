@@ -35,7 +35,7 @@ export default {
     source() {
       // 从 LocalStorage 中读取 token
       const token = this.$q.localStorage.getItem('jwt-token') || ''
-      const source = this.qualityBehavior === 'fluentFirst' && this.currentPlayingFile.streamLowQualityUrl
+      const source = (this.qualityBehavior === 'fluentFirst' && this.currentPlayingFile.streamLowQualityUrl)
         ? this.currentPlayingFile.streamLowQualityUrl
         : this.currentPlayingFile.mediaStreamUrl
       return source ? `${source}?token=${token}` : ''
@@ -210,7 +210,7 @@ export default {
       this.SET_DURATION(this.player.duration)
 
       // 播放
-      if (this.player.currentTime !== this.player.duration)
+      if (this.player?.currentTime !== this.player.duration)
         this.player.play()
 
       this.setMediaSessionActionHandler()
@@ -255,14 +255,16 @@ export default {
           break
         case 'repeat once':
           // 单曲循环
-          this.player.currentTime = 0
-          this.WANT_PLAY()
+          if (this.player) {
+            this.player.currentTime = 0
+            this.WANT_PLAY()
+          }
           break
         case 'shuffle': {
           // 随机播放
           const index = Math.floor(Math.random() * this.queue.length)
           this.SET_TRACK(index)
-          if (index === this.queueIndex)
+          if (index === this.queueIndex && this.player)
             this.player.currentTime = 0
 
           break
@@ -371,7 +373,8 @@ export default {
           this.player.fastSeek(event.seekTime)
           return
         }
-        this.player.currentTime = event.seekTime
+        if (this.player)
+          this.player.currentTime = event.seekTime
       })
       navigator.mediaSession.setActionHandler('nexttrack', () => this.$store.commit('AudioPlayer/NEXT_TRACK'))
       navigator.mediaSession.setActionHandler('previoustrack', () => this.$store.commit('AudioPlayer/PREVIOUS_TRACK'))

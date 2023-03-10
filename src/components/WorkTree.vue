@@ -76,7 +76,7 @@ export default {
   methods: {
     formatSeconds,
     playIcon(hash) {
-      return this.playing && this.currentPlayingFile.hash === hash ? 'pause' : 'play_arrow'
+      return (this.playing && this.currentPlayingFile.hash) === hash ? 'pause' : 'play_arrow'
     },
 
     getInitialPath() {

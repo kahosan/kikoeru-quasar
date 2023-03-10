@@ -335,7 +335,8 @@ export default {
 
     refreshPageTitle() {
       if (this.$route.query.circleId || this.$route.query.tagId || this.$route.query.vaId) {
-        let url = ''; let restrict = ''
+        let url = ''
+        let restrict = ''
         if (this.$route.query.circleId) {
           restrict = 'circles'
           url = `/api/${restrict}/${this.$route.query.circleId}`
