@@ -1,6 +1,6 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { mediaDownloadURL, mediaStreamURL } from 'src/utils/apiURL'
+import { mediaDownloadURL, mediaStreamURL } from 'src/utils/url'
 import { formatSeconds } from 'src/utils/time'
 
 export default {

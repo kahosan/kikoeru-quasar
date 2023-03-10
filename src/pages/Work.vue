@@ -2,7 +2,7 @@
 import WorkDetails from 'components/WorkDetails'
 import TagI18N from 'src/mixins/TagI18N'
 import WorkTree from 'components/WorkTree'
-import { formatProductID } from 'src/utils/formatProductID'
+import { formatProductID } from 'src/utils/format-id'
 import NotifyMixin from '../mixins/Notification.js'
 
 export default {

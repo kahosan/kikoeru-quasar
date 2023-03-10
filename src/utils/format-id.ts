@@ -1,10 +1,7 @@
 /**
  * 将 int 或 string 转换为 RJxxxxxx 的 product_id
- * @param {int | string} product_id
- * @param {string} prefix
- * @return {string}
  */
-export const formatProductID = (product_id, prefix = '') => {
+export const formatProductID = (product_id: number | string, prefix = '') => {
   if (typeof product_id === 'string') {
     // 移除 前导英文
     // RJ123456 => 123456

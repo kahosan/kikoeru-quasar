@@ -1,6 +1,6 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { coverURL } from 'src/utils/apiURL'
+import { coverURL } from 'src/utils/url'
 import DarkMode from '../mixins/DarkMode'
 
 export default {

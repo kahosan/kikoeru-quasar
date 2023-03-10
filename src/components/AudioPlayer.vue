@@ -5,7 +5,7 @@ import { mapGetters, mapMutations, mapState } from 'vuex'
 import Notification from 'src/mixins/Notification'
 import { formatSeconds } from 'src/utils/time'
 import DarkMode from '../mixins/DarkMode'
-import { coverURL } from '../utils/apiURL'
+import { coverURL } from '../utils/url'
 
 export default {
   name: 'AudioPlayer',

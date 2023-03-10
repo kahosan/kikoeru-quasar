@@ -1,5 +1,5 @@
 <script>
-import { formatProductID } from 'src/utils/formatProductID'
+import { formatProductID } from 'src/utils/format-id'
 
 export default {
   name: 'CoverSFW',

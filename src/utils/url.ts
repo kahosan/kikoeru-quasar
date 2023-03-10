@@ -1,10 +1,15 @@
+interface MetadataURL {
+  samCoverUrl: string
+  thumbnailCoverUrl: string
+  mainCoverUrl: string
+  id: string
+  hash: string
+}
+
 /**
  * 计算封面 url
- * @param {Object} metadata
- * @param {string|null} type
- * @return {string|string}
  */
-export const coverURL = (metadata, type = 'main') => {
+export const coverURL = (metadata: MetadataURL, type = 'main') => {
   metadata = metadata || {
     samCoverUrl: '',
     thumbnailCoverUrl: '',
@@ -40,18 +45,14 @@ export const coverURL = (metadata, type = 'main') => {
 
 /**
  * 计算在线播放 url
- * @param {number} hash
- * @param {string} token
  */
-export const mediaStreamURL = (hash, token) => {
+export const mediaStreamURL = (hash: number, token: string) => {
   return `${process.env.API_URL}/api/media/stream/${hash}?token=${token}`
 }
 
 /**
  * 计算下载 url
- * @param {number} hash
- * @param {string} token
  */
-export const mediaDownloadURL = (hash, token) => {
+export const mediaDownloadURL = (hash: number, token: string) => {
   return `${process.env.API_URL}/api/media/download/${hash}?token=${token}`
 }

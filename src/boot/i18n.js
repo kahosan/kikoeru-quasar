@@ -6,7 +6,7 @@ import messages from 'src/i18n'
 
 // detect default language
 import { LocalStorage, Quasar } from 'quasar'
-import { quasarLocaleToAvailableLocale } from 'src/utils/localeMap'
+import { quasarLocaleToAvailableLocale } from 'src/utils/locale-map'
 import { boot } from 'quasar/wrappers'
 
 // we tell Vue to use our Vue package:

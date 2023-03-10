@@ -2,8 +2,8 @@
 // import WorkDetails from 'components/WorkDetails'
 import CoverSFW from 'components/CoverSFW'
 import TagI18N from 'src/mixins/TagI18N'
-import { coverURL } from 'src/utils/apiURL'
-import { formatProductID } from 'src/utils/formatProductID'
+import { coverURL } from 'src/utils/url'
+import { formatProductID } from 'src/utils/format-id'
 import NotifyMixin from '../mixins/Notification.js'
 
 export default {

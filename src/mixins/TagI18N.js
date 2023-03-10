@@ -1,4 +1,4 @@
-import { availableLocaleToTagLocale } from 'src/utils/localeMap'
+import { availableLocaleToTagLocale } from 'src/utils/locale-map'
 
 export default {
   methods: {

@@ -4,7 +4,7 @@ import WorkListItem from 'components/WorkListItem'
 import TagI18N from 'src/mixins/TagI18N'
 import { mapState } from 'vuex'
 import Language from 'components/Language'
-import { formatProductID } from 'src/utils/formatProductID'
+import { formatProductID } from 'src/utils/format-id'
 import DarkMode from '../mixins/DarkMode'
 import NotifyMixin from '../mixins/Notification.js'
 
