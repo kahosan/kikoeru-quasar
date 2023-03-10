@@ -21,18 +21,16 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV,
+    strict: !!process.env.DEV,
   })
 
   if (process.env.DEV && module.hot) {
     module.hot.accept(['./module-AudioPlayer'], () => {
-      const newAudioPlayer = require('./module-AudioPlayer').default
-      store.hotUpdate({ modules: { AudioPlayer: newAudioPlayer } })
+      import('./module-AudioPlayer').then(ap => store.hotUpdate({ modules: { AudioPlayer: ap.default } }))
     })
 
     module.hot.accept(['./module-User'], () => {
-      const newUser = require('./module-User').default
-      store.hotUpdate({ modules: { User: newUser } })
+      import('./module-User').then(user => store.hotUpdate({ modules: { User: user.default } }))
     })
   }
 

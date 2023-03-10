@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@quasar/app-webpack': ^3.6.2
   '@quasar/extras': ^1.10.4
+  '@types/webpack-env': ^1.18.0
   '@unhead/vue': ^1.0.13
   axios: ^0.21.1
   copy-webpack-plugin: ^5.1.1
@@ -39,6 +40,7 @@ dependencies:
 
 devDependencies:
   '@quasar/app-webpack': 3.6.2_gcp6rl56ztu64hsez4kjrgeqmu
+  '@types/webpack-env': 1.18.0
   copy-webpack-plugin: 5.1.2
   core-js: 3.26.1
   eslint: 8.30.0
@@ -1852,6 +1854,10 @@ packages:
       - esbuild
       - uglify-js
       - webpack-cli
+    dev: true
+
+  /@types/webpack-env/1.18.0:
+    resolution: {integrity: sha512-56/MAlX5WMsPVbOg7tAxnYvNYMMWr/QJiIp6BxVSW3JJXUVzzOn64qW8TzQyMSqSUFM2+PVI4aUHcHOzIz/1tg==}
     dev: true
 
   /@types/ws/8.5.3:

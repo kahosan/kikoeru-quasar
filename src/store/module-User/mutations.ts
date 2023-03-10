@@ -1,14 +1,14 @@
 const mutations = {
-  INIT(state, user) {
+  INIT(state: any, user: any) {
     state.name = user.name
     state.group = user.group
   },
 
-  SET_AUTH(state, flag) {
+  SET_AUTH(state: any, flag: any) {
     state.auth = flag
   },
 
-  SET_REG(state, flag) {
+  SET_REG(state: any, flag: any) {
     state.reg = flag
   },
 }
