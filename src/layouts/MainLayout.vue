@@ -5,8 +5,8 @@ import LyricsBar from 'components/LyricsBar'
 import PiPSubtitle from 'components/PiPSubtitle'
 import SleepMode from 'components/SleepMode'
 import { mapMutations, mapState } from 'vuex'
-import UpdateNotify from 'src/mixins/UpdateNotify'
-import NotifyMixin from '../mixins/Notification.js'
+import UpdateNotify from 'src/mixins/update-notify'
+import NotifyMixin from '../mixins/notification'
 
 export default {
   name: 'MainLayout',

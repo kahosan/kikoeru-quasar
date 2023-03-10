@@ -2,9 +2,9 @@
 import Draggable from 'vuedraggable'
 import AudioElement from 'components/AudioElement'
 import { mapGetters, mapMutations, mapState } from 'vuex'
-import Notification from 'src/mixins/Notification'
+import Notification from 'src/mixins/notification'
 import { formatSeconds } from 'src/utils/time'
-import DarkMode from '../mixins/DarkMode'
+import DarkMode from '../mixins/dark-mode'
 import { coverURL } from '../utils/url'
 
 export default {

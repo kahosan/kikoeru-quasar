@@ -1,6 +1,6 @@
 <script>
-import DarkMode from 'src/mixins/DarkMode'
-import NotifyMixin from '../../mixins/Notification.js'
+import DarkMode from 'src/mixins/dark-mode'
+import NotifyMixin from '../../mixins/notification'
 
 export default {
   name: 'Folders',

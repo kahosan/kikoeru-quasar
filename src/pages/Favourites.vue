@@ -1,7 +1,7 @@
 <script>
 import FavListItem from 'components/FavListItem'
-import NotifyMixin from '../mixins/Notification.js'
-import DarkMode from '../mixins/DarkMode'
+import NotifyMixin from '../mixins/notification'
+import DarkMode from '../mixins/dark-mode'
 
 export default {
   name: 'Favourites',

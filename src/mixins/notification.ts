@@ -1,6 +1,8 @@
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   methods: {
-    showSuccNotif(message) {
+    showSuccNotif(message: string) {
       this.$q.notify({
         message,
         color: 'positive',
@@ -9,7 +11,7 @@ export default {
       })
     },
 
-    showWarnNotif(message) {
+    showWarnNotif(message: string) {
       this.$q.notify({
         message,
         color: 'warning',
@@ -17,7 +19,7 @@ export default {
       })
     },
 
-    showErrNotif(message) {
+    showErrNotif(message: string) {
       this.$q.notify({
         message,
         color: 'negative',
@@ -25,4 +27,4 @@ export default {
       })
     },
   },
-}
+})

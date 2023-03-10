@@ -1,6 +1,6 @@
 <script>
 import { mapState } from 'vuex'
-import DarkMode from 'src/mixins/DarkMode'
+import DarkMode from 'src/mixins/dark-mode'
 
 export default {
   name: 'Settings',

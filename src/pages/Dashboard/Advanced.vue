@@ -1,5 +1,5 @@
 <script>
-import NotifyMixin from '../../mixins/Notification.js'
+import NotifyMixin from '../../mixins/notification'
 
 export default {
   name: 'Advanced',

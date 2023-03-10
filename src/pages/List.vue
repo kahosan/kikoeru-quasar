@@ -1,6 +1,6 @@
 <script>
-import TagI18N from 'src/mixins/TagI18N'
-import NotifyMixin from '../mixins/Notification.js'
+import TagI18N from 'src/mixins/tag-i18n'
+import NotifyMixin from '../mixins/notification'
 
 export default {
   name: 'List',

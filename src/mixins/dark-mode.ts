@@ -1,4 +1,6 @@
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   computed: {
     color() {
       return this.$q.dark.isActive ? 'black' : 'white'
@@ -14,4 +16,4 @@ export default {
       return this.$q.dark.isActive ? 'bg-black' : 'bg-white'
     },
   },
-}
+})

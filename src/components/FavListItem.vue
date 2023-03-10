@@ -1,8 +1,8 @@
 <script>
 import { coverURL } from 'src/utils/url'
 import { formatProductID } from 'src/utils/format-id'
-import NotifyMixin from '../mixins/Notification.js'
-import DarkMode from '../mixins/DarkMode'
+import NotifyMixin from '../mixins/notification'
+import DarkMode from '../mixins/dark-mode'
 import WriteReview from './WriteReview'
 
 export default {

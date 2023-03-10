@@ -1,11 +1,11 @@
 <script>
 import CoverSFW from 'components/CoverSFW'
-import TagI18N from 'src/mixins/TagI18N'
+import TagI18N from 'src/mixins/tag-i18n'
 import { coverURL } from 'src/utils/url'
 import WorkFeedback from 'components/WorkFeedback'
 import { formatProductID } from 'src/utils/format-id'
-import DarkMode from '../mixins/DarkMode'
-import NotifyMixin from '../mixins/Notification.js'
+import DarkMode from '../mixins/dark-mode'
+import NotifyMixin from '../mixins/notification'
 import WriteReview from './WriteReview'
 
 export default {

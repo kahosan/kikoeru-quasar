@@ -1,6 +1,6 @@
 <script>
 import { setAxiosHeaders } from 'boot/axios'
-import NotifyMixin from '../mixins/Notification.js'
+import NotifyMixin from '../mixins/notification'
 
 export default {
   mixins: [NotifyMixin],

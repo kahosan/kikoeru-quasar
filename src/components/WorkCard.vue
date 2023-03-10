@@ -1,10 +1,10 @@
 <script>
 // import WorkDetails from 'components/WorkDetails'
 import CoverSFW from 'components/CoverSFW'
-import TagI18N from 'src/mixins/TagI18N'
+import TagI18N from 'src/mixins/tag-i18n'
 import { coverURL } from 'src/utils/url'
 import { formatProductID } from 'src/utils/format-id'
-import NotifyMixin from '../mixins/Notification.js'
+import NotifyMixin from '../mixins/notification'
 
 export default {
   name: 'WorkCard',

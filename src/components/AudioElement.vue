@@ -2,7 +2,7 @@
 import Lyric from 'lrc-file-parser'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import VuePlyr from 'vue-plyr'
-import NotifyMixin from '../mixins/Notification.js'
+import NotifyMixin from '../mixins/notification'
 import 'vue-plyr/dist/vue-plyr.css'
 
 /**

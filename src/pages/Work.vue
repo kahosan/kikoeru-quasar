@@ -1,9 +1,9 @@
 <script>
 import WorkDetails from 'components/WorkDetails'
-import TagI18N from 'src/mixins/TagI18N'
+import TagI18N from 'src/mixins/tag-i18n'
 import WorkTree from 'components/WorkTree'
 import { formatProductID } from 'src/utils/format-id'
-import NotifyMixin from '../mixins/Notification.js'
+import NotifyMixin from '../mixins/notification'
 
 export default {
   name: 'Work',

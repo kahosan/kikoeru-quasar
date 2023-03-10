@@ -1,15 +1,28 @@
 // 本 Mixin 用于提醒用户，他的前端已经升级到最新版
 
 import { openURL } from 'quasar'
+import { defineComponent } from 'vue'
 import pa from '../../package.json'
 
-export default {
+export default defineComponent({
+  mounted() {
+    this.checkIOSNeedUpdate()
+
+    const localVersion = this.$q.localStorage.getItem('localVersion')?.toString()
+    if (localVersion && this.hasUpdate(localVersion, pa.version)) {
+      this.notifyUpdate(pa.version)
+      this.doUpdate(pa.version)
+    }
+    else if (!localVersion) {
+      this.doUpdate(pa.version)
+    }
+  },
   methods: {
     /**
      * 当检测到更新时，通过本方法通知用户
      */
-    notifyUpdate(remoteVersion) {
-      const actions = [{ label: '忽略', color: 'white' }]
+    notifyUpdate(remoteVersion: string) {
+      const actions = [{ label: '忽略', color: 'white', handler: () => {} }]
       if (process.env.BLOG_URL) {
         const changeLogUrl = `${process.env.BLOG_URL}/frontend-${pa.version.replace('.', '-')}`
         actions.push({
@@ -34,7 +47,7 @@ export default {
     /**
      * 检查版本号是否有更新
      */
-    hasUpdate(localVersion, remoteVersion) {
+    hasUpdate(localVersion: string, remoteVersion: string) {
       const v1 = localVersion.split('.').slice(0, -1).join('.')
       const v2 = remoteVersion.split('.').slice(0, -1).join('.')
       return v1 !== v2
@@ -43,7 +56,7 @@ export default {
     /**
      * 刷新本地保存的版本号
      */
-    doUpdate(remoteVersion) {
+    doUpdate(remoteVersion: string) {
       this.$q.localStorage.set('localVersion', remoteVersion)
     },
 
@@ -53,15 +66,14 @@ export default {
     checkIOSNeedUpdate() {
       const iPhoneOS = navigator.userAgent.match(/OS ((\d+_?){2,3})\s/)
       const iPadOS = navigator.userAgent.match(/Version\/((\d+.?){2,3})/)
-      if (!(iPhoneOS || iPadOS))
-        return
-
       let a, b
 
       if (iPhoneOS)
         [a, b] = iPhoneOS[1].split('_').map(v => parseInt(v))
-      else
+      else if (iPadOS)
         [a, b] = iPadOS[1].split('.').map(v => parseInt(v))
+      else
+        return
 
       console.info('ios version', a, b)
 
@@ -91,16 +103,4 @@ export default {
       }
     },
   },
-  mounted() {
-    this.checkIOSNeedUpdate()
-
-    const localVersion = this.$q.localStorage.getItem('localVersion')
-    if (localVersion && this.hasUpdate(localVersion, pa.version)) {
-      this.notifyUpdate(pa.version)
-      this.doUpdate(pa.version)
-    }
-    else if (!localVersion) {
-      this.doUpdate(pa.version)
-    }
-  },
-}
+})
