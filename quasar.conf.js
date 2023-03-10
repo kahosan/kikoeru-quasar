@@ -8,6 +8,7 @@ module.exports = function (ctx) {
   ctx.env = require('dotenv').config().parsed
 
   return {
+    supportTS: true,
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
@@ -91,7 +92,7 @@ module.exports = function (ctx) {
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {
         cfg.plugins.push(new CopyWebpackPlugin([{ from: 'public/', to: '' }]))
-        cfg.plugins.push(new ESLintPlugin({ extensions: ['js', 'vue'] }))
+        cfg.plugins.push(new ESLintPlugin({ extensions: ['js', 'ts', 'vue'] }))
 
         const STATIC_CDN = process.env.STATIC_CDN
         if (cfg.mode === 'production' && STATIC_CDN)
