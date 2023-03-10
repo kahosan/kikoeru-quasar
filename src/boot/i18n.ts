@@ -21,7 +21,7 @@ export default boot(({ app }) => {
     userPreferredLocale = 'ja'
 
   const i18n = createI18n({
-    locale: userPreferredLocale || quasarLocaleToAvailableLocale(Quasar.lang.getLocale()),
+    locale: userPreferredLocale?.toString() || quasarLocaleToAvailableLocale(Quasar.lang.getLocale() as any),
     fallbackLocale: 'en',
     messages,
   })

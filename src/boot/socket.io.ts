@@ -6,6 +6,7 @@ export default boot(({ app }) => {
     debug: false,
     connection: '',
     options: {
+      // @ts-expect-error is work
       autoConnect: false,
       query: {
         auth_token: '',

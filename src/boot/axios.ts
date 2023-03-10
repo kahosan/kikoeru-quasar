@@ -8,7 +8,7 @@ axios.defaults.headers.Authorization = LocalStorage.getItem('jwt-token') ? `Bear
 // 自定义接口域名
 axios.defaults.baseURL = process.env.API_URL ? process.env.API_URL : ''
 
-export function setAxiosHeaders(token) {
+export function setAxiosHeaders(token: string) {
   axios.defaults.headers.Authorization = `Bearer ${token}`
 }
 
