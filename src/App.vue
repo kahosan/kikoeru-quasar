@@ -50,8 +50,14 @@ export default {
 </template>
 
 <style>
+@font-face {
+  font-family: 'Harmony OS Sans SC';
+  src: url("src/assets/HarmonyOS_Sans_SC_Regular.woff2")
+}
+
 .zh-fonts {
-  font-family: -apple-system,
+  font-family: Harmony OS Sans SC,
+  -apple-system,
   BlinkMacSystemFont,
   Segoe UI,
   PingFang SC,
@@ -67,7 +73,8 @@ export default {
   !important;
 }
 .ja-fonts {
-  font-family: -apple-system,
+  font-family: Harmony OS Sans SC,
+  -apple-system,
   BlinkMacSystemFont,
   Noto Sans JP,
   Segoe UI,
