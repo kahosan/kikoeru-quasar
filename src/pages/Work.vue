@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       metadata: {
-        id: parseInt(this.$route.params.id),
+        id: Number.parseInt(this.$route.params.id),
         circle: {},
         vas: [],
         tags: [],
@@ -94,7 +94,7 @@ ${this.metadata.nsfw ? '🔞 NSFW' : '🟢 SFW'}`
   // 升级 vue3 后，会先显示之前缓存的详细信息，然后再用请求的数据替换，这里是为了解决这个问题
   activated() {
     this.metadata = {
-      id: parseInt(this.$route.params.id),
+      id: Number.parseInt(this.$route.params.id),
       circle: {},
       vas: [],
       tags: [],

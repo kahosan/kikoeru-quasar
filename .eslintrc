@@ -12,6 +12,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console": ["error", { "allow": ["warn", "error", "info"] }]
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    "n/prefer-global/process": "off"
   }
 }

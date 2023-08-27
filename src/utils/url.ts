@@ -9,7 +9,7 @@ interface MetadataURL {
 /**
  * 计算封面 url
  */
-export const coverURL = (metadata: MetadataURL, type = 'main') => {
+export function coverURL(metadata: MetadataURL, type = 'main') {
   metadata = metadata || {
     samCoverUrl: '',
     thumbnailCoverUrl: '',
@@ -46,13 +46,13 @@ export const coverURL = (metadata: MetadataURL, type = 'main') => {
 /**
  * 计算在线播放 url
  */
-export const mediaStreamURL = (hash: number, token: string) => {
+export function mediaStreamURL(hash: number, token: string) {
   return `${process.env.API_URL}/api/media/stream/${hash}?token=${token}`
 }
 
 /**
  * 计算下载 url
  */
-export const mediaDownloadURL = (hash: number, token: string) => {
+export function mediaDownloadURL(hash: number, token: string) {
   return `${process.env.API_URL}/api/media/download/${hash}?token=${token}`
 }

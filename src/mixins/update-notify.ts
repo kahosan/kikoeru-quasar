@@ -69,9 +69,9 @@ export default defineComponent({
       let a, b
 
       if (iPhoneOS)
-        [a, b] = iPhoneOS[1].split('_').map(v => parseInt(v))
+        [a, b] = iPhoneOS[1].split('_').map(v => Number.parseInt(v))
       else if (iPadOS)
-        [a, b] = iPadOS[1].split('.').map(v => parseInt(v))
+        [a, b] = iPadOS[1].split('.').map(v => Number.parseInt(v))
       else
         return
 

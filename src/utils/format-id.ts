@@ -1,7 +1,7 @@
 /**
  * 将 int 或 string 转换为 RJxxxxxx 的 product_id
  */
-export const formatProductID = (product_id: number | string, prefix = '') => {
+export function formatProductID(product_id: number | string, prefix = '') {
   if (typeof product_id === 'string') {
     // 移除 前导英文
     // RJ123456 => 123456
@@ -9,7 +9,7 @@ export const formatProductID = (product_id: number | string, prefix = '') => {
 
     // 转换为 int
     // 012345 => 12345
-    product_id = parseInt(product_id)
+    product_id = Number.parseInt(product_id)
   }
 
   if (product_id >= 1000000) {

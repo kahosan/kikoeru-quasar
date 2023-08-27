@@ -1,19 +1,21 @@
 <script>
 import { mapState } from 'vuex'
 
-const onCursorMove = that => (ev) => {
-  if (!that.beTouched)
-    return
+function onCursorMove(that) {
+  return (ev) => {
+    if (!that.beTouched)
+      return
 
-  // ev.preventDefault()
-  const touch = that.getTouch(ev)
+    // ev.preventDefault()
+    const touch = that.getTouch(ev)
 
-  // 计算 element 新位置坐标
-  const eleX = touch.clientX - that.startX
-  const eleY = touch.clientY - that.startY
+    // 计算 element 新位置坐标
+    const eleX = touch.clientX - that.startX
+    const eleY = touch.clientY - that.startY
 
-  that.draggable.style.left = `${eleX}px`
-  that.draggable.style.top = `${eleY}px`
+    that.draggable.style.left = `${eleX}px`
+    that.draggable.style.top = `${eleY}px`
+  }
 }
 
 export default {

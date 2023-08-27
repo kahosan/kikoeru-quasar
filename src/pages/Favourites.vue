@@ -271,7 +271,7 @@ export default {
 
     <div class="q-pt-md">
       <div class="q-px-sm q-py-md">
-        <q-infinite-scroll v-if="mode !== 'folder'" ref="scroll" :offset="500" :disable="stopLoad" @load="onLoad">
+        <q-infinite-scroll v-if="mode !== 'folder'" :offset="500" :disable="stopLoad" @load="onLoad">
           <div v-if="works.length === 0" class="row justify-center text-grey">
             {{ $t('favourites.favouriteEmptyTips') }}
           </div>

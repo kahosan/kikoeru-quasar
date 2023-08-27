@@ -42,8 +42,8 @@ export default {
 
     onSubmit() {
       // String => Integer
-      this.config.rewindSeekTime = parseInt(this.rewindSeekTime)
-      this.config.forwardSeekTime = parseInt(this.forwardSeekTime)
+      this.config.rewindSeekTime = Number.parseInt(this.rewindSeekTime)
+      this.config.forwardSeekTime = Number.parseInt(this.forwardSeekTime)
 
       this.loading = true
       this.$axios.put('/api/config/admin', {
