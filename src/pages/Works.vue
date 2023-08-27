@@ -206,6 +206,13 @@ export default {
   },
 
   watch: {
+    $route: {
+      handler(to) {
+        if (to.name === 'work')
+          this.active = false
+      },
+    },
+
     url() {
       // 当用户一直在 works 界面时，api url 的变动由此处处理
       if (this.active) {
@@ -241,7 +248,8 @@ export default {
 
     page() {
       document.getElementById('gotop')?.click()
-      this.requestWorksQueue()
+      if (this.active)
+        this.requestWorksQueue()
     },
   },
 
@@ -402,10 +410,14 @@ export default {
       this.pagination = { currentPage: 0, pageSize: 12, totalCount: 0 }
 
       // TODO 此处逻辑需要通过重写 query 规则进行优化
-      // if (this.page === 1) {
-      // 当 page === 1 时，由本方法调用 requestWorksQueue
-      this.requestWorksQueue()
-    //  }
+      if (this.page === 1) {
+        // 当 page === 1 时，由本方法调用 requestWorksQueue
+        this.requestWorksQueue()
+      }
+      else {
+        // 否则通过设定 page = 1，触发 this.page 的 watcher，间接调用 requestWorksQueue
+        this.page = 1
+      }
     },
   },
 }
