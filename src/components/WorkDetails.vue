@@ -4,6 +4,8 @@ import TagI18N from 'src/mixins/tag-i18n'
 import { coverURL } from 'src/utils/url'
 import WorkFeedback from 'components/WorkFeedback'
 import { formatProductID } from 'src/utils/format-id'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
+import { useUserStore } from 'src/stores/user'
 import DarkMode from '../mixins/dark-mode'
 import NotifyMixin from '../mixins/notification'
 import WriteReview from './WriteReview'
@@ -27,6 +29,13 @@ export default {
   },
 
   emits: ['reset'],
+
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -74,7 +83,7 @@ export default {
   },
   mounted() {
     // 进入本页时提前加载 Player，否则 ios 会因为 autoplay 限制无法播放
-    this.$store.commit('AudioPlayer/LOAD_PLAYER')
+    this.audioPlayerStore.LOAD_PLAYER()
   },
 
   methods: {
@@ -82,7 +91,7 @@ export default {
     setProgress(newProgress) {
       this.progress = newProgress
       const submitPayload = {
-        user_name: this.$store.state.User.name, // 用户名不会被后端使用
+        user_name: this.userStore.name, // 用户名不会被后端使用
         work_id: this.metadata.id,
         progress: newProgress,
       }
@@ -112,7 +121,7 @@ export default {
 
     setRating(newRating) {
       const submitPayload = {
-        user_name: this.$store.state.User.name, // 用户名不会被后端使用
+        user_name: this.userStore.name, // 用户名不会被后端使用
         work_id: this.metadata.id,
         rating: newRating,
       }

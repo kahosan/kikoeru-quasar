@@ -1,8 +1,15 @@
 <script>
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../../mixins/notification'
 
 export default {
   mixins: [NotifyMixin],
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -111,7 +118,7 @@ export default {
           this.showSuccNotif(response.data.message)
 
           // 仅当启用鉴权时跳转到登录页面
-          if (this.$store.state.User.auth) {
+          if (this.userStore.auth) {
             console.info('Got here')
             this.$router.push('/login')
           }

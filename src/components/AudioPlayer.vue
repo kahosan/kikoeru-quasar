@@ -1,9 +1,10 @@
 <script>
 import Draggable from 'vuedraggable'
 import AudioElement from 'components/AudioElement'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'pinia'
 import Notification from 'src/mixins/notification'
 import { formatSeconds } from 'src/utils/time'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 import DarkMode from '../mixins/dark-mode'
 import { coverURL } from '../utils/url'
 
@@ -16,6 +17,12 @@ export default {
   },
 
   mixins: [DarkMode, Notification],
+
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
+  },
 
   data() {
     return {
@@ -36,7 +43,7 @@ export default {
         return false
 
       // 当前为 pip 模式，或者可以进入 pip 模式
-      else return !!(this.subtitleDisplayMode === 'pip' || this.$store.state.AudioPlayer.lyricContent.length)
+      else return !!(this.subtitleDisplayMode === 'pip' || this.audioPlayerStore.lyricContent.length)
     },
     coverUrl() {
       return coverURL(this.currentPlayingFile, 'main')
@@ -49,7 +56,7 @@ export default {
 
     volume: {
       get() {
-        return this.$store.state.AudioPlayer.volume
+        return this.audioPlayerStore.volume
       },
       set(val) {
         this.SET_VOLUME(val)
@@ -58,7 +65,7 @@ export default {
 
     queue: {
       get() {
-        return this.$store.state.AudioPlayer.queue
+        return this.audioPlayerStore.queue
       },
       set() {},
     },
@@ -106,7 +113,7 @@ export default {
       }
     },
 
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'playing',
       'wantPlaying',
       'hide',
@@ -117,9 +124,6 @@ export default {
       'rewindSeekTime',
       'forwardSeekTime',
       'subtitleDisplayMode',
-    ]),
-
-    ...mapGetters('AudioPlayer', [
       'currentPlayingFile',
     ]),
   },
@@ -173,7 +177,7 @@ export default {
 
   methods: {
     formatSeconds,
-    ...mapMutations('AudioPlayer', {
+    ...mapActions(useAudioPlayerStore, {
       hidePlayer: 'PLAYER_HIDE',
       togglePlay: 'TOGGLE_WANT_PLAYING',
       nextTrack: 'NEXT_TRACK',
@@ -184,7 +188,7 @@ export default {
       forward: 'SET_FORWARD_SEEK_MODE',
       setLyricContent: 'SET_LYRIC_CONTENT',
     }),
-    ...mapMutations('AudioPlayer', [
+    ...mapActions(useAudioPlayerStore, [
       'SET_TRACK',
       'SET_QUEUE',
       'REMOVE_FROM_QUEUE',
@@ -206,9 +210,9 @@ export default {
       }
 
       if (this.subtitleDisplayMode === 'pip')
-        this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'in-app')
+        this.audioPlayerStore.SET_SUBTITLE_DISPLAY_MODE('in-app')
       else
-        this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'pip')
+        this.audioPlayerStore.SET_SUBTITLE_DISPLAY_MODE('pip')
     },
 
     onLyricFileRejected() {
@@ -216,7 +220,7 @@ export default {
     },
 
     onLyricFileLoaded(fileObject) {
-      // 用户选择本地字幕后，更新到 vuex，AudioElement 接收
+      // 用户选择本地字幕后，更新到 pinia，AudioElement 接收
       const reader = new FileReader()
       reader.onloadend = () => {
         this.setLyricContent(reader.result)

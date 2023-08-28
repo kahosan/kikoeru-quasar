@@ -1,9 +1,15 @@
 <script>
 import { setAxiosHeaders } from 'boot/axios'
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../mixins/notification'
 
 export default {
   mixins: [NotifyMixin],
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -33,7 +39,7 @@ export default {
     checkRegEnable() {
       this.$axios.get('/api/auth/reg')
         .then((res) => {
-          this.$store.commit('User/SET_REG', res.data.reg)
+          this.userStore.SET_REG(res.data.reg)
         })
     },
     login() {
@@ -118,7 +124,7 @@ export default {
     <q-btn v-if="!showRegisterForm" :label="$t('login.login')" type="submit" color="primary" class="fit" />
     <div class="row fit no-wrap justify-between">
       <q-btn v-if="!showRegisterForm" :label="$t('login.guestLogin')" flat dense color="accent" style="max-width: 5em" @click="guestLogin" />
-      <q-btn v-if="$store.state.User.reg && !showRegisterForm" :label="$t('login.register')" flat dense color="secondary" style="max-width: 5em" @click="navigateToRegister" />
+      <q-btn v-if="userStore.reg && !showRegisterForm" :label="$t('login.register')" flat dense color="secondary" style="max-width: 5em" @click="navigateToRegister" />
     </div>
 
     <!-- 注册界面按钮 -->

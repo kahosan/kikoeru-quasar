@@ -1,6 +1,7 @@
 <script>
 import { coverURL } from 'src/utils/url'
 import { formatProductID } from 'src/utils/format-id'
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../mixins/notification'
 import DarkMode from '../mixins/dark-mode'
 import WriteReview from './WriteReview'
@@ -11,7 +12,6 @@ export default {
   components: {
     WriteReview,
   },
-
   mixins: [NotifyMixin, DarkMode],
 
   props: {
@@ -30,6 +30,12 @@ export default {
   },
 
   emits: ['reset'],
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -88,7 +94,7 @@ export default {
       // 取消标星可能是操作失误，所以不响应。应使用删除标记来删除打星
       if (newRating) {
         const submitPayload = {
-          user_name: this.$store.state.User.name, // 用户名不会被后端使用
+          user_name: this.userStore.name, // 用户名不会被后端使用
           work_id: this.metadata.id,
           rating: newRating,
         }
@@ -118,7 +124,7 @@ export default {
 
     setProgress(newProgress) {
       const submitPayload = {
-        user_name: this.$store.state.User.name, // 用户名不会被后端使用
+        user_name: this.userStore.name, // 用户名不会被后端使用
         work_id: this.metadata.id,
         progress: newProgress,
       }

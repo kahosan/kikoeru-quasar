@@ -1,7 +1,8 @@
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'pinia'
 import { mediaDownloadURL, mediaStreamURL } from 'src/utils/url'
 import { formatSeconds } from 'src/utils/time'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 
 export default {
   name: 'WorkTree',
@@ -15,6 +16,12 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
   },
 
   data() {
@@ -36,7 +43,13 @@ export default {
         })
       },
     },
-    ...mapState('AudioPlayer', ['qualityBehavior']),
+
+    ...mapState(useAudioPlayerStore, [
+      'qualityBehavior',
+      'playing',
+      'currentPlayingFile',
+    ]),
+
     currentFolder() {
       if (!this.tree.length)
         return []
@@ -57,14 +70,6 @@ export default {
 
       return queue
     },
-
-    ...mapState('AudioPlayer', [
-      'playing',
-    ]),
-
-    ...mapGetters('AudioPlayer', [
-      'currentPlayingFile',
-    ]),
   },
 
   watch: {
@@ -108,21 +113,21 @@ export default {
         this.download(item)
       }
       else if (this.currentPlayingFile.hash !== item.hash) {
-        this.$store.commit('AudioPlayer/SET_QUEUE', {
+        this.audioPlayerStore.SET_QUEUE({
           queue: this.queue.concat(),
           index: this.queue.findIndex(file => file.hash === item.hash),
           resetPlaying: true,
         })
-        this.$store.commit('AudioPlayer/SET_METADATA', this.metadata)
+        this.audioPlayerStore.SET_METADATA(this.metadata)
       }
     },
 
     onClickPlayButton(hash) {
       if (this.currentPlayingFile.hash === hash) {
-        this.$store.commit('AudioPlayer/TOGGLE_WANT_PLAYING')
+        this.audioPlayerStore.TOGGLE_WANT_PLAYING()
       }
       else {
-        this.$store.commit('AudioPlayer/SET_QUEUE', {
+        this.audioPlayerStore.SET_QUEUE({
           queue: this.queue.concat(),
           index: this.queue.findIndex(file => file.hash === hash),
           resetPlaying: true,
@@ -131,11 +136,11 @@ export default {
     },
 
     addToQueue(file) {
-      this.$store.commit('AudioPlayer/ADD_TO_QUEUE', file)
+      this.audioPlayerStore.ADD_TO_QUEUE(file)
     },
 
     playNext(file) {
-      this.$store.commit('AudioPlayer/PLAY_NEXT', file)
+      this.audioPlayerStore.PLAY_NEXT(file)
     },
 
     download(file) {

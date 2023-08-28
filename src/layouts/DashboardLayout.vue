@@ -1,11 +1,18 @@
 <script>
 import DarkMode from 'src/mixins/dark-mode'
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../mixins/notification'
 
 export default {
   name: 'DashboardLayout',
 
   mixins: [DarkMode, NotifyMixin],
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -45,8 +52,8 @@ export default {
     success(payload) {
       this.showSuccNotif(payload.message)
       if (payload.auth) {
-        this.$store.commit('User/INIT', payload.user)
-        this.$store.commit('User/SET_AUTH', payload.auth)
+        this.userStore.INIT(payload.user)
+        this.userStore.SET_AUTH(payload.auth)
       }
     },
     error(err) {

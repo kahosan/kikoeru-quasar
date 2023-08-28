@@ -2,9 +2,10 @@
 import WorkCard from 'components/WorkCard'
 import WorkListItem from 'components/WorkListItem'
 import TagI18N from 'src/mixins/tag-i18n'
-import { mapState } from 'vuex'
+import { mapState } from 'pinia'
 import Language from 'components/Language'
 import { formatProductID } from 'src/utils/format-id'
+import { useUserStore } from 'src/stores/user'
 import DarkMode from '../mixins/dark-mode'
 import NotifyMixin from '../mixins/notification'
 
@@ -89,7 +90,7 @@ export default {
   },
 
   computed: {
-    ...mapState('User', {
+    ...mapState(useUserStore, {
       userName: 'name',
     }),
 

@@ -1,5 +1,6 @@
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'pinia'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 
 export default {
   name: 'SleepMode',
@@ -16,7 +17,7 @@ export default {
   },
 
   computed: {
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'sleepTime',
       'sleepMode',
     ]),
@@ -48,7 +49,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('AudioPlayer', [
+    ...mapActions(useAudioPlayerStore, [
       'SET_SLEEP_TIMER',
       'CLEAR_SLEEP_MODE',
     ]),

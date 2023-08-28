@@ -1,5 +1,6 @@
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'pinia'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 
 function onCursorMove(that) {
   return (ev) => {
@@ -32,7 +33,7 @@ export default {
   },
 
   computed: {
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'currentLyric',
     ]),
 

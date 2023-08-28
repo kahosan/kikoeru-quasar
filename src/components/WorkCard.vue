@@ -4,6 +4,7 @@ import CoverSFW from 'components/CoverSFW'
 import TagI18N from 'src/mixins/tag-i18n'
 import { coverURL } from 'src/utils/url'
 import { formatProductID } from 'src/utils/format-id'
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../mixins/notification'
 
 export default {
@@ -24,6 +25,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
   },
 
   data() {
@@ -56,7 +63,7 @@ export default {
     rating(newRating, oldRating) {
       if (oldRating) {
         const submitPayload = {
-          user_name: this.$store.state.User.name, // 用户名不会被后端使用
+          user_name: this.userStore.name, // 用户名不会被后端使用,
           work_id: this.metadata.id,
           rating: newRating,
         }
@@ -66,7 +73,7 @@ export default {
     },
   },
 
-  // TODO: Refactor with Vuex?
+  // TODO: Refactor with Pinia?
   mounted() {
     if (this.metadata.userRating) {
       this.userMarked = true

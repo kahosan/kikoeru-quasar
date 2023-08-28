@@ -1,4 +1,5 @@
 <script>
+import { useUserStore } from 'src/stores/user'
 import NotifyMixin from '../mixins/notification'
 
 export default {
@@ -18,6 +19,12 @@ export default {
   },
 
   emits: ['closed'],
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
 
   data() {
     return {
@@ -52,7 +59,7 @@ export default {
 
     reviewPayload() {
       const submitPayload = {
-        user_name: this.$store.state.User.name, // 用户名不会被后端使用
+        user_name: this.userStore.name, // 用户名不会被后端使用
         work_id: this.workid,
         rating: this.rating,
         review_text: this.reviewText,

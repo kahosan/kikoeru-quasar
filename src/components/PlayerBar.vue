@@ -1,12 +1,19 @@
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'pinia'
 import { coverURL } from 'src/utils/url'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 import DarkMode from '../mixins/dark-mode'
 
 export default {
   name: 'PlayerBar',
 
   mixins: [DarkMode],
+
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
+  },
 
   computed: {
     samCoverUrl() {
@@ -17,31 +24,28 @@ export default {
       return this.playing ? 'pause' : 'play_arrow'
     },
 
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'hide',
       'playing',
-    ]),
-
-    ...mapGetters('AudioPlayer', [
       'currentPlayingFile',
     ]),
   },
 
   methods: {
     showPlayer() {
-      this.$store.commit('AudioPlayer/PLAYER_SHOW')
+      this.audioPlayerStore.PLAYER_SHOW()
     },
 
     togglePlaying() {
-      this.$store.commit('AudioPlayer/TOGGLE_WANT_PLAYING')
+      this.audioPlayerStore.TOGGLE_WANT_PLAYING()
     },
 
     nextTrack() {
-      this.$store.commit('AudioPlayer/NEXT_TRACK')
+      this.audioPlayerStore.NEXT_TRACK()
     },
 
     previousTrack() {
-      this.$store.commit('AudioPlayer/PREVIOUS_TRACK')
+      this.audioPlayerStore.PREVIOUS_TRACK()
     },
   },
 }

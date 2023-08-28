@@ -4,8 +4,10 @@ import AudioPlayer from 'components/AudioPlayer'
 import LyricsBar from 'components/LyricsBar'
 import PiPSubtitle from 'components/PiPSubtitle'
 import SleepMode from 'components/SleepMode'
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'pinia'
 import UpdateNotify from 'src/mixins/update-notify'
+import { useUserStore } from 'src/stores/user'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 import NotifyMixin from '../mixins/notification'
 
 export default {
@@ -20,6 +22,13 @@ export default {
   },
 
   mixins: [NotifyMixin, UpdateNotify],
+
+  setup() {
+    return {
+      userStore: useUserStore(),
+      audioPlayerStore: useAudioPlayerStore(),
+    }
+  },
 
   data() {
     return {
@@ -85,12 +94,12 @@ export default {
       return path && path !== '/' && path !== '/works' && path !== '/favourites'
     },
 
-    ...mapState('User', {
+    ...mapState(useUserStore, {
       userName: 'name',
       authEnabled: 'auth',
     }),
 
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'shouldLoadPlayer',
     ]),
   },
@@ -118,7 +127,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('AudioPlayer', [
+    ...mapActions(useAudioPlayerStore, [
       'SET_REWIND_SEEK_TIME',
       'SET_FORWARD_SEEK_TIME',
       'SET_QUALITY_BEHAVIOR',
@@ -126,9 +135,9 @@ export default {
     initUser() {
       this.$axios.get('/api/auth/me')
         .then((res) => {
-          this.$store.commit('User/INIT', res.data.user)
-          this.$store.commit('User/SET_AUTH', res.data.auth)
-          this.$store.commit('User/SET_REG', res.data.reg)
+          this.userStore.INIT(res.data.user)
+          this.userStore.SET_AUTH(res.data.auth)
+          this.userStore.SET_REG(res.data.reg)
         })
         .catch((error) => {
           if (error.response) {
@@ -410,7 +419,7 @@ export default {
     </q-page-container>
 
     <q-footer class="q-pa-none">
-      <LyricsBar v-if="shouldLoadPlayer" v-show="$store.state.AudioPlayer.subtitleDisplayMode === 'in-app'" />
+      <LyricsBar v-if="shouldLoadPlayer" v-show="audioPlayerStore.subtitleDisplayMode === 'in-app'" />
       <PlayerBar v-if="shouldLoadPlayer" />
     </q-footer>
   </q-layout>

@@ -1,7 +1,14 @@
 <script>
+import { useAudioPlayerStore } from 'src/stores/audio-player'
+
 export default {
   name: 'PiPSubtitle',
   props: {
+  },
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
   },
   data() {
     return {
@@ -18,7 +25,7 @@ export default {
      * 用户按了播放器的暂停
      * 字幕也同时暂停
      */
-    '$store.state.AudioPlayer.playing': function (playing) {
+    'audioPlayerStore.playing': function (playing) {
       // 只有 pip 显示时才跟随播放状态
       if (!this.currentPiPStatus)
         return
@@ -32,7 +39,7 @@ export default {
      * 用户调整桌面字幕开关时
      * @param subtitleDisplayMode
      */
-    '$store.state.AudioPlayer.subtitleDisplayMode': function (subtitleDisplayMode) {
+    'audioPlayerStore.subtitleDisplayMode': function (subtitleDisplayMode) {
       if (subtitleDisplayMode === 'pip' && !this.currentPiPStatus)
         this.show()
       else if (subtitleDisplayMode !== 'pip' && this.currentPiPStatus)
@@ -43,7 +50,7 @@ export default {
      * 当前字幕更新时
      * @param text
      */
-    '$store.state.AudioPlayer.currentLyric': function (text) {
+    'audioPlayerStore.currentLyric': function (text) {
       this.setSubtitle(text)
       this.video.srcObject.getTracks().forEach(track => track.requestFrame())
     },
@@ -54,11 +61,11 @@ export default {
 
     // 用户按了字幕的暂停，播放器也同时暂停
     this.video.addEventListener('pause', () => {
-      this.$store.commit('AudioPlayer/WANT_PAUSE')
+      this.audioPlayerStore.WANT_PAUSE()
     }, true)
 
     this.video.addEventListener('play', () => {
-      this.$store.commit('AudioPlayer/WANT_PLAY')
+      this.audioPlayerStore.WANT_PLAY()
     }, true)
 
     // 设置默认 canvas 画布大小
@@ -74,7 +81,7 @@ export default {
     // pip 启动成功
     addEventListener('enterpictureinpicture', (event) => {
       this.currentPiPStatus = true
-      this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'pip')
+      this.audioPlayerStore.subtitleDisplayMode('pip')
 
       this.pipWindow = event.pictureInPictureWindow
       this.pipWindow.onresize = this.onPipWindowResize.bind(this)
@@ -84,7 +91,7 @@ export default {
     // 用户主动关闭 pip
     addEventListener('leavepictureinpicture', () => {
       this.currentPiPStatus = false
-      this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'in-app')
+      this.audioPlayerStore.subtitleDisplayMode('in-app')
       this.pipWindow.onresize = null
     }, false)
   },
@@ -92,7 +99,7 @@ export default {
     onPipWindowResize() {
       this.canvas.width = 2 * this.pipWindow.width
       this.canvas.height = 2 * this.pipWindow.height
-      this.setSubtitle(this.$store.state.AudioPlayer.currentLyric)
+      this.setSubtitle(this.audioPlayerStore.currentLyric)
       this.video.srcObject.getTracks().forEach(track => track.requestFrame())
     },
 
@@ -110,7 +117,7 @@ export default {
       if (typeof this.video.requestPictureInPicture === 'function') {
         this.video.requestPictureInPicture().catch((e) => {
           this.video.pause()
-          this.$store.commit('AudioPlayer/SET_SUBTITLE_DISPLAY_MODE', 'in-app')
+          this.audioPlayerStore.SET_SUBTITLE_DISPLAY_MODE('in-app')
           Sentry.captureException(e)
         })
 

@@ -1,10 +1,16 @@
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'pinia'
 import DarkMode from 'src/mixins/dark-mode'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 
 export default {
   name: 'Settings',
   mixins: [DarkMode],
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
+  },
   data() {
     return {
       // forwardSeekTime: null,
@@ -21,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'forwardSeekTime',
       'rewindSeekTime',
       'qualityBehavior',
@@ -31,26 +37,26 @@ export default {
 
   },
   mounted() {
-    // this.forwardSeekTime = this.$store.state.AudioPlayer.forwardSeekTime
-    // this.rewindSeekTime = this.$store.state.AudioPlayer.rewindSeekTime
+    // this.forwardSeekTime = this.audioPlayerStore.forwardSeekTime
+    // this.rewindSeekTime = this.audioPlayerStore.rewindSeekTime
   },
   methods: {
     setForwardSeekTime(val) {
-      this.$store.commit('AudioPlayer/SET_FORWARD_SEEK_TIME', val)
+      this.audioPlayerStore.SET_FORWARD_SEEK_TIME(val)
       this.$q.localStorage.set('sharedConfig', {
         ...this.$q.localStorage.getItem('sharedConfig') || {},
         forwardSeekTime: val,
       })
     },
     setRewindSeekTime(val) {
-      this.$store.commit('AudioPlayer/SET_REWIND_SEEK_TIME', val)
+      this.audioPlayerStore.SET_REWIND_SEEK_TIME(val)
       this.$q.localStorage.set('sharedConfig', {
         ...this.$q.localStorage.getItem('sharedConfig') || {},
         rewindSeekTime: val,
       })
     },
     setQualityBehavior(val) {
-      this.$store.commit('AudioPlayer/SET_QUALITY_BEHAVIOR', val)
+      this.audioPlayerStore.SET_QUALITY_BEHAVIOR(val)
       this.$q.localStorage.set('sharedConfig', {
         ...this.$q.localStorage.getItem('sharedConfig') || {},
         qualityBehavior: val,

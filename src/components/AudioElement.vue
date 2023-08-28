@@ -1,6 +1,7 @@
 <script>
 import Lyric from 'lrc-file-parser'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'pinia'
+import { useAudioPlayerStore } from 'src/stores/audio-player'
 import VuePlyr from 'vue-plyr'
 import NotifyMixin from '../mixins/notification'
 import 'vue-plyr/dist/vue-plyr.css'
@@ -18,6 +19,12 @@ export default {
 
   mixins: [NotifyMixin],
 
+  setup() {
+    return {
+      audioPlayerStore: useAudioPlayerStore(),
+    }
+  },
+
   data() {
     return {
       lrcObj: null,
@@ -26,8 +33,6 @@ export default {
   },
 
   computed: {
-    ...mapState('AudioPlayer', ['qualityBehavior']),
-
     player() {
       return this.$refs.plyr.player
     },
@@ -41,7 +46,7 @@ export default {
       return source ? `${source}?token=${token}` : ''
     },
 
-    ...mapState('AudioPlayer', [
+    ...mapState(useAudioPlayerStore, [
       'playing',
       'playingControlSignal',
       'queue',
@@ -57,9 +62,7 @@ export default {
       'forwardSeekMode',
       'lyricContent',
       'metadata',
-    ]),
-
-    ...mapGetters('AudioPlayer', [
+      'qualityBehavior',
       'currentPlayingFile',
     ]),
   },
@@ -182,7 +185,7 @@ export default {
       this.setLrcPlayStatus(false)
       this.ON_PLAY()
     },
-    ...mapMutations('AudioPlayer', [
+    ...mapActions(useAudioPlayerStore, [
       'SET_DURATION',
       'SET_CURRENT_TIME',
 
@@ -220,7 +223,7 @@ export default {
 
     onTimeupdate() {
       // 安卓必须要靠这种方式才能在后台更新字幕，用于 pip
-      if (this.playing && this.$store.state.AudioPlayer.subtitleDisplayMode === 'pip')
+      if (this.playing && this.audioPlayerStore.subtitleDisplayMode === 'pip')
         this.setLrcPlayStatus(true)
 
       // 当目前的播放位置已更改时触发
@@ -366,8 +369,8 @@ export default {
       console.info('setMediaSessionActionHandler')
       if (!('mediaSession' in navigator))
         return
-      navigator.mediaSession.setActionHandler('play', () => this.$store.commit('AudioPlayer/WANT_PLAY'))
-      navigator.mediaSession.setActionHandler('pause', () => this.$store.commit('AudioPlayer/WANT_PAUSE'))
+      navigator.mediaSession.setActionHandler('play', () => this.audioPlayerStore.WANT_PLAY())
+      navigator.mediaSession.setActionHandler('pause', () => this.audioPlayerStore.WANT_PAUSE())
       navigator.mediaSession.setActionHandler('seekto', (event) => {
         if (event.fastSeek && ('fastSeek' in this.player)) {
           this.player.fastSeek(event.seekTime)
@@ -376,10 +379,10 @@ export default {
         if (this.player)
           this.player.currentTime = event.seekTime
       })
-      navigator.mediaSession.setActionHandler('nexttrack', () => this.$store.commit('AudioPlayer/NEXT_TRACK'))
-      navigator.mediaSession.setActionHandler('previoustrack', () => this.$store.commit('AudioPlayer/PREVIOUS_TRACK'))
-      navigator.mediaSession.setActionHandler('seekforward', () => this.$store.commit('AudioPlayer/SET_FORWARD_SEEK_MODE', this.$store.state.AudioPlayer.forwardSeekTime))
-      navigator.mediaSession.setActionHandler('seekbackward', () => this.$store.commit('AudioPlayer/SET_REWIND_SEEK_MODE', this.$store.state.AudioPlayer.rewindSeekTime))
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.audioPlayerStore.NEXT_TRACK())
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.audioPlayerStore.PREVIOUS_TRACK())
+      navigator.mediaSession.setActionHandler('seekforward', () => this.audioPlayerStore.SET_FORWARD_SEEK_MODE(this.audioPlayerStore.forwardSeekTime))
+      navigator.mediaSession.setActionHandler('seekbackward', () => this.audioPlayerStore.SET_REWIND_SEEK_MODE(this.audioPlayerStore.rewindSeekTime))
     },
   },
 }
