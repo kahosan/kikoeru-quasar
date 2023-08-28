@@ -339,7 +339,7 @@ export default {
 
             <q-item-section>
               <q-item-label class="text-subtitle1">
-                {{ $t('sidebar.sleepMode') }}
+                {{ $t('sidebar.noPicMode') }}
               </q-item-label>
             </q-item-section>
           </q-item>
