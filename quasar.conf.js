@@ -79,6 +79,7 @@ module.exports = function (ctx) {
       env: require('dotenv').config().parsed, // patchDotEnvForQuasar1(require('dotenv').config().parsed),
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      publicPath: process.env.ROUTER_BASE || '/',
 
       // rtl: false, // https://quasar.dev/options/rtl-support
       // showProgress: false,
