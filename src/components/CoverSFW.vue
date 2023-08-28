@@ -70,7 +70,7 @@ export default {
 <template>
   <router-link :to="`/work/${rjCode}`">
     <q-img
-      :src="coverUrl" :ratio="4 / 3" :img-class="imgClass" style="max-width: 560px;" transition="fade"
+      :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : coverUrl" :ratio="4 / 3" :img-class="imgClass" style="max-width: 560px;" transition="fade"
       native-context-menu @mouseover="toggleBlurFlag()" @mouseout="toggleBlurFlag()"
     >
       <div class="absolute-top-left transparent" style="padding: 0;">

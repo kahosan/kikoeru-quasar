@@ -8,6 +8,7 @@ export default {
   configration: '设定',
   randomPlay: '随心听',
   sleepMode: '睡眠模式',
+  noPicMode: '无图模式',
 
   // bottom
   darkMode: '夜间模式',

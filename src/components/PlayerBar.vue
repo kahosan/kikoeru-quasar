@@ -56,7 +56,7 @@ export default {
     <div v-show="currentPlayingFile.hash && hide" class="row text-black" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-white'">
       <q-item v-ripple clickable style="padding: 0px 5px;" class="col non-selectable" @click="showPlayer()">
         <q-item-section avatar>
-          <q-img transition="fade" :src="samCoverUrl" style="height: 50px; width: 50px" class="rounded-borders" />
+          <q-img transition="fade" :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : samCoverUrl" style="height: 50px; width: 50px" class="rounded-borders" />
         </q-item-section>
 
         <q-item-section>

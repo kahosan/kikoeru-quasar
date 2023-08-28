@@ -160,7 +160,7 @@ export default {
   <q-item clickable class="row" :class="classBackgroundColor">
     <q-item-section class="col-auto" top>
       <router-link :to="`/work/${rjCode}`">
-        <q-img transition="fade" :src="coverUrl" style="height: 120px; width: 160px;" />
+        <q-img transition="fade" :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : coverUrl" style="height: 120px; width: 160px;" />
       </router-link>
     </q-item-section>
 

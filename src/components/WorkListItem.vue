@@ -38,7 +38,7 @@ export default {
   <q-item clickable :to="`/work/${rjCode}`" :class="classBackgroundColor" style="padding: 5px;">
     <q-item-section avatar style="padding: 0px 5px 0px 0px;">
       <router-link :to="`/work/${rjCode}`">
-        <q-img transition="fade" :src="samCoverUrl" style="height: 60px; width: 60px;" />
+        <q-img transition="fade" :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : samCoverUrl" style="height: 60px; width: 60px;" />
       </router-link>
     </q-item-section>
 

@@ -296,7 +296,7 @@ export default {
       <q-card v-show="currentPlayingFile.hash && !hide" square class="fixed-bottom-right audio-player" :class="classTextColor" @mousewheel.prevent @touchmove.prevent>
         <!-- 音声封面 -->
         <div class="bg-dark row items-center albumart relative-position">
-          <q-img contain transition="fade" :src="coverUrl" :ratio="4 / 3" />
+          <q-img contain transition="fade" :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : coverUrl" :ratio="4 / 3" />
           <q-btn dense round size="md" :color="color" :text-color="textColor" icon="keyboard_arrow_down" class="absolute-top-left q-ma-sm" @click="hidePlayer()" />
           <q-btn dense round size="md" :color="color" :text-color="textColor" icon="more_vert" class="absolute-top-right q-ma-sm">
             <q-menu anchor="bottom right" self="top right">
@@ -466,7 +466,7 @@ export default {
                 </q-item-section>
 
                 <q-item-section avatar>
-                  <q-img transition="fade" :src="samCoverUrl(track)" style="height: 38px; width: 38px" class="rounded-borders" />
+                  <q-img transition="fade" :src="$q.localStorage.getItem('NO_PIC_MODE') ? '' : samCoverUrl(track)" style="height: 38px; width: 38px" class="rounded-borders" />
                 </q-item-section>
 
                 <q-item-section>

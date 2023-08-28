@@ -7,6 +7,7 @@ export default {
   vas: '声優',
   randomPlay: 'ランダム',
   sleepMode: 'スリープモード',
+  noPicMode: 'ノーピクモード',
 
   // bottom
   darkMode: 'ダークモード',

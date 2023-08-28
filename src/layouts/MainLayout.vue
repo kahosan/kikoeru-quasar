@@ -159,6 +159,12 @@ export default {
         })
     },
 
+    toggleNoPicMode() {
+      const mode = this.$q.localStorage.getItem('NO_PIC_MODE') || false
+      this.$q.localStorage.set('NO_PIC_MODE', !mode)
+      location.reload()
+    },
+
     checkUpdate() {
       this.$axios.get('/api/version')
         .then((res) => {
@@ -317,6 +323,18 @@ export default {
           <q-item v-ripple clickable exact active-class="text-deep-purple text-weight-medium" @click="showTimer = true">
             <q-item-section avatar>
               <q-icon name="bedtime" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-subtitle1">
+                {{ $t('sidebar.sleepMode') }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-ripple clickable exact active-class="text-deep-purple text-weight-medium" @click="toggleNoPicMode">
+            <q-item-section avatar>
+              <q-icon :name="$q.localStorage.getItem('NO_PIC_MODE') ? 'image' : 'image_not_supported'" />
             </q-item-section>
 
             <q-item-section>

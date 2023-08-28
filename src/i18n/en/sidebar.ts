@@ -7,6 +7,7 @@ export default {
   vas: 'VAs',
   randomPlay: 'Random Play',
   sleepMode: 'Sleep Mode',
+  noPicMode: 'No Pic Mode',
 
   // bottom
   darkMode: 'Dark Mode',
