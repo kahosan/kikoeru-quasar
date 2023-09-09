@@ -1,20 +1,39 @@
 <script>
-import { mapState } from 'pinia'
 import DarkMode from 'src/mixins/dark-mode'
 import { useAudioPlayerStore } from 'src/stores/audio-player'
+import { onMounted, ref } from 'vue'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'Settings',
   mixins: [DarkMode],
+
   setup() {
+    const store = useAudioPlayerStore()
+    const $q = useQuasar()
+
+    const forwardSeekTime = ref(30)
+    const rewindSeekTime = ref(5)
+    const qualityBehavior = ref('qualityFirst')
+
+    onMounted(() => {
+      const storedConfig = $q.localStorage.getItem('sharedConfig')
+      if (storedConfig) {
+        forwardSeekTime.value = storedConfig.forwardSeekTime
+        rewindSeekTime.value = storedConfig.rewindSeekTime
+        qualityBehavior.value = storedConfig.qualityBehavior
+
+        store.SET_FORWARD_SEEK_TIME(storedConfig.forwardSeekTime)
+        store.SET_REWIND_SEEK_TIME(storedConfig.rewindSeekTime)
+        store.SET_QUALITY_BEHAVIOR(storedConfig.qualityBehavior)
+      }
+    })
+
     return {
       audioPlayerStore: useAudioPlayerStore(),
-    }
-  },
-  data() {
-    return {
-      // forwardSeekTime: null,
-      // rewindSeekTime: null,
+      forwardSeekTime,
+      rewindSeekTime,
+      qualityBehavior,
       quickSeekOptions: [5, 10, 15, 30],
     }
   },
@@ -26,19 +45,16 @@ export default {
       ],
     }
   },
-  computed: {
-    ...mapState(useAudioPlayerStore, [
-      'forwardSeekTime',
-      'rewindSeekTime',
-      'qualityBehavior',
-    ]),
-  },
   watch: {
-
-  },
-  mounted() {
-    // this.forwardSeekTime = this.audioPlayerStore.forwardSeekTime
-    // this.rewindSeekTime = this.audioPlayerStore.rewindSeekTime
+    forwardSeekTime(val) {
+      this.setForwardSeekTime(val)
+    },
+    rewindSeekTime(val) {
+      this.setRewindSeekTime(val)
+    },
+    qualityBehavior(val) {
+      this.setQualityBehavior(val)
+    },
   },
   methods: {
     setForwardSeekTime(val) {
@@ -83,11 +99,11 @@ export default {
 
         <q-item-section side>
           <q-select
-            borderless dense
-            :value="forwardSeekTime"
+            v-model="forwardSeekTime"
+            borderless
+            dense
             :options="quickSeekOptions"
             :option-label="opt => opt.toString() + $t('settings.seconds')"
-            @input="setForwardSeekTime"
           />
         </q-item-section>
       </q-item>
@@ -107,11 +123,11 @@ export default {
 
         <q-item-section side>
           <q-select
-            borderless dense
-            :value="rewindSeekTime"
+            v-model="rewindSeekTime"
+            borderless
+            dense
             :options="quickSeekOptions"
             :option-label="opt => opt.toString() + $t('settings.seconds')"
-            @input="setRewindSeekTime"
           />
         </q-item-section>
       </q-item>
@@ -131,18 +147,13 @@ export default {
 
         <q-item-section side>
           <q-select
+            v-model="qualityBehavior"
             borderless dense
-            :value="qualityBehavior"
             :options="['qualityFirst', 'fluentFirst']"
             :option-label="opt => $t(`settings.${opt}`)"
-            @input="setQualityBehavior"
           />
         </q-item-section>
       </q-item>
     </q-list>
   </div>
 </template>
-
-<style scoped>
-
-</style>
