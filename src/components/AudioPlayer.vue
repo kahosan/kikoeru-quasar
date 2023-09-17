@@ -346,7 +346,7 @@ export default {
                 </q-item-section>
               </q-item>
 
-              <q-item v-ripple v-close-popup clickable :to="`/play?source=${source}`" target="_blank">
+              <q-item v-ripple v-close-popup clickable :to="`/play?source=${source}`" target="_blank" @click="() => audioPlayerStore.WANT_PAUSE()">
                 <q-item-section avatar>
                   <q-icon name="open_in_new" />
                 </q-item-section>
