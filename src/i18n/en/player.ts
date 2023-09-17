@@ -4,4 +4,5 @@ export default {
   workDetail: 'Open work detail',
   loadSubtitle: 'Load local subtitle',
   selectSubtitleFile: 'Select subtitle file',
+  openVideo: 'Open video',
 }

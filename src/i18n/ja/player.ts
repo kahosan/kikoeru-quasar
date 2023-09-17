@@ -4,4 +4,5 @@ export default {
   workDetail: '作品詳細',
   loadSubtitle: '字幕を読み込む',
   selectSubtitleFile: '字幕ファイルを選択',
+  openVideo: '動画を開く',
 }

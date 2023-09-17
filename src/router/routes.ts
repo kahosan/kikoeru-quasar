@@ -14,6 +14,8 @@ import Scanner from 'pages/Dashboard/Scanner.vue'
 import Advanced from 'pages/Dashboard/Advanced.vue'
 import UserManage from 'pages/Dashboard/UserManage.vue'
 
+import Play from 'pages/Play.vue'
+
 import type { RouteRecordRaw } from 'vue-router'
 
 function prefixRoutes(prefix: string, routes: RouteRecordRaw[]) {
@@ -94,6 +96,10 @@ const routes: RouteRecordRaw[] = [
         path: 'about',
         props: { restrict: 'about' },
         component: () => import('pages/About.vue'),
+      },
+      {
+        path: 'play',
+        component: Play,
       },
       ...prefixRoutes('favourites', [
         {

@@ -4,4 +4,5 @@ export default {
   workDetail: '打开作品详情',
   loadSubtitle: '加载本地字幕',
   selectSubtitleFile: '选择字幕文件',
+  openVideo: '打开视频',
 }
